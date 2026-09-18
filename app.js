@@ -7,38 +7,8 @@
 let curtain;
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// A small curated palette + original taglines for the curtain flash — one
-// random pair shown briefly on every page load before the sweep reveals the
-// actual (black-and-white) site underneath. Inspired by the playful colored
-// loading moment on a reference site, written fresh in Areen's own voice
-// rather than reusing anyone else's specific copy or exact palette.
-const CURTAIN_PALETTE = ['#D9694F', '#2F6F62', '#E8A33D', '#2B2C6C', '#B8562E'];
-const CURTAIN_TAGLINES = [
-    'sketching in the margins',
-    'prototyping the improbable',
-    'form follows curiosity',
-    'measuring twice, cutting once',
-    'where research meets render',
-    'getting the gears turning',
-];
-
-function dressCurtain() {
-    if (!curtain) return;
-    const color = CURTAIN_PALETTE[Math.floor(Math.random() * CURTAIN_PALETTE.length)];
-    const tagline = CURTAIN_TAGLINES[Math.floor(Math.random() * CURTAIN_TAGLINES.length)];
-    curtain.style.backgroundColor = color;
-    let label = curtain.querySelector('.curtain-tagline');
-    if (!label) {
-        label = document.createElement('span');
-        label.className = 'curtain-tagline font-pixel';
-        curtain.appendChild(label);
-    }
-    label.textContent = tagline;
-}
-
 function playCurtainReveal() {
     if (typeof gsap === 'undefined' || !curtain) return;
-    dressCurtain();
     gsap.set(curtain, { y: '0%' });
     gsap.to(curtain, { duration: REDUCE_MOTION ? 0.05 : 0.6, y: '-100%', ease: 'power3.inOut', delay: REDUCE_MOTION ? 0 : 0.15 });
 }
@@ -395,36 +365,40 @@ function initLogoCarousel() {
     carousel.addEventListener('touchend', dragEnd);
 }
 
-// ---------------- Pull-to-refresh: gear animation, every page ----------------
-// Touch-only by design — pull-to-refresh has no real mouse equivalent on any
-// platform, and enabling it for mouse-drag would risk colliding with normal
-// desktop interactions (text selection, the logo carousel's own drag). Only
-// activates when the page's scroll container is already at the very top.
+// ---------------- Pull-to-refresh: gear banner, every page ----------------
+// A black banner unrolls from the very top of the viewport as you pull,
+// with two meshed gears turning inside it — release past the threshold and
+// it spins up and reloads. Works with a real mouse click-and-drag on
+// desktop as well as touch; that's a distinct gesture from the multi-finger
+// trackpad swipe Safari intercepts natively, so it doesn't hit that conflict.
+// Only engages when starting near the very top of the viewport and while
+// already scrolled to the top, so it can't interfere with normal clicking,
+// dragging the logo carousel, or selecting text further down the page.
 function initPullToRefresh() {
     if (REDUCE_MOTION || typeof gsap === 'undefined') return;
-    if (!('ontouchstart' in window)) return; // touch-capable devices only
 
     const GEAR_BIG = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
     const GEAR_SMALL = 'M 65.5,50.0 L 68.36,54.89 L 65.27,61.31 L 59.66,62.12 L 59.66,62.12 L 57.62,67.4 L 50.68,68.99 L 46.55,65.11 L 46.55,65.11 L 41.15,66.81 L 35.58,62.37 L 36.03,56.73 L 36.03,56.73 L 31.34,53.56 L 31.34,46.44 L 36.03,43.27 L 36.03,43.27 L 35.58,37.63 L 41.15,33.19 L 46.55,34.89 L 46.55,34.89 L 50.68,31.01 L 57.62,32.6 L 59.66,37.88 L 59.66,37.88 L 65.27,38.69 L 68.36,45.11 L 65.5,50.0 Z M 55,50 A 5,5 0 1 0 45,50 A 5,5 0 1 0 55,50 Z';
 
     const wrap = document.createElement('div');
     wrap.id = 'ptr-indicator';
-    if (document.querySelector('.content-header.dark-mode')) wrap.classList.add('ptr-on-dark');
     wrap.innerHTML = `
-        <div id="ptr-backdrop"></div>
-        <svg id="ptr-gears" viewBox="0 0 130 100" width="72" height="55">
-            <path id="ptr-gear-big" d="${GEAR_BIG}" transform="translate(0,0)"></path>
+        <svg id="ptr-gears" viewBox="0 0 130 100" width="84" height="65">
+            <path id="ptr-gear-big" d="${GEAR_BIG}"></path>
             <path id="ptr-gear-small" d="${GEAR_SMALL}" transform="translate(38,-2) scale(0.62)"></path>
         </svg>`;
     document.body.appendChild(wrap);
     const gearBig = document.getElementById('ptr-gear-big');
     const gearSmall = document.getElementById('ptr-gear-small');
     gsap.set([gearBig, gearSmall], { transformOrigin: '50% 50%' });
+    gsap.set(wrap, { height: 0 });
 
-    const THRESHOLD = 78;
-    const MAX_PULL = 130;
-    const DEAD_ZONE = 12;
+    const THRESHOLD = 90;
+    const MAX_PULL = 150;
+    const SETTLED_HEIGHT = 100;
+    const DEAD_ZONE = 10;
     const DAMPING = 0.5;
+    const START_BAND = 160; // only engage if the gesture starts within this many px of the top
 
     let startX = 0, startY = 0, tracking = false, isPull = null, pull = 0, triggered = false;
 
@@ -436,55 +410,64 @@ function initPullToRefresh() {
     function setPull(p) {
         pull = p;
         const progress = pull / MAX_PULL;
-        gsap.set(wrap, { y: pull - 90 });
+        gsap.set(wrap, { height: pull });
         gsap.set(gearBig, { rotation: progress * 200 });
         gsap.set(gearSmall, { rotation: progress * -260 });
-        wrap.classList.toggle('ptr-ready', pull >= THRESHOLD);
     }
 
     function snapBack() {
-        gsap.to(wrap, { y: -90, duration: 0.35, ease: 'power2.out' });
-        wrap.classList.remove('ptr-ready');
+        gsap.to(wrap, { height: 0, duration: 0.35, ease: 'power2.out' });
         pull = 0;
     }
 
     function fireRefresh() {
         triggered = true;
-        gsap.to(wrap, { y: 10, duration: 0.25, ease: 'power2.out' });
+        gsap.to(wrap, { height: SETTLED_HEIGHT, duration: 0.25, ease: 'power2.out' });
         gsap.to(gearBig, { rotation: '+=560', duration: 0.7, ease: 'none', repeat: -1 });
         gsap.to(gearSmall, { rotation: '-=730', duration: 0.7, ease: 'none', repeat: -1 });
         setTimeout(() => window.location.reload(), 750);
     }
 
-    window.addEventListener('touchstart', (e) => {
-        if (triggered || !atTop()) { tracking = false; return; }
+    function dragStart(x, y) {
+        if (triggered || y > START_BAND || !atTop()) { tracking = false; return; }
         tracking = true; isPull = null; pull = 0;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-    }, { passive: true });
+        startX = x; startY = y;
+    }
 
-    window.addEventListener('touchmove', (e) => {
+    function dragMove(x, y, evt) {
         if (!tracking || triggered) return;
-        const dx = e.touches[0].clientX - startX;
-        const dy = e.touches[0].clientY - startY;
+        const dx = x - startX;
+        const dy = y - startY;
 
         if (isPull === null) {
-            if (Math.abs(dx) < DEAD_ZONE && Math.abs(dy) < DEAD_ZONE) return; // not enough movement yet to tell
-            isPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4; // predominantly downward, not a horizontal swipe
+            if (Math.abs(dx) < DEAD_ZONE && Math.abs(dy) < DEAD_ZONE) return;
+            isPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4; // predominantly downward, not horizontal (carousel drag, text selection)
             if (!isPull) { tracking = false; return; }
         }
         if (!isPull) return;
 
-        e.preventDefault(); // only once we're confident this is a pull, so normal scrolling elsewhere is untouched
+        if (evt) evt.preventDefault();
         setPull(Math.max(0, Math.min(dy * DAMPING, MAX_PULL)));
-    }, { passive: false });
+    }
 
-    window.addEventListener('touchend', () => {
+    function dragEnd() {
         if (!tracking || !isPull || triggered) { tracking = false; return; }
         tracking = false;
         if (pull >= THRESHOLD) fireRefresh();
         else snapBack();
-    });
+    }
+
+    // Touch
+    window.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
+    window.addEventListener('touchend', dragEnd);
+
+    // Mouse — a plain click-and-drag, a different gesture from the trackpad
+    // swipe, so it doesn't collide with Safari's native behavior.
+    let mouseDown = false;
+    window.addEventListener('mousedown', (e) => { mouseDown = true; dragStart(e.clientX, e.clientY); });
+    window.addEventListener('mousemove', (e) => { if (mouseDown) dragMove(e.clientX, e.clientY, e); });
+    window.addEventListener('mouseup', () => { mouseDown = false; dragEnd(); });
 }
 
 // ---------------- Boot ----------------
