@@ -74,7 +74,7 @@
 
         #content-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); overflow-y: auto; z-index: 100; transform: none !important; scroll-behavior: smooth; }
 
-        .content-header { position: fixed; top: 0; left: 0; width: 100%; padding: 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 110; pointer-events: none; transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .content-header { position: fixed; top: 0; left: 0; width: 100%; padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 110; pointer-events: none; transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .content-header.dark-mode { background-color: rgba(5, 5, 5, 0.85); }
         @media (max-width: 767px) {
             .content-header { padding: 1.25rem 1.5rem; }
@@ -94,7 +94,7 @@
         .back-btn:hover { transform: translateX(-5px); }
 
         #hi-content { background-color: white; color: black; width: 100%; overflow-x: hidden; }
-        #contact-content { background-color: var(--contact-bg); color: white; min-height: 100vh; padding-top: 120px; display: flex; flex-direction: column; padding-left: 3rem; padding-right: 3rem; }
+        #contact-content { background-color: var(--contact-bg); color: white; min-height: 100vh; padding-top: 140px; display: flex; flex-direction: column; padding-left: 3rem; padding-right: 3rem; }
         .greetings-carousel { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(4rem, 12vw, 10rem); color: #444; margin-bottom: 2rem; height: 1.2em; overflow: hidden; position: relative; letter-spacing: -0.05em; line-height: 1; }
         .greeting-word { position: absolute; width: 100%; text-align: left; opacity: 0; transform: translateY(100%); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .greeting-word.active { opacity: 1; transform: translateY(0); }
@@ -102,15 +102,16 @@
         .contact-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 1; margin-bottom: 4rem; letter-spacing: -0.02em; color: white; }
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: auto; padding-bottom: 4rem; }
         .contact-bio { font-size: 1.5rem; line-height: 1.4; max-width: 600px; margin-bottom: 4rem; color: #ccc; }
-        .contact-email { font-size: clamp(0.9rem, 2.4vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; overflow-wrap: break-word; word-break: break-word; }
+        .contact-email { font-size: clamp(0.8rem, 2.2vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; overflow-wrap: break-word; }
 
         @media (max-width: 767px) {
-            #contact-content { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 100px; }
+            #contact-content { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 115px; }
         }
-        .social-links a { color: #888; margin-right: 2rem; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; }
+        .social-links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
+        .social-links a { color: #888; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; }
         .social-links a:hover { color: white; }
 
-        #research-content { background-color: #f4f4f4; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        #research-content { background-color: #f4f4f4; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 8rem; }
         #research-preview { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
         .research-card { display: flex; width: 80%; max-width: 1000px; height: auto; min-height: 500px; background: white; border-radius: 24px; box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15); overflow: hidden; position: relative; z-index: 10; }
         .card-left { width: 40%; background-color: #000000; padding: 3rem; color: white; display: flex; flex-direction: column; justify-content: space-between; }
