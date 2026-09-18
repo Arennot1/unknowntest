@@ -102,7 +102,11 @@
         .contact-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 1; margin-bottom: 4rem; letter-spacing: -0.02em; color: white; }
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: auto; padding-bottom: 4rem; }
         .contact-bio { font-size: 1.5rem; line-height: 1.4; max-width: 600px; margin-bottom: 4rem; color: #ccc; }
-        .contact-email { font-size: clamp(1rem, 2.6vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; white-space: nowrap; }
+        .contact-email { font-size: clamp(0.9rem, 2.4vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; overflow-wrap: break-word; word-break: break-word; }
+
+        @media (max-width: 767px) {
+            #contact-content { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 100px; }
+        }
         .social-links a { color: #888; margin-right: 2rem; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; }
         .social-links a:hover { color: white; }
 
@@ -134,20 +138,19 @@
         .btn-primary { background-color: #000; color: white; padding: 1rem 2rem; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.05em; cursor: pointer; width: fit-content; }
         .btn-primary:hover { transform: scale(1.05); }
 
-        .filter-active { border-color: #000000 !important; color: #000000 !important; }
-        .filter-inactive { border-color: #d1d5db !important; color: #6b7280 !important; }
+        .filter-active { border-color: #000000 !important; background-color: #000000 !important; color: #ffffff !important; }
+        .filter-inactive { border-color: #d1d5db !important; color: #374151 !important; background-color: transparent !important; }
 
-        /* Anti-grid project layout: desktop-only asymmetric spans, packed densely
-           so each card's size (set via gridSize in data/projects.json) creates
-           an irregular, non-uniform rhythm instead of a rigid uniform matrix.
-           Mobile stays a plain single-column stack (see grid-cols-1 in the HTML). */
+        /* Anti-grid project layout: desktop-only, deliberately subtle spans —
+           mostly even (6/6), with an occasional gentle 7/5 offset for rhythm.
+           All cards share the same aspect ratio so rows stay level; no more
+           dramatic width/height mismatches. Mobile stays a plain single-column
+           stack (see grid-cols-1 in the HTML). */
         @media (min-width: 1024px) {
             #projects-grid { grid-auto-flow: dense; }
-            .grid-col-4 { grid-column: span 4 / span 4; }
             .grid-col-5 { grid-column: span 5 / span 5; }
             .grid-col-6 { grid-column: span 6 / span 6; }
             .grid-col-7 { grid-column: span 7 / span 7; }
-            .grid-col-8 { grid-column: span 8 / span 8; }
         }
 
         /* Real <a> links replace what used to be onclick'd <div>s — keep them looking identical */
