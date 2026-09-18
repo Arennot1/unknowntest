@@ -84,47 +84,39 @@ function startGreetingCarousel() {
 }
 
 // ---------------- Logo ripple effect (home page only) ----------------
+// Real frosted-glass circles (actual backdrop-filter blur of whatever page
+// content sits behind them), not canvas-drawn outlines — canvas has no way
+// to blur what's behind it, only a real DOM element does.
 function initLogoRipple() {
-    const canvas = document.getElementById('logo-canvas');
     const brandingLogo = document.querySelector('.branding-logo');
-    if (!canvas || !brandingLogo || REDUCE_MOTION) return;
-    const ctx = canvas.getContext('2d');
-    let ripples = [];
-
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Ripple {
-        constructor(x, y) {
-            this.x = x; this.y = y; this.radius = 0;
-            const dx = canvas.width - this.x; const dy = canvas.height - this.y;
-            this.maxRadius = Math.sqrt(dx * dx + dy * dy) + 100;
-            this.speed = 5 + Math.random() * 5; this.opacity = 1; this.lineWidth = 2 + Math.random() * 3;
-        }
-        update() { this.radius += this.speed; this.opacity = 1 - (this.radius / this.maxRadius); if (this.opacity < 0) this.opacity = 0; }
-        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.strokeStyle = `rgba(0, 0, 0, ${this.opacity})`; ctx.lineWidth = this.lineWidth; ctx.stroke(); }
-    }
-
-    function animateRipples() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < ripples.length; i++) {
-            ripples[i].update(); ripples[i].draw();
-            if (ripples[i].opacity <= 0 || ripples[i].radius >= ripples[i].maxRadius) { ripples.splice(i, 1); i--; }
-        }
-        if (ripples.length > 0) requestAnimationFrame(animateRipples);
-    }
+    if (!brandingLogo || REDUCE_MOTION || typeof gsap === 'undefined') return;
 
     window.triggerLogoEffect = function () {
         const logoImg = brandingLogo.querySelector('img');
         const rect = logoImg.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2; const centerY = rect.top + rect.height / 2; let spawned = 0;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const maxSize = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2) * 1.3;
+
+        let spawned = 0;
         const interval = setInterval(() => {
-            ripples.push(new Ripple(centerX, centerY)); spawned++;
-            if (spawned === 1 && ripples.length === 1) animateRipples();
-            if (spawned >= 5) clearInterval(interval);
-        }, 150);
+            spawnGlassRipple(centerX, centerY, maxSize);
+            spawned++;
+            if (spawned >= 4) clearInterval(interval);
+        }, 220);
     };
+}
+
+function spawnGlassRipple(x, y, maxSize) {
+    const el = document.createElement('div');
+    el.className = 'glass-ripple';
+    document.body.appendChild(el);
+    gsap.set(el, { x, y, xPercent: -50, yPercent: -50, width: 0, height: 0, opacity: 0.9 });
+    gsap.to(el, {
+        width: maxSize, height: maxSize, opacity: 0,
+        duration: 2.2, ease: 'power2.out',
+        onComplete: () => el.remove(),
+    });
 }
 
 // ---------------- Diecast Dash mini-game (About/Hi page only) ----------------
@@ -297,6 +289,51 @@ function initCustomCursor() {
     document.body.addEventListener('mouseleave', hide);
 }
 
+// ---------------- "Journey So Far" stat counters (Projects page) ----------------
+function initStatCounters() {
+    const counters = document.querySelectorAll('.stat-count');
+    if (!counters.length) return;
+
+    counters.forEach(el => {
+        const target = parseFloat(el.getAttribute('data-count-to'));
+        const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        const suffix = el.getAttribute('data-suffix') || '';
+
+        if (REDUCE_MOTION || typeof gsap === 'undefined') {
+            el.textContent = target.toFixed(decimals) + suffix;
+            return;
+        }
+
+        const proxy = { value: 0 };
+        gsap.to(proxy, {
+            value: target,
+            duration: 1.6,
+            ease: 'power2.out',
+            onUpdate: () => { el.textContent = proxy.value.toFixed(decimals) + suffix; },
+        });
+    });
+}
+
+// ---------------- Logo carousel: native scroll + click-and-drag ----------------
+function initLogoCarouselDrag() {
+    const carousel = document.getElementById('logo-carousel');
+    if (!carousel) return;
+    let isDown = false, startX = 0, startScroll = 0;
+
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        carousel.classList.add('dragging');
+        startX = e.pageX;
+        startScroll = carousel.scrollLeft;
+    });
+    window.addEventListener('mouseup', () => { isDown = false; carousel.classList.remove('dragging'); });
+    window.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        carousel.scrollLeft = startScroll - (e.pageX - startX);
+    });
+}
+
 // ---------------- Boot ----------------
 window.addEventListener('DOMContentLoaded', () => {
     curtain = document.getElementById('transition-curtain');
@@ -305,6 +342,8 @@ window.addEventListener('DOMContentLoaded', () => {
     initCarGame();
     startGreetingCarousel();
     initCustomCursor();
+    initStatCounters();
+    initLogoCarouselDrag();
 });
 
 window.onload = function () {
