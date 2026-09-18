@@ -55,16 +55,17 @@
             .menu-tag { display: none; }
         }
 
-        .branding-logo { position: absolute; top: 3rem; left: 3rem; z-index: 40; cursor: pointer; }
+        .branding-logo { position: absolute; top: 2.5rem; left: 2.5rem; z-index: 40; cursor: pointer; padding: 1rem; margin: -1rem; }
         .glass-ripple {
             position: fixed; top: 0; left: 0; border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.06);
-            backdrop-filter: blur(6px) saturate(140%);
-            -webkit-backdrop-filter: blur(6px) saturate(140%);
+            background: rgba(255, 255, 255, 0.28);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.4), 0 15px 45px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(9px) saturate(160%);
+            -webkit-backdrop-filter: blur(9px) saturate(160%);
             pointer-events: none;
             z-index: 9998;
+            will-change: width, height, opacity;
         }
         
         .footer-strip { position: absolute; bottom: 3rem; left: 0; width: 100%; padding: 0 3rem; z-index: 40; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-main); line-height: 1.6; }
@@ -161,10 +162,12 @@
         .stat-count { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
         .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: #9ca3af; margin-top: 0.5rem; }
         .trusted-label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 1rem; }
-        .logo-carousel { overflow-x: auto; cursor: grab; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
-        .logo-carousel.dragging { cursor: grabbing; scroll-behavior: auto; user-select: none; }
-        .logo-carousel-track { display: flex; gap: 1rem; width: max-content; padding-bottom: 0.5rem; }
+        .logo-carousel { overflow: hidden; cursor: grab; -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent); mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent); }
+        .logo-carousel.dragging { cursor: grabbing; user-select: none; }
+        .logo-carousel-track { display: flex; gap: 1rem; width: max-content; will-change: transform; }
         .logo-chip { flex-shrink: 0; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 2rem; border: 1px solid #e5e5e5; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; white-space: nowrap; }
+        .logo-chip img { height: 28px; width: auto; max-width: 120px; object-fit: contain; filter: grayscale(1); opacity: 0.6; transition: filter 0.2s, opacity 0.2s; }
+        .logo-chip:hover img { filter: grayscale(0); opacity: 1; }
 
         @media (max-width: 1023px) {
             .journey-grid { grid-template-columns: 1fr; gap: 1.75rem; }
