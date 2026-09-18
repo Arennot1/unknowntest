@@ -118,9 +118,9 @@ function renderMedia(media, altText = '') {
 }
 
 const GRID_SIZES = {
-    wide: { span: 'grid-col-7', aspect: 'aspect-video' },
-    standard: { span: 'grid-col-6', aspect: 'aspect-video' },
-    narrow: { span: 'grid-col-5', aspect: 'aspect-video' },
+    wide: { span: 'grid-col-7', aspect: 'aspect-[4/3]' },
+    standard: { span: 'grid-col-6', aspect: 'aspect-[4/3]' },
+    narrow: { span: 'grid-col-5', aspect: 'aspect-[4/3]' },
 };
 
 function renderProjectGridHTML() {
@@ -200,14 +200,50 @@ routes.push({
     title: 'Projects — Areen Pednekar',
     description: 'Portfolio of UI/UX, industrial, and interior design projects by Areen Pednekar.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Projects' })}\n        <div id="projects-content" class="w-full min-h-screen bg-white text-black pt-40 pb-32">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
-                <div class="flex flex-wrap gap-4 mb-16 border-b border-gray-100 pb-8">
+            <div class="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-10">
+                <div class="journey-block">
+                    <div class="journey-grid">
+                        <div class="journey-intro">
+                            <span class="journey-eyebrow">The Journey So Far</span>
+                            <p>Hello to the folks new here. This space is more than just a gallery of final deliverables&mdash;it's a living record of my journey. From deep-dive research to physical form, these are the challenges, skills, and strategies that keep shaping me as a designer.</p>
+                        </div>
+                        <div class="journey-stats">
+                            <div class="stat">
+                                <span class="stat-count" data-count-to="2.5" data-decimals="1">0</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-count" data-count-to="10" data-suffix="+">0</span>
+                                <span class="stat-label">Domains Explored</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-count" data-count-to="30" data-suffix="+">0</span>
+                                <span class="stat-label">Client Partnerships</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="journey-trusted">
+                        <span class="trusted-label">Trusted by teams at</span>
+                        <!-- Placeholder chips — swap these for real client names/logos whenever you have them. -->
+                        <div class="logo-carousel" id="logo-carousel">
+                            <div class="logo-carousel-track">
+                                <div class="logo-chip">Nimbus Labs</div>
+                                <div class="logo-chip">Orbit &amp; Co.</div>
+                                <div class="logo-chip">Forma Studio</div>
+                                <div class="logo-chip">Kestrel Group</div>
+                                <div class="logo-chip">Northline</div>
+                                <div class="logo-chip">Verdant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8">
                     <button onclick="filterProjects(event, 'all')" data-cursor-quiet class="filter-btn filter-active text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors">All</button>
                     <button onclick="filterProjects(event, 'uiux')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">UI/UX</button>
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
                     <button onclick="filterProjects(event, 'interior')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Interior</button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-16 lg:gap-y-20" id="projects-grid">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-4 lg:gap-x-6 gap-y-10 lg:gap-y-12" id="projects-grid">
 ${renderProjectGridHTML()}
                 </div>
             </div>
