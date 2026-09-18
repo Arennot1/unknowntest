@@ -75,7 +75,7 @@ function renderHeader({ backHref, darkMode }) {
     return `        <header class="content-header${darkMode ? ' dark-mode' : ''}" id="global-header">
             <div class="content-logo"><a href=""><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-12 w-auto"></a></div>
             <nav class="content-nav hidden md:flex"></nav>
-            <a href="${backHref}" data-transition class="back-btn">
+            <a href="${backHref}" data-transition data-cursor-quiet class="back-btn">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </a>
         </header>`;
@@ -89,7 +89,7 @@ const FOOTER = `        <footer class="content-footer bg-white border-t border-g
                 </div>
                 <div class="flex flex-col gap-3">
                     <span class="text-gray-400 font-medium">Contact</span>
-                    <a href="mailto:areenpednekarbusiness@gmail.com" class="text-black font-semibold hover:opacity-60 transition-opacity">areenpednekarbusiness@gmail.com</a>
+                    <a href="mailto:areenpednekarbusiness@gmail.com" class="text-black font-semibold hover:opacity-60 transition-opacity" data-cursor-icon="mail" data-cursor-text="COPY EMAIL" data-copy="areenpednekarbusiness@gmail.com">areenpednekarbusiness@gmail.com</a>
                 </div>
             </div>
             <div class="flex flex-col gap-3 md:text-right mt-12 md:mt-0 justify-end h-full">
@@ -104,7 +104,7 @@ function renderMedia(media) {
 }
 
 function renderProjectGridHTML() {
-    return projects.map(p => `                    <a href="projects/${p.id}/" data-transition class="project-card cursor-pointer group" data-category="${p.category}">
+    return projects.map(p => `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group" data-category="${p.category}">
                         <div class="w-full aspect-video ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail)}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl text-black editorial-text">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
@@ -131,7 +131,7 @@ function renderCaseStudyBody(p) {
         `<div><span class="block text-black font-bold mb-2 font-sans tracking-tight">${label}</span>${value}</div>`
     ).join('');
     const sidebarHTML = [['overview', 'Overview'], ...SECTION_ORDER].map(([key, label]) =>
-        `<button onclick="scrollToSection('${p.id}-${key}')" class="text-left hover:text-black transition-colors">${label}</button>`
+        `<button onclick="scrollToSection('${p.id}-${key}')" data-cursor-quiet class="text-left hover:text-black transition-colors">${label}</button>`
     ).join('\n');
     const sectionsHTML = SECTION_ORDER.map(([key, label]) => renderSectionHTML(p, key, label)).join('\n');
 
@@ -179,10 +179,10 @@ routes.push({
     body: `    <div id="content-view">\n${renderHeader({ backHref: '' })}\n        <div id="projects-content" class="w-full min-h-screen bg-white text-black pt-40 pb-32">
             <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
                 <div class="flex flex-wrap gap-4 mb-16 border-b border-gray-100 pb-8">
-                    <button onclick="filterProjects(event, 'all')" class="filter-btn filter-active text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors">All</button>
-                    <button onclick="filterProjects(event, 'uiux')" class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">UI/UX</button>
-                    <button onclick="filterProjects(event, 'industrial')" class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
-                    <button onclick="filterProjects(event, 'interior')" class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Interior</button>
+                    <button onclick="filterProjects(event, 'all')" data-cursor-quiet class="filter-btn filter-active text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors">All</button>
+                    <button onclick="filterProjects(event, 'uiux')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">UI/UX</button>
+                    <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
+                    <button onclick="filterProjects(event, 'interior')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Interior</button>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-20" id="projects-grid">
 ${renderProjectGridHTML()}

@@ -191,31 +191,105 @@ function initCarGame() {
     window.addEventListener('keydown', (e) => { if (e.code === 'Space') startGame(e); });
 }
 
-// ---------------- Custom cursor (fine-pointer devices only, i.e. not touch) ----------------
+// ---------------- Custom cursor: glass dot, three tiers ----------------
+// - data-cursor-icon + data-cursor-text on any <a>/<button> → rich glass pill
+//   with that icon and label (e.g. the eye icon + "VIEW CASE STUDY" on
+//   project cards, the mail icon + "COPY EMAIL" on email links).
+// - data-cursor-quiet on any <a>/<button> → the cursor recedes (dimmer,
+//   no pill) instead of announcing itself — used for navigation/utility
+//   controls (main menu, back button, filters, section jump links).
+// - Neither attribute → falls back to the eye icon + "VIEW".
+// - data-copy="value" on top of the above → clicking copies that value to
+//   the clipboard instead of following the link, with a "COPIED" flash.
+//
+// To label something new: add data-cursor-icon="eye|mail|check" and
+// data-cursor-text="YOUR LABEL" to any link or button. To mark something as
+// navigation/secondary instead: add data-cursor-quiet (no value needed).
+const CURSOR_ICONS = {
+    eye: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>',
+    mail: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>',
+    check: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+};
+
 function initCustomCursor() {
     if (!window.matchMedia('(pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (typeof gsap === 'undefined') return;
 
-    const cursor = document.createElement('div');
-    cursor.id = 'custom-cursor';
-    // The Contact page has a dark background (see .content-header.dark-mode) —
-    // use a light-colored cursor there instead of the default dark one.
-    if (document.querySelector('.content-header.dark-mode')) {
-        cursor.classList.add('cursor-on-dark');
-    }
-    document.body.appendChild(cursor);
+    const isDark = !!document.querySelector('.content-header.dark-mode');
 
-    // quickTo gives the same springy, trailing follow as the original
-    // useSpring version, without needing React or Framer Motion.
-    const moveX = gsap.quickTo(cursor, 'x', { duration: 0.45, ease: 'power3' });
-    const moveY = gsap.quickTo(cursor, 'y', { duration: 0.45, ease: 'power3' });
+    const dot = document.createElement('div');
+    dot.id = 'cursor-dot';
+
+    const glass = document.createElement('div');
+    glass.id = 'cursor-glass';
+    glass.innerHTML = '<span id="cursor-glass-icon"></span><span id="cursor-glass-label"></span>';
+
+    [dot, glass].forEach(el => {
+        if (isDark) el.classList.add('cursor-on-dark');
+        document.body.appendChild(el);
+    });
+    const iconEl = glass.querySelector('#cursor-glass-icon');
+    const labelEl = glass.querySelector('#cursor-glass-label');
+
+    gsap.set([dot, glass], { xPercent: -50, yPercent: -50, scale: 0 });
+
+    const dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power3' });
+    const dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power3' });
+    const glassX = gsap.quickTo(glass, 'x', { duration: 0.3, ease: 'power3' });
+    const glassY = gsap.quickTo(glass, 'y', { duration: 0.3, ease: 'power3' });
 
     function onMouseMove(e) {
-        moveX(e.clientX - 16); // 16 = half the 32px cursor size, centers it on the pointer
-        moveY(e.clientY - 16);
+        dotX(e.clientX);
+        dotY(e.clientY);
+        glassX(e.clientX);
+        glassY(e.clientY);
     }
-    function show() { gsap.to(cursor, { opacity: 1, duration: 0.2 }); }
-    function hide() { gsap.to(cursor, { opacity: 0, duration: 0.2 }); }
+
+    function onEnterTarget(e) {
+        const el = e.currentTarget;
+        if (el.hasAttribute('data-cursor-quiet')) {
+            // Receding state: no pill, just a dimmer, slightly larger dot.
+            glass.classList.remove('has-label');
+            gsap.to(dot, { scale: 1.8, opacity: 0.35, duration: 0.2 });
+            gsap.to(glass, { scale: 0, opacity: 0, duration: 0.15 });
+            return;
+        }
+        const icon = el.getAttribute('data-cursor-icon') || 'eye';
+        const text = el.getAttribute('data-cursor-text') || 'VIEW';
+        iconEl.innerHTML = CURSOR_ICONS[icon] || CURSOR_ICONS.eye;
+        labelEl.textContent = text;
+        glass.classList.add('has-label');
+        gsap.to(dot, { scale: 0, opacity: 0, duration: 0.2 });
+        gsap.to(glass, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.7)' });
+    }
+    function onLeaveTarget() {
+        gsap.to(dot, { scale: 1, opacity: 1, duration: 0.2 });
+        gsap.to(glass, { scale: 0, opacity: 0, duration: 0.2 });
+    }
+
+    function onClickCopy(e) {
+        const value = e.currentTarget.getAttribute('data-copy');
+        if (!value || !navigator.clipboard) return; // fall through to normal link behavior
+        e.preventDefault();
+        navigator.clipboard.writeText(value).then(() => {
+            iconEl.innerHTML = CURSOR_ICONS.check;
+            labelEl.textContent = 'COPIED';
+            setTimeout(() => {
+                iconEl.innerHTML = CURSOR_ICONS[e.currentTarget.getAttribute('data-cursor-icon') || 'eye'];
+                labelEl.textContent = e.currentTarget.getAttribute('data-cursor-text') || 'VIEW';
+            }, 1200);
+        });
+    }
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', onEnterTarget);
+        el.addEventListener('mouseleave', onLeaveTarget);
+        if (el.hasAttribute('data-copy')) el.addEventListener('click', onClickCopy);
+    });
+
+    function show() { gsap.to(dot, { scale: 1, opacity: 1, duration: 0.2 }); }
+    function hide() { gsap.to([dot, glass], { scale: 0, opacity: 0, duration: 0.2 }); }
 
     window.addEventListener('mousemove', onMouseMove);
     document.body.addEventListener('mouseenter', show);
