@@ -56,7 +56,16 @@
         }
 
         .branding-logo { position: absolute; top: 3rem; left: 3rem; z-index: 40; cursor: pointer; }
-        #logo-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
+        .glass-ripple {
+            position: fixed; top: 0; left: 0; border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(6px) saturate(140%);
+            -webkit-backdrop-filter: blur(6px) saturate(140%);
+            pointer-events: none;
+            z-index: 9998;
+        }
         
         .footer-strip { position: absolute; bottom: 3rem; left: 0; width: 100%; padding: 0 3rem; z-index: 40; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-main); line-height: 1.6; }
         .footer-col-group { display: flex; gap: 4vw; pointer-events: auto; }
@@ -141,6 +150,26 @@
 
         .filter-active { border-color: #000000 !important; background-color: #000000 !important; color: #ffffff !important; }
         .filter-inactive { border-color: #d1d5db !important; color: #374151 !important; background-color: transparent !important; }
+
+        /* Projects page: "The Journey So Far" intro + stats + logo carousel */
+        .journey-block { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid #f0f0f0; }
+        .journey-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: start; margin-bottom: 2.5rem; }
+        .journey-eyebrow { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.75rem; }
+        .journey-intro p { font-size: 1.05rem; line-height: 1.6; color: #374151; max-width: 46ch; }
+        .journey-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+        .stat { display: flex; flex-direction: column; }
+        .stat-count { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
+        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: #9ca3af; margin-top: 0.5rem; }
+        .trusted-label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; margin-bottom: 1rem; }
+        .logo-carousel { overflow-x: auto; cursor: grab; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+        .logo-carousel.dragging { cursor: grabbing; scroll-behavior: auto; user-select: none; }
+        .logo-carousel-track { display: flex; gap: 1rem; width: max-content; padding-bottom: 0.5rem; }
+        .logo-chip { flex-shrink: 0; display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 2rem; border: 1px solid #e5e5e5; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; white-space: nowrap; }
+
+        @media (max-width: 1023px) {
+            .journey-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+            .journey-stats { gap: 2rem; }
+        }
 
         /* Anti-grid project layout: desktop-only, deliberately subtle spans —
            mostly even (6/6), with an occasional gentle 7/5 offset for rhythm.
