@@ -7,8 +7,38 @@
 let curtain;
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// A small curated palette + original taglines for the curtain flash — one
+// random pair shown briefly on every page load before the sweep reveals the
+// actual (black-and-white) site underneath. Inspired by the playful colored
+// loading moment on a reference site, written fresh in Areen's own voice
+// rather than reusing anyone else's specific copy or exact palette.
+const CURTAIN_PALETTE = ['#D9694F', '#2F6F62', '#E8A33D', '#2B2C6C', '#B8562E'];
+const CURTAIN_TAGLINES = [
+    'sketching in the margins',
+    'prototyping the improbable',
+    'form follows curiosity',
+    'measuring twice, cutting once',
+    'where research meets render',
+    'getting the gears turning',
+];
+
+function dressCurtain() {
+    if (!curtain) return;
+    const color = CURTAIN_PALETTE[Math.floor(Math.random() * CURTAIN_PALETTE.length)];
+    const tagline = CURTAIN_TAGLINES[Math.floor(Math.random() * CURTAIN_TAGLINES.length)];
+    curtain.style.backgroundColor = color;
+    let label = curtain.querySelector('.curtain-tagline');
+    if (!label) {
+        label = document.createElement('span');
+        label.className = 'curtain-tagline font-pixel';
+        curtain.appendChild(label);
+    }
+    label.textContent = tagline;
+}
+
 function playCurtainReveal() {
     if (typeof gsap === 'undefined' || !curtain) return;
+    dressCurtain();
     gsap.set(curtain, { y: '0%' });
     gsap.to(curtain, { duration: REDUCE_MOTION ? 0.05 : 0.6, y: '-100%', ease: 'power3.inOut', delay: REDUCE_MOTION ? 0 : 0.15 });
 }
