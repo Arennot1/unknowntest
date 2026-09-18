@@ -96,14 +96,17 @@ function initLogoRipple() {
         const rect = logoImg.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const maxSize = Math.min(window.innerWidth, window.innerHeight) * 0.9;
+        // Diameter needs to be ~2x the viewport diagonal to fully reach the
+        // farthest corner when the ripple originates near a corner (like the
+        // logo does) rather than dead-center.
+        const maxSize = 2 * Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
 
         let spawned = 0;
         const interval = setInterval(() => {
             spawnGlassRipple(centerX, centerY, maxSize);
             spawned++;
             if (spawned >= 4) clearInterval(interval);
-        }, 260);
+        }, 300);
     };
 }
 
@@ -114,12 +117,12 @@ function spawnGlassRipple(x, y, maxSize) {
     gsap.set(el, { x, y, xPercent: -50, yPercent: -50, width: 0, height: 0, opacity: 0 });
 
     const tl = gsap.timeline({ onComplete: () => el.remove() });
-    // Pop in fast and hold near-full visibility while it grows, then fade
-    // only at the very end — the previous single power2.out fade dropped
-    // opacity fastest right at the start, so it read as barely-there.
-    tl.to(el, { opacity: 1, width: maxSize * 0.2, height: maxSize * 0.2, duration: 0.25, ease: 'power2.out' })
-      .to(el, { width: maxSize, height: maxSize, duration: 1.6, ease: 'power2.out' }, '<')
-      .to(el, { opacity: 0, duration: 0.7, ease: 'power1.in' }, '-=0.7');
+    // Strong, fast start (quick pop to near-full opacity + a burst of initial
+    // growth), then the expansion visibly decelerates as it spreads across
+    // the page, calming down into a slow fade rather than an abrupt cut-off.
+    tl.to(el, { opacity: 1, width: maxSize * 0.12, height: maxSize * 0.12, duration: 0.2, ease: 'power2.out' })
+      .to(el, { width: maxSize, height: maxSize, duration: 2.6, ease: 'power3.out' }, '<')
+      .to(el, { opacity: 0, duration: 1.4, ease: 'power1.in' }, '-=1.4');
 }
 
 // ---------------- Diecast Dash mini-game (About/Hi page only) ----------------
@@ -362,6 +365,98 @@ function initLogoCarousel() {
     carousel.addEventListener('touchend', dragEnd);
 }
 
+// ---------------- Pull-to-refresh: gear animation, every page ----------------
+// Touch-only by design — pull-to-refresh has no real mouse equivalent on any
+// platform, and enabling it for mouse-drag would risk colliding with normal
+// desktop interactions (text selection, the logo carousel's own drag). Only
+// activates when the page's scroll container is already at the very top.
+function initPullToRefresh() {
+    if (REDUCE_MOTION || typeof gsap === 'undefined') return;
+    if (!('ontouchstart' in window)) return; // touch-capable devices only
+
+    const GEAR_BIG = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
+    const GEAR_SMALL = 'M 65.5,50.0 L 68.36,54.89 L 65.27,61.31 L 59.66,62.12 L 59.66,62.12 L 57.62,67.4 L 50.68,68.99 L 46.55,65.11 L 46.55,65.11 L 41.15,66.81 L 35.58,62.37 L 36.03,56.73 L 36.03,56.73 L 31.34,53.56 L 31.34,46.44 L 36.03,43.27 L 36.03,43.27 L 35.58,37.63 L 41.15,33.19 L 46.55,34.89 L 46.55,34.89 L 50.68,31.01 L 57.62,32.6 L 59.66,37.88 L 59.66,37.88 L 65.27,38.69 L 68.36,45.11 L 65.5,50.0 Z M 55,50 A 5,5 0 1 0 45,50 A 5,5 0 1 0 55,50 Z';
+
+    const wrap = document.createElement('div');
+    wrap.id = 'ptr-indicator';
+    if (document.querySelector('.content-header.dark-mode')) wrap.classList.add('ptr-on-dark');
+    wrap.innerHTML = `
+        <div id="ptr-backdrop"></div>
+        <svg id="ptr-gears" viewBox="0 0 130 100" width="72" height="55">
+            <path id="ptr-gear-big" d="${GEAR_BIG}" transform="translate(0,0)"></path>
+            <path id="ptr-gear-small" d="${GEAR_SMALL}" transform="translate(38,-2) scale(0.62)"></path>
+        </svg>`;
+    document.body.appendChild(wrap);
+    const gearBig = document.getElementById('ptr-gear-big');
+    const gearSmall = document.getElementById('ptr-gear-small');
+    gsap.set([gearBig, gearSmall], { transformOrigin: '50% 50%' });
+
+    const THRESHOLD = 78;
+    const MAX_PULL = 130;
+    const DEAD_ZONE = 12;
+    const DAMPING = 0.5;
+
+    let startX = 0, startY = 0, tracking = false, isPull = null, pull = 0, triggered = false;
+
+    function atTop() {
+        const cv = document.getElementById('content-view');
+        return cv ? cv.scrollTop <= 0 : true; // home page has no scroll container
+    }
+
+    function setPull(p) {
+        pull = p;
+        const progress = pull / MAX_PULL;
+        gsap.set(wrap, { y: pull - 90 });
+        gsap.set(gearBig, { rotation: progress * 200 });
+        gsap.set(gearSmall, { rotation: progress * -260 });
+        wrap.classList.toggle('ptr-ready', pull >= THRESHOLD);
+    }
+
+    function snapBack() {
+        gsap.to(wrap, { y: -90, duration: 0.35, ease: 'power2.out' });
+        wrap.classList.remove('ptr-ready');
+        pull = 0;
+    }
+
+    function fireRefresh() {
+        triggered = true;
+        gsap.to(wrap, { y: 10, duration: 0.25, ease: 'power2.out' });
+        gsap.to(gearBig, { rotation: '+=560', duration: 0.7, ease: 'none', repeat: -1 });
+        gsap.to(gearSmall, { rotation: '-=730', duration: 0.7, ease: 'none', repeat: -1 });
+        setTimeout(() => window.location.reload(), 750);
+    }
+
+    window.addEventListener('touchstart', (e) => {
+        if (triggered || !atTop()) { tracking = false; return; }
+        tracking = true; isPull = null; pull = 0;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!tracking || triggered) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        if (isPull === null) {
+            if (Math.abs(dx) < DEAD_ZONE && Math.abs(dy) < DEAD_ZONE) return; // not enough movement yet to tell
+            isPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4; // predominantly downward, not a horizontal swipe
+            if (!isPull) { tracking = false; return; }
+        }
+        if (!isPull) return;
+
+        e.preventDefault(); // only once we're confident this is a pull, so normal scrolling elsewhere is untouched
+        setPull(Math.max(0, Math.min(dy * DAMPING, MAX_PULL)));
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+        if (!tracking || !isPull || triggered) { tracking = false; return; }
+        tracking = false;
+        if (pull >= THRESHOLD) fireRefresh();
+        else snapBack();
+    });
+}
+
 // ---------------- Boot ----------------
 window.addEventListener('DOMContentLoaded', () => {
     curtain = document.getElementById('transition-curtain');
@@ -372,6 +467,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initCustomCursor();
     initStatCounters();
     initLogoCarousel();
+    initPullToRefresh();
 });
 
 window.onload = function () {
