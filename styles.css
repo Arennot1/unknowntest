@@ -39,9 +39,9 @@
         .slanted-list { display: flex; flex-direction: column; align-items: flex-end; transform: rotate(-6deg); transform-origin: center right; pointer-events: auto; }
 
         .menu-item { font-size: 12.5vh; line-height: 0.82; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; color: var(--text-main); -webkit-text-stroke: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; cursor: pointer; white-space: nowrap; user-select: none; padding-top: 10px; padding-bottom: 10px; z-index: 60; }
-        .menu-tag { font-size: 0.9rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; position: absolute; top: 25%; left: -40px; color: var(--text-main); opacity: 0.5; transform: translateX(10px); transition: all 0.3s ease; }
+        .menu-tag { font-size: 0.9rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; position: absolute; top: 25%; left: -40px; color: var(--text-main); -webkit-text-stroke: 0; opacity: 0.5; transform: translateX(10px); transition: all 0.3s ease; }
         .menu-item:hover { color: transparent; -webkit-text-stroke: 2px var(--text-main); transform: translateX(-40px) scale(1.05); }
-        .menu-item:hover .menu-tag { opacity: 1; transform: translateX(0); }
+        .menu-item:hover .menu-tag { opacity: 1; transform: translateX(0); color: var(--text-main); -webkit-text-stroke: 0; }
 
         .branding-logo { position: absolute; top: 3rem; left: 3rem; z-index: 40; cursor: pointer; }
         #logo-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
@@ -49,16 +49,22 @@
         .footer-strip { position: absolute; bottom: 3rem; left: 0; width: 100%; padding: 0 3rem; z-index: 40; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-main); line-height: 1.6; }
         .footer-col-group { display: flex; gap: 4vw; pointer-events: auto; }
         .footer-block { display: flex; flex-direction: column; }
-        .footer-block a { text-decoration: none; color: var(--text-main); transition: opacity 0.2s; }
+        .footer-block a { text-decoration: none; color: var(--text-main); transition: opacity 0.2s; white-space: nowrap; }
         .footer-block a:hover { opacity: 0.6; }
         .block-label { opacity: 0.5; margin-bottom: 2px; }
 
         #content-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); overflow-y: auto; z-index: 100; transform: none !important; scroll-behavior: smooth; }
 
-        .content-header { position: fixed; top: 0; left: 0; width: 100%; padding: 3rem; display: flex; justify-content: space-between; align-items: flex-start; z-index: 110; pointer-events: none; transition: color 0.3s ease, transform 0.3s ease; }
+        .content-header { position: fixed; top: 0; left: 0; width: 100%; padding: 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 110; pointer-events: none; transition: color 0.3s ease, transform 0.3s ease; }
         .content-header > * { pointer-events: auto; }
         .content-header.hide-header { transform: translateY(-100%); }
         .content-header.dark-mode { color: white !important; }
+        .content-nav { gap: 2rem; align-items: center; }
+        .content-nav-link { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; transition: color 0.2s ease; }
+        .content-nav-link:hover { color: var(--text-main); }
+        .content-nav-link.active { color: var(--text-main); font-weight: 600; }
+        .content-header.dark-mode .content-nav-link { color: #666; }
+        .content-header.dark-mode .content-nav-link:hover, .content-header.dark-mode .content-nav-link.active { color: white; }
         .content-header.dark-mode .content-logo img { filter: invert(1); }
         .content-header.dark-mode .back-btn { color: white !important; }
         .back-btn { cursor: pointer; transition: transform 0.2s; color: var(--text-main); }
@@ -73,7 +79,7 @@
         .contact-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 1; margin-bottom: 4rem; letter-spacing: -0.02em; color: white; }
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: auto; padding-bottom: 4rem; }
         .contact-bio { font-size: 1.5rem; line-height: 1.4; max-width: 600px; margin-bottom: 4rem; color: #ccc; }
-        .contact-email { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; }
+        .contact-email { font-size: clamp(1rem, 2.6vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; display: block; color: white; white-space: nowrap; }
         .social-links a { color: #888; margin-right: 2rem; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; }
         .social-links a:hover { color: white; }
 
@@ -101,6 +107,19 @@
 
         .filter-active { border-color: #000000 !important; color: #000000 !important; }
         .filter-inactive { border-color: #e5e5e5 !important; color: #9ca3af !important; }
+
+        /* Anti-grid project layout: desktop-only asymmetric spans, packed densely
+           so each card's size (set via gridSize in data/projects.json) creates
+           an irregular, non-uniform rhythm instead of a rigid uniform matrix.
+           Mobile stays a plain single-column stack (see grid-cols-1 in the HTML). */
+        @media (min-width: 1024px) {
+            #projects-grid { grid-auto-flow: dense; }
+            .grid-col-4 { grid-column: span 4 / span 4; }
+            .grid-col-5 { grid-column: span 5 / span 5; }
+            .grid-col-6 { grid-column: span 6 / span 6; }
+            .grid-col-7 { grid-column: span 7 / span 7; }
+            .grid-col-8 { grid-column: span 8 / span 8; }
+        }
 
         /* Real <a> links replace what used to be onclick'd <div>s — keep them looking identical */
         .menu-item, .project-card, .back-btn, .content-logo a { text-decoration: none; }
