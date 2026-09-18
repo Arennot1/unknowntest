@@ -5,11 +5,12 @@
 // ============================================================
 
 let curtain;
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function playCurtainReveal() {
     if (typeof gsap === 'undefined' || !curtain) return;
     gsap.set(curtain, { y: '0%' });
-    gsap.to(curtain, { duration: 0.6, y: '-100%', ease: 'power3.inOut', delay: 0.15 });
+    gsap.to(curtain, { duration: REDUCE_MOTION ? 0.05 : 0.6, y: '-100%', ease: 'power3.inOut', delay: REDUCE_MOTION ? 0 : 0.15 });
 }
 
 // Any internal link marked data-transition gets the curtain-down
@@ -25,7 +26,7 @@ function wireTransitionLinks() {
             if (typeof gsap === 'undefined' || !curtain) { window.location.href = href; return; }
             e.preventDefault();
             gsap.to(curtain, {
-                duration: 0.5, y: '0%', ease: 'power3.inOut',
+                duration: REDUCE_MOTION ? 0.05 : 0.5, y: '0%', ease: 'power3.inOut',
                 onComplete: () => { window.location.href = href; }
             });
         });
@@ -61,10 +62,10 @@ window.openResearchFull = function () {
     const full = document.getElementById('research-full');
     if (!preview || !full || typeof gsap === 'undefined' || !curtain) return;
     gsap.to(curtain, {
-        duration: 0.4, y: '0%', ease: 'power3.inOut', onComplete: () => {
+        duration: REDUCE_MOTION ? 0.05 : 0.4, y: '0%', ease: 'power3.inOut', onComplete: () => {
             preview.style.display = 'none';
             full.style.display = 'flex';
-            gsap.to(curtain, { duration: 0.4, y: '-100%', ease: 'power3.inOut' });
+            gsap.to(curtain, { duration: REDUCE_MOTION ? 0.05 : 0.4, y: '-100%', ease: 'power3.inOut' });
         }
     });
 };
@@ -86,7 +87,7 @@ function startGreetingCarousel() {
 function initLogoRipple() {
     const canvas = document.getElementById('logo-canvas');
     const brandingLogo = document.querySelector('.branding-logo');
-    if (!canvas || !brandingLogo) return;
+    if (!canvas || !brandingLogo || REDUCE_MOTION) return;
     const ctx = canvas.getContext('2d');
     let ripples = [];
 
