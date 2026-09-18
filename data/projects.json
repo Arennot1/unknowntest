@@ -7,22 +7,10 @@
     "tagLine": "The future of wave tracking",
     "tagMeta": "SURFING APP \u2022 CONCEPT 2025",
     "meta": [
-      [
-        "Timeline",
-        "8 Weeks"
-      ],
-      [
-        "Role",
-        "UI/UX Designer"
-      ],
-      [
-        "Platform",
-        "iOS Mobile"
-      ],
-      [
-        "Deliverables",
-        "Wireframes, Prototype"
-      ]
+      ["Timeline", "8 Weeks"],
+      ["Role", "UI/UX Designer"],
+      ["Platform", "iOS Mobile"],
+      ["Deliverables", "Wireframes, Prototype"]
     ],
     "thumbnail": {
       "image": null,
@@ -36,40 +24,14 @@
       "placeholderHTML": "<span class=\"text-white font-mono text-sm\">[ Surfing App Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "wide"
   },
@@ -81,22 +43,10 @@
     "tagLine": "Kaari Digital Experience",
     "tagMeta": "KAARI \u2022 SHIPPED 2024",
     "meta": [
-      [
-        "Timeline",
-        "12 Weeks"
-      ],
-      [
-        "Role",
-        "Product Designer"
-      ],
-      [
-        "Platform",
-        "Web & Mobile App"
-      ],
-      [
-        "Deliverables",
-        "End-to-End UI/UX"
-      ]
+      ["Timeline", "12 Weeks"],
+      ["Role", "Product Designer"],
+      ["Platform", "Web & Mobile App"],
+      ["Deliverables", "End-to-End UI/UX"]
     ],
     "thumbnail": {
       "image": null,
@@ -109,40 +59,14 @@
       "placeholderHTML": "<span class=\"text-gray-500 font-mono text-sm\">[ Kaari Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "narrow"
   },
@@ -154,22 +78,10 @@
     "tagLine": "IRCTC Redesign",
     "tagMeta": "IRCTC \u2022 CONCEPT 2023",
     "meta": [
-      [
-        "Timeline",
-        "4 Weeks"
-      ],
-      [
-        "Role",
-        "UI/UX Designer"
-      ],
-      [
-        "Platform",
-        "Web Platform"
-      ],
-      [
-        "Deliverables",
-        "UI Systems"
-      ]
+      ["Timeline", "4 Weeks"],
+      ["Role", "UI/UX Designer"],
+      ["Platform", "Web Platform"],
+      ["Deliverables", "UI Systems"]
     ],
     "thumbnail": {
       "image": null,
@@ -182,67 +94,29 @@
       "placeholderHTML": "<span class=\"text-blue-400 font-mono text-sm\">[ IRCTC Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "standard"
   },
   {
     "id": "koya",
-    "category": "interior",
+    "category": "research",
     "title": "KOYA Space",
     "subtitle": "Harmonizing physical layout with human behavioral patterns.",
     "tagLine": "KOYA Space Integration",
     "tagMeta": "INTERIOR \u2022 2024",
     "meta": [
-      [
-        "Timeline",
-        "6 Months"
-      ],
-      [
-        "Role",
-        "Interior Designer"
-      ],
-      [
-        "Category",
-        "Commercial"
-      ],
-      [
-        "Deliverables",
-        "CAD, 3D Renders"
-      ]
+      ["Timeline", "6 Months"],
+      ["Role", "Interior Designer"],
+      ["Category", "Commercial"],
+      ["Deliverables", "CAD, 3D Renders"]
     ],
     "thumbnail": {
       "image": null,
@@ -255,40 +129,14 @@
       "placeholderHTML": "<span class=\"text-stone-500 font-mono text-sm\">[ Koya Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "standard"
   },
@@ -300,22 +148,10 @@
     "tagLine": "Hand Sewing Machine",
     "tagMeta": "INDUSTRIAL \u2022 REDESIGN",
     "meta": [
-      [
-        "Timeline",
-        "10 Weeks"
-      ],
-      [
-        "Role",
-        "Industrial Designer"
-      ],
-      [
-        "Category",
-        "Hardware"
-      ],
-      [
-        "Deliverables",
-        "CAD, Physical Prototype"
-      ]
+      ["Timeline", "10 Weeks"],
+      ["Role", "Industrial Designer"],
+      ["Category", "Hardware"],
+      ["Deliverables", "CAD, Physical Prototype"]
     ],
     "thumbnail": {
       "image": null,
@@ -328,40 +164,14 @@
       "placeholderHTML": "<span class=\"text-neutral-500 font-mono text-sm\">[ Sewing Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "narrow"
   },
@@ -373,22 +183,10 @@
     "tagLine": "Yuma Hardware Design",
     "tagMeta": "INDUSTRIAL \u2022 2023",
     "meta": [
-      [
-        "Timeline",
-        "14 Weeks"
-      ],
-      [
-        "Role",
-        "Industrial Designer"
-      ],
-      [
-        "Category",
-        "Hardware"
-      ],
-      [
-        "Deliverables",
-        "CMF, CAD"
-      ]
+      ["Timeline", "14 Weeks"],
+      ["Role", "Industrial Designer"],
+      ["Category", "Hardware"],
+      ["Deliverables", "CMF, CAD"]
     ],
     "thumbnail": {
       "image": null,
@@ -401,40 +199,14 @@
       "placeholderHTML": "<span class=\"text-gray-400 font-mono text-sm\">[ Yuma Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "wide"
   },
@@ -446,22 +218,10 @@
     "tagLine": "Smoothie Machine",
     "tagMeta": "INDUSTRIAL \u2022 CONCEPT",
     "meta": [
-      [
-        "Timeline",
-        "4 Weeks"
-      ],
-      [
-        "Role",
-        "Industrial Designer"
-      ],
-      [
-        "Category",
-        "Hardware"
-      ],
-      [
-        "Deliverables",
-        "Concept Renders"
-      ]
+      ["Timeline", "4 Weeks"],
+      ["Role", "Industrial Designer"],
+      ["Category", "Hardware"],
+      ["Deliverables", "Concept Renders"]
     ],
     "thumbnail": {
       "image": null,
@@ -474,40 +234,14 @@
       "placeholderHTML": "<span class=\"text-orange-300 font-mono text-sm\">[ Smoothie Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": {
-        "type": "video",
-        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
-        "image": null
-      },
-      "flows": {
-        "type": "text",
-        "content": "[ Flow documentation goes here ]"
-      },
-      "research": {
-        "type": "text",
-        "content": "[ Research findings go here ]"
-      },
-      "formFactors": {
-        "type": "images",
-        "content": "[ Form Factor Images ]",
-        "image": null
-      },
-      "prototyping": {
-        "type": "text",
-        "content": "[ Prototyping data goes here ]"
-      },
-      "decisions": {
-        "type": "text",
-        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
-      },
-      "hardware": {
-        "type": "text",
-        "content": "[ Hardware constraint details ]"
-      },
-      "reflection": {
-        "type": "text",
-        "content": "[ Final takeaways ]"
-      }
+      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
+      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
+      "research": { "type": "text", "content": "[ Research findings go here ]" },
+      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
+      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
+      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
+      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
+      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "standard"
   }
