@@ -96,14 +96,14 @@ function initLogoRipple() {
         const rect = logoImg.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const maxSize = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2) * 1.3;
+        const maxSize = Math.min(window.innerWidth, window.innerHeight) * 0.9;
 
         let spawned = 0;
         const interval = setInterval(() => {
             spawnGlassRipple(centerX, centerY, maxSize);
             spawned++;
             if (spawned >= 4) clearInterval(interval);
-        }, 220);
+        }, 260);
     };
 }
 
@@ -111,12 +111,15 @@ function spawnGlassRipple(x, y, maxSize) {
     const el = document.createElement('div');
     el.className = 'glass-ripple';
     document.body.appendChild(el);
-    gsap.set(el, { x, y, xPercent: -50, yPercent: -50, width: 0, height: 0, opacity: 0.9 });
-    gsap.to(el, {
-        width: maxSize, height: maxSize, opacity: 0,
-        duration: 2.2, ease: 'power2.out',
-        onComplete: () => el.remove(),
-    });
+    gsap.set(el, { x, y, xPercent: -50, yPercent: -50, width: 0, height: 0, opacity: 0 });
+
+    const tl = gsap.timeline({ onComplete: () => el.remove() });
+    // Pop in fast and hold near-full visibility while it grows, then fade
+    // only at the very end — the previous single power2.out fade dropped
+    // opacity fastest right at the start, so it read as barely-there.
+    tl.to(el, { opacity: 1, width: maxSize * 0.2, height: maxSize * 0.2, duration: 0.25, ease: 'power2.out' })
+      .to(el, { width: maxSize, height: maxSize, duration: 1.6, ease: 'power2.out' }, '<')
+      .to(el, { opacity: 0, duration: 0.7, ease: 'power1.in' }, '-=0.7');
 }
 
 // ---------------- Diecast Dash mini-game (About/Hi page only) ----------------
@@ -314,24 +317,49 @@ function initStatCounters() {
     });
 }
 
-// ---------------- Logo carousel: native scroll + click-and-drag ----------------
-function initLogoCarouselDrag() {
+// ---------------- Logo carousel: continuous auto-scroll, pausable + draggable ----------------
+// Driven by one shared "offset" via requestAnimationFrame rather than CSS
+// @keyframes, because native drag-scrolling and a CSS animation running at
+// the same time would fight each other. The chip list is duplicated in the
+// HTML so wrapping the offset creates a seamless loop.
+function initLogoCarousel() {
     const carousel = document.getElementById('logo-carousel');
-    if (!carousel) return;
-    let isDown = false, startX = 0, startScroll = 0;
+    const track = document.getElementById('logo-carousel-track');
+    if (!carousel || !track) return;
 
-    carousel.addEventListener('mousedown', (e) => {
-        isDown = true;
-        carousel.classList.add('dragging');
-        startX = e.pageX;
-        startScroll = carousel.scrollLeft;
-    });
-    window.addEventListener('mouseup', () => { isDown = false; carousel.classList.remove('dragging'); });
-    window.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        carousel.scrollLeft = startScroll - (e.pageX - startX);
-    });
+    let offset = 0;
+    let isDown = false, startX = 0, startOffset = 0, paused = false;
+    const speed = REDUCE_MOTION ? 0 : 0.5; // px per frame
+
+    function loopWidth() { return track.scrollWidth / 2; }
+    function wrap() {
+        const lw = loopWidth();
+        if (lw <= 0) return;
+        if (offset <= -lw) offset += lw;
+        if (offset > 0) offset -= lw;
+    }
+    function apply() { track.style.transform = `translateX(${offset}px)`; }
+
+    function tick() {
+        if (!isDown && !paused) { offset -= speed; wrap(); apply(); }
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    carousel.addEventListener('mouseenter', () => { paused = true; });
+    carousel.addEventListener('mouseleave', () => { paused = false; });
+
+    function dragStart(x) { isDown = true; carousel.classList.add('dragging'); startX = x; startOffset = offset; }
+    function dragMove(x) { if (!isDown) return; offset = startOffset + (x - startX); wrap(); apply(); }
+    function dragEnd() { isDown = false; carousel.classList.remove('dragging'); }
+
+    carousel.addEventListener('mousedown', (e) => dragStart(e.pageX));
+    window.addEventListener('mousemove', (e) => { if (isDown) { e.preventDefault(); dragMove(e.pageX); } });
+    window.addEventListener('mouseup', dragEnd);
+
+    carousel.addEventListener('touchstart', (e) => dragStart(e.touches[0].pageX), { passive: true });
+    carousel.addEventListener('touchmove', (e) => dragMove(e.touches[0].pageX), { passive: true });
+    carousel.addEventListener('touchend', dragEnd);
 }
 
 // ---------------- Boot ----------------
@@ -343,7 +371,7 @@ window.addEventListener('DOMContentLoaded', () => {
     startGreetingCarousel();
     initCustomCursor();
     initStatCounters();
-    initLogoCarouselDrag();
+    initLogoCarousel();
 });
 
 window.onload = function () {
