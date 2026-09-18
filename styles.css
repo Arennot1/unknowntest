@@ -64,7 +64,7 @@
             backdrop-filter: blur(9px) saturate(160%);
             -webkit-backdrop-filter: blur(9px) saturate(160%);
             pointer-events: none;
-            z-index: 9998;
+            z-index: 10;
             will-change: width, height, opacity;
         }
         
@@ -246,3 +246,26 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* Pull-to-refresh: two interlocking gears, touch-only (see app.js) */
+        #ptr-indicator {
+            position: fixed; top: 0; left: 50%; width: 90px; height: 90px;
+            transform: translate(-50%, -90px);
+            z-index: 200; pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #ptr-backdrop {
+            position: absolute; inset: 0; border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0; transition: opacity 0.2s ease;
+        }
+        #ptr-indicator.ptr-ready #ptr-backdrop { opacity: 1; }
+        #ptr-gears { position: relative; z-index: 1; }
+        #ptr-gear-big, #ptr-gear-small { fill: #000; }
+        #ptr-indicator.ptr-on-dark #ptr-gear-big,
+        #ptr-indicator.ptr-on-dark #ptr-gear-small { fill: #fff; }
+        #ptr-indicator.ptr-on-dark #ptr-backdrop { background: rgba(20, 20, 20, 0.6); border-color: rgba(255, 255, 255, 0.15); }
