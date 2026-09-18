@@ -85,7 +85,7 @@ function renderHeader({ backHref, darkMode, active }) {
         return `<a href="${href}" data-transition data-cursor-quiet class="content-nav-link${isActive ? ' active' : ''}">${label}</a>`;
     }).join('\n                ');
     return `        <header class="content-header${darkMode ? ' dark-mode' : ''}" id="global-header">
-            <div class="content-logo"><a href="" data-cursor-quiet><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-24 w-auto"></a></div>
+            <div class="content-logo"><a href="" data-cursor-quiet><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-14 md:h-24 w-auto"></a></div>
             <nav class="content-nav hidden md:flex">
                 ${navHTML}
             </nav>
@@ -112,8 +112,8 @@ const FOOTER = `        <footer class="content-footer bg-white border-t border-g
             </div>
         </footer>`;
 
-function renderMedia(media) {
-    if (media.image) return `<img src="${media.image}" alt="" class="w-full h-full object-cover">`;
+function renderMedia(media, altText = '') {
+    if (media.image) return `<img src="${media.image}" alt="${altText}" class="w-full h-full object-cover">`;
     return media.placeholderHTML || '';
 }
 
@@ -129,7 +129,7 @@ function renderProjectGridHTML() {
     return projects.map(p => {
         const size = GRID_SIZES[p.gridSize] || GRID_SIZES.standard;
         return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group ${size.span}" data-category="${p.category}">
-                        <div class="w-full ${size.aspect} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail)}</div>
+                        <div class="w-full ${size.aspect} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl text-black editorial-text">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
@@ -162,7 +162,7 @@ function renderCaseStudyBody(p) {
 
     return `        <div class="bg-white w-full min-h-screen text-black pb-32">
             <div id="${p.id}-overview" class="w-full scroll-mt-32">
-                <div class="w-full h-[60vh] ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero)}</div>
+                <div class="w-full h-[60vh] pt-20 md:pt-0 ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero, p.title + ' hero image')}</div>
                 <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-12">
                     <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">${p.title}</h1>
                     <p class="text-xl md:text-2xl text-gray-500 font-light max-w-3xl">${p.subtitle}</p>
