@@ -71,10 +71,24 @@ ${bodyHTML}
 `;
 }
 
-function renderHeader({ backHref, darkMode }) {
+const NAV_ITEMS = [
+    ['Hi', 'about/'],
+    ['Projects', 'projects/'],
+    ['Research', 'research/'],
+    ['Resume', 'resume/'],
+    ['Contact', 'contact/'],
+];
+
+function renderHeader({ backHref, darkMode, active }) {
+    const navHTML = NAV_ITEMS.map(([label, href]) => {
+        const isActive = label === active;
+        return `<a href="${href}" data-transition data-cursor-quiet class="content-nav-link${isActive ? ' active' : ''}">${label}</a>`;
+    }).join('\n                ');
     return `        <header class="content-header${darkMode ? ' dark-mode' : ''}" id="global-header">
-            <div class="content-logo"><a href=""><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-12 w-auto"></a></div>
-            <nav class="content-nav hidden md:flex"></nav>
+            <div class="content-logo"><a href="" data-cursor-quiet><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-24 w-auto"></a></div>
+            <nav class="content-nav hidden md:flex">
+                ${navHTML}
+            </nav>
             <a href="${backHref}" data-transition data-cursor-quiet class="back-btn">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </a>
@@ -94,7 +108,7 @@ const FOOTER = `        <footer class="content-footer bg-white border-t border-g
             </div>
             <div class="flex flex-col gap-3 md:text-right mt-12 md:mt-0 justify-end h-full">
                 <span class="text-black font-semibold mb-[-2px] hidden md:block">&nbsp;</span>
-                <span class="text-black font-semibold">© 2025</span>
+                <span class="text-black font-semibold">© 2026</span>
             </div>
         </footer>`;
 
@@ -103,13 +117,24 @@ function renderMedia(media) {
     return media.placeholderHTML || '';
 }
 
+const GRID_SIZES = {
+    feature: { span: 'grid-col-7', aspect: 'aspect-video' },
+    wide: { span: 'grid-col-8', aspect: 'aspect-[21/9]' },
+    standard: { span: 'grid-col-6', aspect: 'aspect-video' },
+    tall: { span: 'grid-col-5', aspect: 'aspect-[3/4]' },
+    compact: { span: 'grid-col-4', aspect: 'aspect-square' },
+};
+
 function renderProjectGridHTML() {
-    return projects.map(p => `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group" data-category="${p.category}">
-                        <div class="w-full aspect-video ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail)}</div>
+    return projects.map(p => {
+        const size = GRID_SIZES[p.gridSize] || GRID_SIZES.standard;
+        return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group ${size.span}" data-category="${p.category}">
+                        <div class="w-full ${size.aspect} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail)}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl text-black editorial-text">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
-                    </a>`).join('\n');
+                    </a>`;
+    }).join('\n');
 }
 
 function renderSectionHTML(project, key, label) {
@@ -169,14 +194,14 @@ routes.push({
     outPath: 'about/index.html', depth: 1,
     title: 'About — Areen Pednekar',
     description: 'About Areen Pednekar, Product & Industrial Designer — background, roots, and how to get in touch.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '' })}\n        <div id="hi-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Hi' })}\n        <div id="hi-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'projects/index.html', depth: 1,
     title: 'Projects — Areen Pednekar',
     description: 'Portfolio of UI/UX, industrial, and interior design projects by Areen Pednekar.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '' })}\n        <div id="projects-content" class="w-full min-h-screen bg-white text-black pt-40 pb-32">
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Projects' })}\n        <div id="projects-content" class="w-full min-h-screen bg-white text-black pt-40 pb-32">
             <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
                 <div class="flex flex-wrap gap-4 mb-16 border-b border-gray-100 pb-8">
                     <button onclick="filterProjects(event, 'all')" data-cursor-quiet class="filter-btn filter-active text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors">All</button>
@@ -184,7 +209,7 @@ routes.push({
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
                     <button onclick="filterProjects(event, 'interior')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Interior</button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-20" id="projects-grid">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-16 lg:gap-y-20" id="projects-grid">
 ${renderProjectGridHTML()}
                 </div>
             </div>
@@ -195,21 +220,21 @@ routes.push({
     outPath: 'research/index.html', depth: 1,
     title: 'Research — Areen Pednekar',
     description: 'The Tactile Dissonance: a comparative analysis of ergonomic feedback in gaming, by Areen Pednekar.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '' })}\n        <div id="research-content">\n${fragments.research}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${fragments.research}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'resume/index.html', depth: 1,
     title: 'Resume — Areen Pednekar',
     description: 'Resume and professional background of Areen Pednekar, Product & Industrial Designer.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '' })}\n        <div id="resume-content">\n${fragments.resume}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Resume' })}\n        <div id="resume-content">\n${fragments.resume}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'contact/index.html', depth: 1,
     title: 'Contact — Areen Pednekar',
     description: "Get in touch with Areen Pednekar to discuss a product, industrial, or UI/UX design project.",
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '', darkMode: true })}\n        <div id="contact-content">\n${fragments.contact}\n        </div>\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', darkMode: true, active: 'Contact' })}\n        <div id="contact-content">\n${fragments.contact}\n        </div>\n    </div>`,
 });
 
 for (const p of projects) {
@@ -217,7 +242,7 @@ for (const p of projects) {
         outPath: `projects/${p.id}/index.html`, depth: 2,
         title: `${p.title} — Areen Pednekar`,
         description: p.subtitle,
-        body: `    <div id="content-view">\n${renderHeader({ backHref: 'projects/' })}\n${renderCaseStudyBody(p)}\n${FOOTER}\n    </div>`,
+        body: `    <div id="content-view">\n${renderHeader({ backHref: 'projects/', active: 'Projects' })}\n${renderCaseStudyBody(p)}\n${FOOTER}\n    </div>`,
     });
 }
 
