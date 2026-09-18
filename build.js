@@ -118,11 +118,9 @@ function renderMedia(media, altText = '') {
 }
 
 const GRID_SIZES = {
-    feature: { span: 'grid-col-7', aspect: 'aspect-video' },
-    wide: { span: 'grid-col-8', aspect: 'aspect-[21/9]' },
+    wide: { span: 'grid-col-7', aspect: 'aspect-video' },
     standard: { span: 'grid-col-6', aspect: 'aspect-video' },
-    tall: { span: 'grid-col-5', aspect: 'aspect-[3/4]' },
-    compact: { span: 'grid-col-4', aspect: 'aspect-square' },
+    narrow: { span: 'grid-col-5', aspect: 'aspect-video' },
 };
 
 function renderProjectGridHTML() {
@@ -131,7 +129,7 @@ function renderProjectGridHTML() {
         return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group ${size.span}" data-category="${p.category}">
                         <div class="w-full ${size.aspect} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
-                            <h4 class="text-xl text-black editorial-text">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
+                            <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
                     </a>`;
     }).join('\n');
