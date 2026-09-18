@@ -85,7 +85,7 @@ function renderHeader({ backHref, darkMode, active }) {
         return `<a href="${href}" data-transition data-cursor-quiet class="content-nav-link${isActive ? ' active' : ''}">${label}</a>`;
     }).join('\n                ');
     return `        <header class="content-header${darkMode ? ' dark-mode' : ''}" id="global-header">
-            <div class="content-logo"><a href="" data-cursor-quiet><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-14 md:h-24 w-auto"></a></div>
+            <div class="content-logo"><a href="" data-cursor-quiet><img src="assets/logo.png" alt="Areen Pednekar logo" class="h-14 md:h-16 w-auto"></a></div>
             <nav class="content-nav hidden md:flex">
                 ${navHTML}
             </nav>
