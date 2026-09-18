@@ -71,7 +71,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "feature"
+    "gridSize": "wide"
   },
   {
     "id": "kaari",
@@ -144,7 +144,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "tall"
+    "gridSize": "narrow"
   },
   {
     "id": "irctc",
@@ -217,7 +217,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "compact"
+    "gridSize": "standard"
   },
   {
     "id": "koya",
@@ -290,7 +290,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "wide"
+    "gridSize": "standard"
   },
   {
     "id": "sewing",
@@ -363,7 +363,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "tall"
+    "gridSize": "narrow"
   },
   {
     "id": "yuma",
@@ -436,7 +436,7 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "feature"
+    "gridSize": "wide"
   },
   {
     "id": "smoothie",
@@ -509,6 +509,6 @@
         "content": "[ Final takeaways ]"
       }
     },
-    "gridSize": "wide"
+    "gridSize": "standard"
   }
 ]
