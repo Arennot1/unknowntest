@@ -224,24 +224,33 @@ routes.push({
                     </div>
                     <div class="journey-trusted">
                         <span class="trusted-label">Trusted by teams at</span>
-                        <!-- Placeholder chips — swap these for real client names/logos whenever you have them. -->
+                        <!-- Placeholder chips — replace the text with an <img> per chip once you have
+                             real client logos (e.g. <img src="assets/clients/acme.png" alt="Acme">).
+                             The list is intentionally duplicated below so the auto-scroll loops seamlessly;
+                             edit both copies together, or regenerate the second half to match the first. -->
                         <div class="logo-carousel" id="logo-carousel">
-                            <div class="logo-carousel-track">
+                            <div class="logo-carousel-track" id="logo-carousel-track">
                                 <div class="logo-chip">Nimbus Labs</div>
                                 <div class="logo-chip">Orbit &amp; Co.</div>
                                 <div class="logo-chip">Forma Studio</div>
                                 <div class="logo-chip">Kestrel Group</div>
                                 <div class="logo-chip">Northline</div>
                                 <div class="logo-chip">Verdant</div>
+                                <div class="logo-chip" aria-hidden="true">Nimbus Labs</div>
+                                <div class="logo-chip" aria-hidden="true">Orbit &amp; Co.</div>
+                                <div class="logo-chip" aria-hidden="true">Forma Studio</div>
+                                <div class="logo-chip" aria-hidden="true">Kestrel Group</div>
+                                <div class="logo-chip" aria-hidden="true">Northline</div>
+                                <div class="logo-chip" aria-hidden="true">Verdant</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8">
                     <button onclick="filterProjects(event, 'all')" data-cursor-quiet class="filter-btn filter-active text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors">All</button>
-                    <button onclick="filterProjects(event, 'uiux')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">UI/UX</button>
+                    <button onclick="filterProjects(event, 'uiux')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">UI/UX Strategy</button>
+                    <button onclick="filterProjects(event, 'research')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Research &amp; Behavior</button>
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
-                    <button onclick="filterProjects(event, 'interior')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Interior</button>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-4 lg:gap-x-6 gap-y-10 lg:gap-y-12" id="projects-grid">
 ${renderProjectGridHTML()}
