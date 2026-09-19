@@ -117,17 +117,12 @@ function renderMedia(media, altText = '') {
     return media.placeholderHTML || '';
 }
 
-const GRID_SIZES = {
-    wide: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
-    standard: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
-    narrow: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
-};
+const CARD_ASPECT = 'aspect-[4/3]';
 
 function renderProjectGridHTML() {
     return projects.map(p => {
-        const size = GRID_SIZES[p.gridSize] || GRID_SIZES.standard;
-        return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group ${size.span}" data-category="${p.category}">
-                        <div class="w-full ${size.aspect} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
+        return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group break-inside-avoid mb-6 lg:mb-8 block" data-category="${p.category}">
+                        <div class="w-full ${CARD_ASPECT} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
@@ -252,7 +247,7 @@ routes.push({
                     <button onclick="filterProjects(event, 'research')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Research &amp; Behavior</button>
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-3 lg:gap-x-5 gap-y-6 lg:gap-y-8" id="projects-grid">
+                <div class="columns-1 md:columns-2 xl:columns-3 gap-x-3 lg:gap-x-5" id="projects-grid">
 ${renderProjectGridHTML()}
                 </div>
             </div>
