@@ -58,7 +58,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500..900&family=Frank+Ruhl+Libre:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500..900&family=Sora:wght@100..800&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     ${extraHead}
 </head>
@@ -235,7 +235,7 @@ routes.push({
                 <div class="journey-block">
                     <div class="journey-grid">
                         <div class="journey-intro">
-                            <span class="journey-eyebrow">The Journey So Far</span>
+                            <h1 class="font-black text-4xl md:text-5xl mb-4 tracking-tighter">The Journey So Far</h1>
                             <p>This space is more than a gallery of finished work. Each project follows the same arc, from early research to physical form, shaped by the constraints and decisions specific to that problem. Together, they trace how I <em>think</em>.</p>
                         </div>
                         <div class="journey-stats">
@@ -254,7 +254,7 @@ routes.push({
                         </div>
                     </div>
                     <div class="journey-trusted">
-                        <span class="trusted-label">Trusted by teams at</span>
+                        <h2 class="font-black text-4xl md:text-5xl mb-4 tracking-tighter">Trusted by teams at</h2>
                         <!-- Placeholder chips — replace the text with an <img> per chip once you have
                              real client logos (e.g. <img src="assets/clients/acme.png" alt="Acme">).
                              The list is intentionally duplicated below so the auto-scroll loops seamlessly;
