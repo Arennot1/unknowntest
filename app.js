@@ -379,42 +379,60 @@ function initPullToRefresh() {
     const GEAR_LARGE = 'M 85.0,50.0 L 91.52,56.35 L 89.13,65.26 L 80.31,67.5 L 80.31,67.5 L 82.78,76.26 L 76.26,82.78 L 67.5,80.31 L 67.5,80.31 L 65.26,89.13 L 56.35,91.52 L 50.0,85.0 L 50.0,85.0 L 43.65,91.52 L 34.74,89.13 L 32.5,80.31 L 32.5,80.31 L 23.74,82.78 L 17.22,76.26 L 19.69,67.5 L 19.69,67.5 L 10.87,65.26 L 8.48,56.35 L 15.0,50.0 L 15.0,50.0 L 8.48,43.65 L 10.87,34.74 L 19.69,32.5 L 19.69,32.5 L 17.22,23.74 L 23.74,17.22 L 32.5,19.69 L 32.5,19.69 L 34.74,10.87 L 43.65,8.48 L 50.0,15.0 L 50.0,15.0 L 56.35,8.48 L 65.26,10.87 L 67.5,19.69 L 67.5,19.69 L 76.26,17.22 L 82.78,23.74 L 80.31,32.5 L 80.31,32.5 L 89.13,34.74 L 91.52,43.65 L 85.0,50.0 Z M 61,50 A 11,11 0 1 0 39,50 A 11,11 0 1 0 61,50 Z';
     const GEAR_MEDIUM = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
 
-    const wrap = document.createElement('div');
-    wrap.id = 'ptr-indicator';
+    const SCENE_H = 160; // fixed — the gear scene always renders at this real height, never squished
+    const GEAR_DEFS = [
+        { key: 'farL', fx: 0.04, y: 142, scale: 1.3, path: GEAR_LARGE, cls: 'ptr-g-bg', pullMult: 70, spin: '+=200' },
+        { key: 'farR', fx: 0.96, y: 138, scale: 1.3, path: GEAR_LARGE, cls: 'ptr-g-bg', pullMult: -75, spin: '-=210' },
+        { key: 'upL', fx: 0.22, y: 32, scale: 0.95, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: -95, spin: '-=260' },
+        { key: 'upR', fx: 0.78, y: 28, scale: 0.95, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: 95, spin: '+=260' },
+        { key: 'midL', fx: 0.33, y: 128, scale: 0.85, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: -120, spin: '-=340' },
+        { key: 'midR', fx: 0.67, y: 122, scale: 0.9, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: 130, spin: '+=360' },
+        { key: 'hero', fx: 0.50, y: 112, scale: 1.35, path: GEAR_LARGE, cls: 'ptr-g-hero', pullMult: 200, spin: '+=560' },
+    ];
+
     // Each gear is two stacked paths (a dark offset "shadow" + the lighter
     // "face" on top) so the teeth read as embossed/beveled like the
     // reference, instead of a single flat-filled shape.
-    function gearGroup(id, cls, transform, pathD) {
-        return `<g id="${id}" class="${cls}" transform="${transform}">
+    function gearGroup(id, cls, x, y, scale, pathD) {
+        return `<g id="${id}" class="${cls}" transform="translate(${x},${y}) scale(${scale})">
             <path class="ptr-shadow" d="${pathD}" transform="translate(3,4)"></path>
             <path class="ptr-face" d="${pathD}"></path>
         </g>`;
     }
+    // viewBox width matches the real window width in real pixels, so gears
+    // render at true scale with no horizontal stretch either — just full,
+    // correctly-proportioned coverage edge to edge.
+    function buildGearsSVG(width) {
+        const inner = GEAR_DEFS.map(g =>
+            gearGroup(`ptr-g-${g.key}`, g.cls, Math.round(g.fx * width), g.y, g.scale, g.path)
+        ).join('');
+        return `<svg id="ptr-gears" viewBox="0 0 ${width} ${SCENE_H}" preserveAspectRatio="none">${inner}</svg>`;
+    }
+
+    const wrap = document.createElement('div');
+    wrap.id = 'ptr-indicator';
     wrap.innerHTML = `
         <div class="ptr-rod ptr-rod-left"></div>
         <div class="ptr-rod ptr-rod-right"></div>
-        <svg id="ptr-gears" viewBox="0 0 500 160" preserveAspectRatio="none">
-            ${gearGroup('ptr-g-tl', 'ptr-g-bg', 'translate(8,-35) scale(1.3)', GEAR_LARGE)}
-            ${gearGroup('ptr-g-tr', 'ptr-g-bg', 'translate(465,-12) scale(1.15)', GEAR_MEDIUM)}
-            ${gearGroup('ptr-g-bl', 'ptr-g-bg', 'translate(55,152) scale(1.05)', GEAR_MEDIUM)}
-            ${gearGroup('ptr-g-br', 'ptr-g-bg', 'translate(460,150) scale(1.3)', GEAR_LARGE)}
-            ${gearGroup('ptr-g-ml', 'ptr-g-bg', 'translate(110,80) scale(0.85)', GEAR_MEDIUM)}
-            ${gearGroup('ptr-g-mr', 'ptr-g-bg', 'translate(390,75) scale(0.9)', GEAR_MEDIUM)}
-            ${gearGroup('ptr-g-hero', 'ptr-g-hero', 'translate(250,78) scale(1.35)', GEAR_LARGE)}
-        </svg>`;
+        <div id="ptr-scene">${buildGearsSVG(window.innerWidth)}</div>`;
     document.body.appendChild(wrap);
 
-    const GEARS = {
-        tl: { el: document.getElementById('ptr-g-tl'), pullMult: 70, spin: '+=200' },
-        tr: { el: document.getElementById('ptr-g-tr'), pullMult: -85, spin: '-=230' },
-        bl: { el: document.getElementById('ptr-g-bl'), pullMult: 95, spin: '+=260' },
-        br: { el: document.getElementById('ptr-g-br'), pullMult: -75, spin: '-=210' },
-        ml: { el: document.getElementById('ptr-g-ml'), pullMult: -120, spin: '-=340' },
-        mr: { el: document.getElementById('ptr-g-mr'), pullMult: 130, spin: '+=360' },
-        hero: { el: document.getElementById('ptr-g-hero'), pullMult: 200, spin: '+=560' },
-    };
-    Object.values(GEARS).forEach(g => gsap.set(g.el, { transformOrigin: '50% 50%' }));
+    let gearEls = {};
+    function bindGearEls() {
+        GEAR_DEFS.forEach(g => { gearEls[g.key] = document.getElementById(`ptr-g-${g.key}`); });
+        Object.values(gearEls).forEach(el => { if (el) gsap.set(el, { transformOrigin: '50% 50%' }); });
+    }
+    bindGearEls();
     gsap.set(wrap, { height: 0 });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const scene = document.getElementById('ptr-scene');
+            if (scene) { scene.innerHTML = buildGearsSVG(window.innerWidth); bindGearEls(); }
+        }, 200);
+    });
 
     const THRESHOLD = 90;
     const MAX_PULL = 150;
@@ -434,7 +452,7 @@ function initPullToRefresh() {
         pull = p;
         const progress = pull / MAX_PULL;
         gsap.set(wrap, { height: pull });
-        Object.values(GEARS).forEach(g => gsap.set(g.el, { rotation: progress * g.pullMult }));
+        GEAR_DEFS.forEach(g => { const el = gearEls[g.key]; if (el) gsap.set(el, { rotation: progress * g.pullMult }); });
     }
 
     function snapBack() {
@@ -445,7 +463,7 @@ function initPullToRefresh() {
     function fireRefresh() {
         triggered = true;
         gsap.to(wrap, { height: SETTLED_HEIGHT, duration: 0.25, ease: 'power2.out' });
-        Object.values(GEARS).forEach(g => gsap.to(g.el, { rotation: g.spin, duration: 0.7, ease: 'none', repeat: -1 }));
+        GEAR_DEFS.forEach(g => { const el = gearEls[g.key]; if (el) gsap.to(el, { rotation: g.spin, duration: 0.7, ease: 'none', repeat: -1 }); });
         setTimeout(() => window.location.reload(), 750);
     }
 
