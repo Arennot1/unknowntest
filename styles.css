@@ -241,48 +241,13 @@
             }
         }
 
-        /* Pull-to-refresh: a black banner unrolls from the very top as you
-           pull, with a small glimpsed mechanism of gears turning inside
-           (see app.js) — 4 dimmer background gears around one crisp hero
-           gear, each with a dark offset "shadow" layer under its lighter
-           "face" for an embossed/beveled edge instead of a flat fill. */
-        #ptr-indicator {
-            position: fixed; top: 0; left: 0; width: 100%; height: 0;
-            background-color: #000;
-            overflow: hidden;
+        /* Pull-to-refresh: a WebGL2 shader (see app.js) — a pixelated,
+           Perlin-noise-displaced dissolve — grows a black covering down
+           from the top of the screen as you pull, in sync with pull
+           distance, and dissolves back to nothing on release/reload. */
+        #ptr-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
             z-index: 500;
             pointer-events: none;
-        }
-        /* Fixed real height, pinned to the bottom of the (animating-height)
-           outer banner. The outer banner's overflow:hidden + growing height
-           acts as a rising mask that progressively reveals more of this
-           always-normally-proportioned scene from the bottom up — the gear
-           artwork itself never changes size, so it can never be squished,
-           at any pull amount. */
-        #ptr-scene { position: absolute; bottom: 0; left: 0; width: 100%; height: 160px; }
-        #ptr-gears { width: 100%; height: 100%; display: block; }
-        #ptr-gears .ptr-face { fill: #fff; }
-        #ptr-gears .ptr-shadow { fill: rgba(0, 0, 0, 0.55); }
-        #ptr-gears .ptr-g-bg .ptr-face { fill: rgba(255, 255, 255, 0.4); }
-        #ptr-gears .ptr-g-bg .ptr-shadow { fill: rgba(0, 0, 0, 0.3); }
-
-        /* Vertical rods on both edges, like a mechanical frame/track the
-           gears sit inside. Height matches the banner automatically since
-           they're absolutely positioned (top:0;bottom:0) inside it. */
-        .ptr-rod {
-            position: absolute; top: 0; bottom: 0; width: 10px; z-index: 2;
-            background: linear-gradient(90deg, #1a1a1a 0%, #6b6b6b 35%, #a3a3a3 50%, #6b6b6b 65%, #1a1a1a 100%);
-        }
-        .ptr-rod-left { left: 14px; }
-        .ptr-rod-right { right: 14px; }
-        .ptr-rod::after {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 16px; height: 16px; border-radius: 50%;
-            background: #2a2a2a; border: 2px solid #999;
-        }
-        @media (max-width: 480px) {
-            .ptr-rod { width: 7px; }
-            .ptr-rod-left { left: 8px; }
-            .ptr-rod-right { right: 8px; }
-            .ptr-rod::after { width: 11px; height: 11px; }
         }
