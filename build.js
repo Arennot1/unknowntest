@@ -193,7 +193,7 @@ function renderCaseStudyBody(p) {
             <div id="${p.id}-overview" class="w-full scroll-mt-32">
                 <div class="w-full h-[60vh] pt-20 md:pt-0 ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero, p.title + ' hero image')}</div>
                 <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-12">
-                    <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">${p.title}</h1>
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">${p.title}</h1>
                     <p class="text-xl md:text-2xl text-gray-500 font-light max-w-3xl">${p.subtitle}</p>
                 </div>
             </div>
