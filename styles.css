@@ -259,10 +259,13 @@
             z-index: 500;
             pointer-events: none;
         }
-        /* The SVG's viewBox + preserveAspectRatio="slice" scales the whole
-           scene proportionally to the container's actual width/height, so
-           this composition holds up correctly from narrow phones to wide
-           desktop windows without any extra breakpoints needed. */
+        /* Fixed real height, pinned to the bottom of the (animating-height)
+           outer banner. The outer banner's overflow:hidden + growing height
+           acts as a rising mask that progressively reveals more of this
+           always-normally-proportioned scene from the bottom up — the gear
+           artwork itself never changes size, so it can never be squished,
+           at any pull amount. */
+        #ptr-scene { position: absolute; bottom: 0; left: 0; width: 100%; height: 160px; }
         #ptr-gears { width: 100%; height: 100%; display: block; }
         #ptr-gears .ptr-face { fill: #fff; }
         #ptr-gears .ptr-shadow { fill: rgba(0, 0, 0, 0.55); }
