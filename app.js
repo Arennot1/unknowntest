@@ -689,15 +689,16 @@ function initPullToRefresh() {
     window.addEventListener('resize', resize);
     resize();
 
-    const THRESHOLD = 90;
-    const MAX_PULL = 150;
+    const THRESHOLD = 50;
+    const MAX_PULL = 60;
     const DEAD_ZONE = 10;
     const DAMPING = 0.5;
     const START_BAND = 160; // gesture must start within this many px of the top
     // How much of the screen the shader covers at pull === MAX_PULL, as a
-    // fraction (0-1) fed into the same formula the settle/commit state
-    // reuses by letting 'pull' exceed MAX_PULL — see fireRefresh().
-    const PULL_COVER_MAX = 0.62;
+    // fraction (0-1). Kept deliberately small — this needs to work as a
+    // thin band on every page, including inner pages with real content
+    // (stats, logos) sitting close to the top, not a takeover.
+    const PULL_COVER_MAX = 0.28;
 
     let pull = 0, triggered = false, looping = false;
     const tweenState = { pull: 0 };
@@ -738,15 +739,15 @@ function initPullToRefresh() {
     function fireRefresh() {
         triggered = true;
         tweenState.pull = pull;
-        // Push past what dragging alone reaches (pull can exceed MAX_PULL
-        // here since only setPull's live-drag path clamps it), so the
-        // commit reads as a decisive, near-full takeover rather than
-        // holding at the same partial coverage the drag topped out at.
+        // Only a small confirming nudge past wherever the drag was released
+        // (never much past MAX_PULL) — the whole point is that this stays
+        // a thin band right up to the moment it refreshes, not something
+        // that grows larger once you let go.
         gsap.to(tweenState, {
-            pull: MAX_PULL * 1.55, duration: 0.25, ease: 'power2.out',
+            pull: Math.min(pull * 1.15, MAX_PULL * 1.25), duration: 0.2, ease: 'power2.out',
             onUpdate: () => { pull = tweenState.pull; },
         });
-        setTimeout(() => window.location.reload(), 750);
+        setTimeout(() => window.location.reload(), 550);
     }
 
     // ---- Touch (phone/tablet) ----
