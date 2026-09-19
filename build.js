@@ -95,7 +95,7 @@ function renderHeader({ backHref, darkMode, active }) {
         </header>`;
 }
 
-const FOOTER = `        <footer class="content-footer bg-white border-t border-gray-200 py-12 px-6 md:px-12 lg:px-16 flex flex-col md:flex-row justify-between items-start md:items-center font-mono text-xs md:text-sm tracking-[0.1em] uppercase z-50">
+const FOOTER = `        <footer class="content-footer bg-white border-t border-gray-200 py-12 px-6 md:px-12 lg:px-16 flex flex-col md:flex-row justify-between items-start md:items-center font-meta text-xs md:text-sm tracking-[0.1em] uppercase z-50">
             <div class="flex flex-col md:flex-row gap-12 lg:gap-24 w-full md:w-auto">
                 <div class="flex flex-col gap-3">
                     <span class="text-gray-400 font-medium">Areen Pednekar</span>
@@ -124,7 +124,7 @@ function renderCard(p) {
     return `<a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group mb-6 lg:mb-8 block" data-category="${p.category}">
                         <div class="w-full ${CARD_ASPECT} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
-                            <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
+                            <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-meta uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
                     </a>`;
 }
@@ -170,11 +170,11 @@ function renderSectionHTML(project, key, label) {
     const s = project.sections[key];
     const id = `${project.id}-${key}`;
     if (s.type === 'video') {
-        const body = s.image ? `<img src="${s.image}" class="w-full h-full object-cover">` : `<span class="text-gray-400 font-mono text-sm">${s.content}</span>`;
+        const body = s.image ? `<img src="${s.image}" class="w-full h-full object-cover">` : `<span class="text-gray-400 font-meta text-sm">${s.content}</span>`;
         return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><div class="w-full aspect-video bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden mb-12">${body}</div></div>`;
     }
     if (s.type === 'images') {
-        const body = s.image ? `<img src="${s.image}" class="w-full h-full object-cover rounded-lg">` : `<span class="text-gray-400 font-mono text-xs">${s.content}</span>`;
+        const body = s.image ? `<img src="${s.image}" class="w-full h-full object-cover rounded-lg">` : `<span class="text-gray-400 font-meta text-xs">${s.content}</span>`;
         return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><div class="w-full h-64 bg-gray-100 flex items-center justify-center rounded-lg">${body}</div></div>`;
     }
     return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><p class="text-lg text-gray-600 font-light">${s.content}</p></div>`;
@@ -182,7 +182,7 @@ function renderSectionHTML(project, key, label) {
 
 function renderCaseStudyBody(p) {
     const metaHTML = p.meta.map(([label, value]) =>
-        `<div><span class="block text-black font-bold mb-2 font-sans tracking-tight">${label}</span>${value}</div>`
+        `<div><span class="block text-black font-bold mb-2 font-heading-sans tracking-tight">${label}</span>${value}</div>`
     ).join('');
     const sidebarHTML = [['overview', 'Overview'], ...SECTION_ORDER].map(([key, label]) =>
         `<button onclick="scrollToSection('${p.id}-${key}')" data-cursor-quiet class="text-left hover:text-black transition-colors">${label}</button>`
@@ -198,11 +198,11 @@ function renderCaseStudyBody(p) {
                 </div>
             </div>
             <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-12 border-t border-b border-gray-200 mb-16">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 font-mono text-sm text-gray-500 uppercase">${metaHTML}</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 font-meta text-sm text-gray-500 uppercase">${metaHTML}</div>
             </div>
             <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 flex flex-col md:flex-row gap-12 lg:gap-24 relative">
                 <div class="hidden md:block w-1/4 shrink-0">
-                    <div class="sticky top-32 flex flex-col space-y-4 text-[15px] text-gray-400 font-sans tracking-wide">${sidebarHTML}</div>
+                    <div class="sticky top-32 flex flex-col space-y-4 text-[15px] text-gray-400 font-meta tracking-wide">${sidebarHTML}</div>
                 </div>
                 <div class="w-full md:w-3/4 flex flex-col space-y-32">${sectionsHTML}</div>
             </div>
