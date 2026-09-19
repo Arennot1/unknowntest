@@ -708,14 +708,30 @@ function initPullToRefresh() {
         return cv ? cv.scrollTop <= 0 : true; // home page has no scroll container
     }
 
+    let shaderTime = 0;
+    let lastFrameTs = null;
+
     function ensureLoop() {
-        if (!looping) { looping = true; requestAnimationFrame(render); }
+        if (!looping) { looping = true; lastFrameTs = null; requestAnimationFrame(render); }
     }
 
     function render(now) {
+        now = now || performance.now();
+        if (lastFrameTs === null) lastFrameTs = now;
+        const dt = (now - lastFrameTs) / 1000;
+        lastFrameTs = now;
+        // Once committed, the noise's own drift is the ONLY motion left —
+        // the boundary itself stops growing within a couple hundred ms of
+        // release. At the drift's normal (idle/drag) speed that reads as
+        // frozen, which is exactly backwards for a "refreshing, hang on"
+        // moment — so speed the shader's internal clock up sharply the
+        // instant it's triggered, making the churn unmistakably active
+        // right when that signal matters most.
+        shaderTime += dt * (triggered ? 5.0 : 1.0);
+
         const uT = 1.0 - (pull / MAX_PULL) * PULL_COVER_MAX;
         gl.uniform2f(uResolution, canvas.width, canvas.height);
-        gl.uniform1f(uTime, (now || performance.now()) / 1000);
+        gl.uniform1f(uTime, shaderTime);
         gl.uniform1f(uTransition, uT);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -744,10 +760,15 @@ function initPullToRefresh() {
         // a thin band right up to the moment it refreshes, not something
         // that grows larger once you let go.
         gsap.to(tweenState, {
-            pull: Math.min(pull * 1.15, MAX_PULL * 1.25), duration: 0.2, ease: 'power2.out',
+            pull: Math.min(pull * 1.15, MAX_PULL * 1.25), duration: 0.15, ease: 'power2.out',
             onUpdate: () => { pull = tweenState.pull; },
         });
-        setTimeout(() => window.location.reload(), 550);
+        // Short on purpose: the sped-up shimmer above only needs a couple
+        // of visible frames to read as "working," not a held pause — the
+        // browser's own page-load time adds real, unavoidable delay on
+        // top of whatever's here, so padding this further only compounds
+        // that into something that reads as sluggish.
+        setTimeout(() => window.location.reload(), 260);
     }
 
     // ---- Touch (phone/tablet) ----
