@@ -531,94 +531,221 @@ function initLogoCarousel() {
 function initPullToRefresh() {
     if (REDUCE_MOTION || typeof gsap === 'undefined') return;
 
-    const GEAR_LARGE = 'M 85.0,50.0 L 91.52,56.35 L 89.13,65.26 L 80.31,67.5 L 80.31,67.5 L 82.78,76.26 L 76.26,82.78 L 67.5,80.31 L 67.5,80.31 L 65.26,89.13 L 56.35,91.52 L 50.0,85.0 L 50.0,85.0 L 43.65,91.52 L 34.74,89.13 L 32.5,80.31 L 32.5,80.31 L 23.74,82.78 L 17.22,76.26 L 19.69,67.5 L 19.69,67.5 L 10.87,65.26 L 8.48,56.35 L 15.0,50.0 L 15.0,50.0 L 8.48,43.65 L 10.87,34.74 L 19.69,32.5 L 19.69,32.5 L 17.22,23.74 L 23.74,17.22 L 32.5,19.69 L 32.5,19.69 L 34.74,10.87 L 43.65,8.48 L 50.0,15.0 L 50.0,15.0 L 56.35,8.48 L 65.26,10.87 L 67.5,19.69 L 67.5,19.69 L 76.26,17.22 L 82.78,23.74 L 80.31,32.5 L 80.31,32.5 L 89.13,34.74 L 91.52,43.65 L 85.0,50.0 Z M 61,50 A 11,11 0 1 0 39,50 A 11,11 0 1 0 61,50 Z';
-    const GEAR_MEDIUM = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
+    const canvas = document.createElement('canvas');
+    canvas.id = 'ptr-canvas';
+    document.body.appendChild(canvas);
+    const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
+    if (!gl) return;
 
-    const SCENE_H = 160; // fixed — the gear scene always renders at this real height, never squished
-    const GEAR_DEFS = [
-        { key: 'farL', fx: 0.04, y: 142, scale: 1.3, path: GEAR_LARGE, cls: 'ptr-g-bg', pullMult: 70, spin: '+=200' },
-        { key: 'farR', fx: 0.96, y: 138, scale: 1.3, path: GEAR_LARGE, cls: 'ptr-g-bg', pullMult: -75, spin: '-=210' },
-        { key: 'upL', fx: 0.22, y: 32, scale: 0.95, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: -95, spin: '-=260' },
-        { key: 'upR', fx: 0.78, y: 28, scale: 0.95, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: 95, spin: '+=260' },
-        { key: 'midL', fx: 0.33, y: 128, scale: 0.85, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: -120, spin: '-=340' },
-        { key: 'midR', fx: 0.67, y: 122, scale: 0.9, path: GEAR_MEDIUM, cls: 'ptr-g-bg', pullMult: 130, spin: '+=360' },
-        { key: 'hero', fx: 0.50, y: 112, scale: 1.35, path: GEAR_LARGE, cls: 'ptr-g-hero', pullMult: 200, spin: '+=560' },
-    ];
+    gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
 
-    // Each gear is two stacked paths (a dark offset "shadow" + the lighter
-    // "face" on top) so the teeth read as embossed/beveled like the
-    // reference, instead of a single flat-filled shape.
-    function gearGroup(id, cls, x, y, scale, pathD) {
-        return `<g id="${id}" class="${cls}" transform="translate(${x},${y}) scale(${scale})">
-            <path class="ptr-shadow" d="${pathD}" transform="translate(3,4)"></path>
-            <path class="ptr-face" d="${pathD}"></path>
-        </g>`;
+    const VERT = `#version 300 es
+    layout(location=0) in vec2 aPos;
+    void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+    `;
+
+    // Same pixelated, Perlin-noise-displaced dissolve boundary as the
+    // gear-loader demo (gears removed per that review). One thing is
+    // different from the demo on purpose: 'travel' here uses vUv.y
+    // directly (not 1.0 - vUv.y), because this banner needs to grow
+    // DOWN from the top as you pull, not reveal top-first — it's the
+    // demo's sweep run in reverse, so uTransition=1 is "no banner" and
+    // decreasing it grows the covered region starting at the top edge.
+    const FRAG = `#version 300 es
+    precision highp float;
+    out vec4 fragColor;
+    uniform vec2 uResolution;
+    uniform float uTime;
+    uniform float uTransition;
+
+    vec4 permute(vec4 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+    vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+    vec3 fade(vec3 t) { return t*t*t*(t*(t*6.0-15.0)+10.0); }
+
+    float cnoise(vec3 P) {
+      vec3 Pi0 = floor(P);
+      vec3 Pi1 = Pi0 + vec3(1.0);
+      Pi0 = mod(Pi0, 289.0);
+      Pi1 = mod(Pi1, 289.0);
+      vec3 Pf0 = fract(P);
+      vec3 Pf1 = Pf0 - vec3(1.0);
+      vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+      vec4 iy = vec4(Pi0.yy, Pi1.yy);
+      vec4 iz0 = Pi0.zzzz;
+      vec4 iz1 = Pi1.zzzz;
+
+      vec4 ixy = permute(permute(ix) + iy);
+      vec4 ixy0 = permute(ixy + iz0);
+      vec4 ixy1 = permute(ixy + iz1);
+
+      vec4 gx0 = ixy0 / 7.0;
+      vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
+      gx0 = fract(gx0);
+      vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+      vec4 sz0 = step(gz0, vec4(0.0));
+      gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+      gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+      vec4 gx1 = ixy1 / 7.0;
+      vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
+      gx1 = fract(gx1);
+      vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+      vec4 sz1 = step(gz1, vec4(0.0));
+      gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+      gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+      vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+      vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+      vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+      vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+      vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+      vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+      vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+      vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+      vec4 norm0 = taylorInvSqrt(vec4(dot(g000,g000), dot(g100,g100), dot(g010,g010), dot(g110,g110)));
+      g000 *= norm0.x; g100 *= norm0.y; g010 *= norm0.z; g110 *= norm0.w;
+      vec4 norm1 = taylorInvSqrt(vec4(dot(g001,g001), dot(g101,g101), dot(g011,g011), dot(g111,g111)));
+      g001 *= norm1.x; g101 *= norm1.y; g011 *= norm1.z; g111 *= norm1.w;
+
+      float n000 = dot(g000, Pf0);
+      float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+      float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+      float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+      float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+      float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+      float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+      float n111 = dot(g111, Pf1);
+
+      vec3 fade_xyz = fade(Pf0);
+      float n_z  = mix(mix(n000,n100,fade_xyz.x), mix(n010,n110,fade_xyz.x), fade_xyz.y);
+      float n_dz = mix(mix(n001,n101,fade_xyz.x), mix(n011,n111,fade_xyz.x), fade_xyz.y);
+      return 2.2 * mix(n_z, n_dz, fade_xyz.z);
     }
-    // viewBox width matches the real window width in real pixels, so gears
-    // render at true scale with no horizontal stretch either — just full,
-    // correctly-proportioned coverage edge to edge.
-    function buildGearsSVG(width) {
-        const inner = GEAR_DEFS.map(g =>
-            gearGroup(`ptr-g-${g.key}`, g.cls, Math.round(g.fx * width), g.y, g.scale, g.path)
-        ).join('');
-        return `<svg id="ptr-gears" viewBox="0 0 ${width} ${SCENE_H}" preserveAspectRatio="none">${inner}</svg>`;
+
+    void main() {
+      vec2 vUv = gl_FragCoord.xy / uResolution.xy;
+
+      float pixelSize = 8.0;
+      vec2 grid = uResolution / pixelSize;
+      vec2 pixelatedUv = floor(vUv * grid) / grid;
+
+      float aspect = uResolution.x / uResolution.y;
+      vec2 correctedUv = (pixelatedUv - 0.5) * vec2(aspect, 1.0) + 0.5;
+
+      float travel = pixelatedUv.y; // 1 at top, 0 at bottom — banner grows from the top
+
+      vec2 displacedUv = correctedUv + cnoise(vec3(correctedUv * 5.0, uTime * 0.1));
+      float strengthNoise = cnoise(vec3(displacedUv * 5.0, uTime * 0.2));
+
+      float travelGradient = travel * 12.5 + (1.0 - uTransition) * 2.0 - 15.0 * uTransition;
+      float rawStrength = strengthNoise + travelGradient;
+      float strength = clamp(rawStrength, 0.0, 1.0);
+
+      float edge = smoothstep(0.0, 0.7, rawStrength) * smoothstep(2.5, 0.7, rawStrength);
+      edge *= min((1.0 - uTransition) * 5.0, 1.0);
+
+      vec3 blackPlane = vec3(0.03);
+      vec3 rimColor = vec3(0.8);
+      vec3 planeColor = mix(blackPlane, rimColor, edge * 0.45);
+
+      fragColor = vec4(planeColor, strength);
     }
+    `;
 
-    const wrap = document.createElement('div');
-    wrap.id = 'ptr-indicator';
-    wrap.innerHTML = `
-        <div class="ptr-rod ptr-rod-left"></div>
-        <div class="ptr-rod ptr-rod-right"></div>
-        <div id="ptr-scene">${buildGearsSVG(window.innerWidth)}</div>`;
-    document.body.appendChild(wrap);
-
-    let gearEls = {};
-    function bindGearEls() {
-        GEAR_DEFS.forEach(g => { gearEls[g.key] = document.getElementById(`ptr-g-${g.key}`); });
-        Object.values(gearEls).forEach(el => { if (el) gsap.set(el, { transformOrigin: '50% 50%' }); });
+    function compile(type, src) {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(sh));
+        return sh;
     }
-    bindGearEls();
-    gsap.set(wrap, { height: 0 });
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
 
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            const scene = document.getElementById('ptr-scene');
-            if (scene) { scene.innerHTML = buildGearsSVG(window.innerWidth); bindGearEls(); }
-        }, 200);
-    });
+    const quad = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+    const uResolution = gl.getUniformLocation(prog, 'uResolution');
+    const uTime = gl.getUniformLocation(prog, 'uTime');
+    const uTransition = gl.getUniformLocation(prog, 'uTransition');
+
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(window.innerWidth * dpr);
+        canvas.height = Math.round(window.innerHeight * dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
     const THRESHOLD = 90;
     const MAX_PULL = 150;
-    const SETTLED_HEIGHT = 110;
     const DEAD_ZONE = 10;
     const DAMPING = 0.5;
     const START_BAND = 160; // gesture must start within this many px of the top
+    // How much of the screen the shader covers at pull === MAX_PULL, as a
+    // fraction (0-1) fed into the same formula the settle/commit state
+    // reuses by letting 'pull' exceed MAX_PULL — see fireRefresh().
+    const PULL_COVER_MAX = 0.62;
 
-    let pull = 0, triggered = false;
+    let pull = 0, triggered = false, looping = false;
+    const tweenState = { pull: 0 };
 
     function atTop() {
         const cv = document.getElementById('content-view');
         return cv ? cv.scrollTop <= 0 : true; // home page has no scroll container
     }
 
+    function ensureLoop() {
+        if (!looping) { looping = true; requestAnimationFrame(render); }
+    }
+
+    function render(now) {
+        const uT = 1.0 - (pull / MAX_PULL) * PULL_COVER_MAX;
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.uniform1f(uTime, (now || performance.now()) / 1000);
+        gl.uniform1f(uTransition, uT);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        if (looping) requestAnimationFrame(render);
+    }
+
     function setPull(p) {
         pull = p;
-        const progress = pull / MAX_PULL;
-        gsap.set(wrap, { height: pull });
-        GEAR_DEFS.forEach(g => { const el = gearEls[g.key]; if (el) gsap.set(el, { rotation: progress * g.pullMult }); });
+        ensureLoop();
     }
 
     function snapBack() {
-        gsap.to(wrap, { height: 0, duration: 0.35, ease: 'power2.out' });
-        pull = 0;
+        gsap.to(tweenState, {
+            pull: 0, duration: 0.35, ease: 'power2.out',
+            onUpdate: () => { pull = tweenState.pull; },
+            onComplete: () => { looping = false; },
+        });
+        tweenState.pull = pull;
     }
 
     function fireRefresh() {
         triggered = true;
-        gsap.to(wrap, { height: SETTLED_HEIGHT, duration: 0.25, ease: 'power2.out' });
-        GEAR_DEFS.forEach(g => { const el = gearEls[g.key]; if (el) gsap.to(el, { rotation: g.spin, duration: 0.7, ease: 'none', repeat: -1 }); });
+        tweenState.pull = pull;
+        // Push past what dragging alone reaches (pull can exceed MAX_PULL
+        // here since only setPull's live-drag path clamps it), so the
+        // commit reads as a decisive, near-full takeover rather than
+        // holding at the same partial coverage the drag topped out at.
+        gsap.to(tweenState, {
+            pull: MAX_PULL * 1.55, duration: 0.25, ease: 'power2.out',
+            onUpdate: () => { pull = tweenState.pull; },
+        });
         setTimeout(() => window.location.reload(), 750);
     }
 
