@@ -58,7 +58,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Fragment+Mono&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500..900&family=Frank+Ruhl+Libre:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     ${extraHead}
 </head>
@@ -215,20 +215,20 @@ const routes = [];
 routes.push({
     outPath: 'index.html', depth: 0,
     title: 'Areen Pednekar | Product & Industrial Designer',
-    description: 'Areen Pednekar is a Product & Industrial Designer working across UI/UX, interior, and industrial design — portfolio, research, and resume.',
+    description: 'Areen Pednekar is a Product & Industrial Designer working across UI/UX, interior, and industrial design. Explore selected projects, research, and resume.',
     body: `    <div id="main-view">\n${fragments.mainMenu}\n    </div>`,
 });
 
 routes.push({
     outPath: 'about/index.html', depth: 1,
-    title: 'About — Areen Pednekar',
-    description: 'About Areen Pednekar, Product & Industrial Designer — background, roots, and how to get in touch.',
+    title: 'About | Areen Pednekar',
+    description: 'Learn about Areen Pednekar, Product & Industrial Designer: background, roots, and how to get in touch.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Hi' })}\n        <div id="hi-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'projects/index.html', depth: 1,
-    title: 'Projects — Areen Pednekar',
+    title: 'Projects | Areen Pednekar',
     description: 'Portfolio of UI/UX, industrial, and interior design projects by Areen Pednekar.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Projects' })}\n        <div id="projects-content" class="w-full min-h-screen bg-white text-black pt-40 pb-32">
             <div class="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-10">
@@ -236,7 +236,7 @@ routes.push({
                     <div class="journey-grid">
                         <div class="journey-intro">
                             <span class="journey-eyebrow">The Journey So Far</span>
-                            <p>Hello to the folks new here. This space is more than just a gallery of final deliverables&mdash;it's a living record of my journey. From deep-dive research to physical form, these are the challenges, skills, and strategies that keep shaping me as a designer.</p>
+                            <p>This space is more than a gallery of finished work. Each project follows the same arc, from early research to physical form, shaped by the constraints and decisions specific to that problem. Together, they trace how I <em>think</em>.</p>
                         </div>
                         <div class="journey-stats">
                             <div class="stat">
@@ -295,21 +295,21 @@ ${renderProjectGridDesktop()}
 
 routes.push({
     outPath: 'research/index.html', depth: 1,
-    title: 'Research — Areen Pednekar',
+    title: 'Research | Areen Pednekar',
     description: 'The Tactile Dissonance: a comparative analysis of ergonomic feedback in gaming, by Areen Pednekar.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${fragments.research}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'resume/index.html', depth: 1,
-    title: 'Resume — Areen Pednekar',
+    title: 'Resume | Areen Pednekar',
     description: 'Resume and professional background of Areen Pednekar, Product & Industrial Designer.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Resume' })}\n        <div id="resume-content">\n${fragments.resume}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'contact/index.html', depth: 1,
-    title: 'Contact — Areen Pednekar',
+    title: 'Contact | Areen Pednekar',
     description: "Get in touch with Areen Pednekar to discuss a product, industrial, or UI/UX design project.",
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', darkMode: true, active: 'Contact' })}\n        <div id="contact-content">\n${fragments.contact}\n        </div>\n    </div>`,
 });
@@ -317,7 +317,7 @@ routes.push({
 for (const p of projects) {
     routes.push({
         outPath: `projects/${p.id}/index.html`, depth: 2,
-        title: `${p.title} — Areen Pednekar`,
+        title: `${p.title} | Areen Pednekar`,
         description: p.subtitle,
         body: `    <div id="content-view">\n${renderHeader({ backHref: 'projects/', active: 'Projects' })}\n${renderCaseStudyBody(p)}\n${FOOTER}\n    </div>`,
     });
