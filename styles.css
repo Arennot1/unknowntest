@@ -97,7 +97,7 @@
         .content-header.hide-header { transform: translateY(-100%); }
         .content-header.dark-mode { color: white !important; }
         .content-nav { gap: 2rem; align-items: center; }
-        .content-nav-link { font-family: 'Fragment Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; transition: color 0.2s ease; }
+        .content-nav-link { font-family: 'Fragment Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; color: #6b7280; transition: color 0.2s ease; }
         .content-nav-link:hover { color: var(--text-main); }
         .content-nav-link.active { color: var(--text-main); font-weight: 600; }
         .content-header.dark-mode .content-nav-link { color: #999; }
