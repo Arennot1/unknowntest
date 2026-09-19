@@ -118,16 +118,52 @@ function renderMedia(media, altText = '') {
 }
 
 const CARD_ASPECT = 'aspect-[4/3]';
+const CARD_ASPECT_RATIO = 4 / 3; // width / height, must match CARD_ASPECT above
 
-function renderProjectGridHTML() {
-    return projects.map(p => {
-        return `                    <a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group break-inside-avoid mb-6 lg:mb-8 block" data-category="${p.category}">
+function renderCard(p) {
+    return `<a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group mb-6 lg:mb-8 block" data-category="${p.category}">
                         <div class="w-full ${CARD_ASPECT} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-mono uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
                         </div>
                     </a>`;
-    }).join('\n');
+}
+
+// Mobile: plain single column, natural array order — no column logic needed.
+function renderProjectGridMobile() {
+    return projects.map(renderCard).join('\n');
+}
+
+// Desktop: two real, independently-stacking columns (7:5 width ratio, matching
+// the reference) — NOT CSS `columns` (which forces equal widths) and NOT CSS
+// Grid rows (which forces every card in a row to share the tallest one's
+// height). Each project is assigned, in order, to whichever column is
+// currently shortest — a real greedy masonry-balancing pass, computed here
+// from each card's actual rendered aspect ratio and each column's actual
+// width share, not eyeballed. A little constant is added per card for the
+// caption block (title + meta text), so the balance accounts for that too,
+// not just the image.
+const COLUMN_WEIGHTS = [7, 5]; // relative width, out of 12 — matches Tailwind's w-7/12 / w-5/12 below
+const CAPTION_HEIGHT_ESTIMATE = 1.6; // relative units, same scale as the image-height terms
+
+function distributeIntoColumns(items) {
+    const columns = COLUMN_WEIGHTS.map(() => ({ items: [], height: 0 }));
+    for (const item of items) {
+        let target = 0;
+        for (let i = 1; i < columns.length; i++) if (columns[i].height < columns[target].height) target = i;
+        const imageHeight = COLUMN_WEIGHTS[target] / CARD_ASPECT_RATIO; // height = width / (width/height)
+        columns[target].items.push(item);
+        columns[target].height += imageHeight + CAPTION_HEIGHT_ESTIMATE;
+    }
+    return columns;
+}
+
+function renderProjectGridDesktop() {
+    const columns = distributeIntoColumns(projects);
+    const widthClasses = ['lg:w-7/12', 'lg:w-5/12'];
+    return columns.map((col, i) =>
+        `<div class="w-full ${widthClasses[i]}">\n${col.items.map(renderCard).join('\n')}\n                    </div>`
+    ).join('\n');
 }
 
 function renderSectionHTML(project, key, label) {
@@ -247,8 +283,11 @@ routes.push({
                     <button onclick="filterProjects(event, 'research')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Research &amp; Behavior</button>
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
                 </div>
-                <div class="columns-1 md:columns-2 xl:columns-3 gap-x-3 lg:gap-x-5" id="projects-grid">
-${renderProjectGridHTML()}
+                <div class="lg:hidden" id="projects-grid-mobile">
+${renderProjectGridMobile()}
+                </div>
+                <div class="hidden lg:flex gap-x-5" id="projects-grid">
+${renderProjectGridDesktop()}
                 </div>
             </div>
         </div>\n${FOOTER}\n    </div>`,
