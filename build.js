@@ -129,6 +129,23 @@ function renderCard(p) {
                     </a>`;
 }
 
+// Real client logos for the "Trusted by teams at" carousel. Each image is a
+// transparent PNG in assets/clients/, already cropped tight to its own
+// content (see that folder) — to add another client, add one line here and
+// drop the matching file in assets/clients/, nothing else needs to change.
+const CLIENT_LOGOS = [
+    { name: 'Dr. Reddy\'s', image: 'assets/clients/dr-reddys.png' },
+    { name: 'EaZy Byts', image: 'assets/clients/eazy-byts.png' },
+    { name: 'Freudenberg', image: 'assets/clients/freudenberg.png' },
+    { name: 'Gala', image: 'assets/clients/gala.png' },
+    { name: 'Prototyze', image: 'assets/clients/prototyze.png' },
+    { name: 'Screen Root', image: 'assets/clients/screenroot.png' },
+    { name: 'Deck Sherpa', image: 'assets/clients/deck-sherpa.png' },
+];
+function renderLogoChip(client, hidden) {
+    return `<div class="logo-chip"${hidden ? ' aria-hidden="true"' : ''}><img src="${client.image}" alt="${client.name} logo"></div>`;
+}
+
 // Mobile: plain single column, natural array order — no column logic needed.
 function renderProjectGridMobile() {
     return projects.map(renderCard).join('\n');
@@ -255,24 +272,14 @@ routes.push({
                     </div>
                     <div class="journey-trusted">
                         <h2 class="font-black text-4xl md:text-5xl mb-4 tracking-tighter">Trusted by teams at</h2>
-                        <!-- Placeholder chips — replace the text with an <img> per chip once you have
-                             real client logos (e.g. <img src="assets/clients/acme.png" alt="Acme">).
-                             The list is intentionally duplicated below so the auto-scroll loops seamlessly;
-                             edit both copies together, or regenerate the second half to match the first. -->
+                        <!-- Client logos are driven by CLIENT_LOGOS above — add a { name, image }
+                             entry there and drop the matching file in assets/clients/ to add a new
+                             one. The visible strip and its seamless-loop duplicate are both generated
+                             from this one list, so they can't drift apart. -->
                         <div class="logo-carousel" id="logo-carousel">
                             <div class="logo-carousel-track" id="logo-carousel-track">
-                                <div class="logo-chip">Nimbus Labs</div>
-                                <div class="logo-chip">Orbit &amp; Co.</div>
-                                <div class="logo-chip">Forma Studio</div>
-                                <div class="logo-chip">Kestrel Group</div>
-                                <div class="logo-chip">Northline</div>
-                                <div class="logo-chip">Verdant</div>
-                                <div class="logo-chip" aria-hidden="true">Nimbus Labs</div>
-                                <div class="logo-chip" aria-hidden="true">Orbit &amp; Co.</div>
-                                <div class="logo-chip" aria-hidden="true">Forma Studio</div>
-                                <div class="logo-chip" aria-hidden="true">Kestrel Group</div>
-                                <div class="logo-chip" aria-hidden="true">Northline</div>
-                                <div class="logo-chip" aria-hidden="true">Verdant</div>
+                                ${CLIENT_LOGOS.map(c => renderLogoChip(c, false)).join('\n                                ')}
+                                ${CLIENT_LOGOS.map(c => renderLogoChip(c, true)).join('\n                                ')}
                             </div>
                         </div>
                     </div>
