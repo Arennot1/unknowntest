@@ -174,16 +174,15 @@
             .journey-stats { gap: 2rem; }
         }
 
-        /* Anti-grid project layout: desktop-only, deliberately subtle spans —
-           mostly even (6/6), with an occasional gentle 7/5 offset for rhythm.
-           All cards share the same aspect ratio so rows stay level; no more
-           dramatic width/height mismatches. Mobile stays a plain single-column
-           stack (see grid-cols-1 in the HTML). */
+        /* Uniform 3-per-row layout: every card spans the same 4 of 12
+           columns, so every card in a row shares the same width — and,
+           since they all share the same aspect ratio, the same height too.
+           The earlier version mixed wide/standard/narrow spans in the same
+           row, which gave differently-sized cards different heights and
+           left an uneven gap below the shorter one; this removes that
+           problem at the source rather than just tightening the gap value. */
         @media (min-width: 1024px) {
-            #projects-grid { grid-auto-flow: dense; }
-            .grid-col-5 { grid-column: span 5 / span 5; }
-            .grid-col-6 { grid-column: span 6 / span 6; }
-            .grid-col-7 { grid-column: span 7 / span 7; }
+            .grid-col-4 { grid-column: span 4 / span 4; }
         }
 
         /* Real <a> links replace what used to be onclick'd <div>s — keep them looking identical */
