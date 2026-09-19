@@ -118,9 +118,9 @@ function renderMedia(media, altText = '') {
 }
 
 const GRID_SIZES = {
-    wide: { span: 'grid-col-7', aspect: 'aspect-[4/3]' },
-    standard: { span: 'grid-col-6', aspect: 'aspect-[4/3]' },
-    narrow: { span: 'grid-col-5', aspect: 'aspect-[4/3]' },
+    wide: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
+    standard: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
+    narrow: { span: 'grid-col-4', aspect: 'aspect-[4/3]' },
 };
 
 function renderProjectGridHTML() {
@@ -252,7 +252,7 @@ routes.push({
                     <button onclick="filterProjects(event, 'research')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Research &amp; Behavior</button>
                     <button onclick="filterProjects(event, 'industrial')" data-cursor-quiet class="filter-btn filter-inactive text-xs md:text-sm font-bold uppercase tracking-widest border px-5 py-2.5 rounded-full transition-colors hover:border-black hover:text-black">Industrial</button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-4 lg:gap-x-6 gap-y-10 lg:gap-y-12" id="projects-grid">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-3 lg:gap-x-5 gap-y-6 lg:gap-y-8" id="projects-grid">
 ${renderProjectGridHTML()}
                 </div>
             </div>
