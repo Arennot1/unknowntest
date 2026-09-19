@@ -19,6 +19,8 @@
         }
 
         h1, h2, h3, h4, h5, h6 { font-family: 'Schibsted Grotesk', sans-serif; }
+        .font-meta { font-family: 'Fragment Mono', monospace; }
+        .font-heading-sans { font-family: 'Schibsted Grotesk', sans-serif; }
 
         .hidden-view { display: none !important; }
         .hidden-content { display: none; }
