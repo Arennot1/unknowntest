@@ -58,7 +58,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Fragment+Mono&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     ${extraHead}
 </head>
