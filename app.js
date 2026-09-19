@@ -393,11 +393,13 @@ function initPullToRefresh() {
     wrap.innerHTML = `
         <div class="ptr-rod ptr-rod-left"></div>
         <div class="ptr-rod ptr-rod-right"></div>
-        <svg id="ptr-gears" viewBox="0 0 500 160" preserveAspectRatio="xMidYMid slice">
+        <svg id="ptr-gears" viewBox="0 0 500 160" preserveAspectRatio="none">
             ${gearGroup('ptr-g-tl', 'ptr-g-bg', 'translate(8,-35) scale(1.3)', GEAR_LARGE)}
             ${gearGroup('ptr-g-tr', 'ptr-g-bg', 'translate(465,-12) scale(1.15)', GEAR_MEDIUM)}
             ${gearGroup('ptr-g-bl', 'ptr-g-bg', 'translate(55,152) scale(1.05)', GEAR_MEDIUM)}
             ${gearGroup('ptr-g-br', 'ptr-g-bg', 'translate(460,150) scale(1.3)', GEAR_LARGE)}
+            ${gearGroup('ptr-g-ml', 'ptr-g-bg', 'translate(110,80) scale(0.85)', GEAR_MEDIUM)}
+            ${gearGroup('ptr-g-mr', 'ptr-g-bg', 'translate(390,75) scale(0.9)', GEAR_MEDIUM)}
             ${gearGroup('ptr-g-hero', 'ptr-g-hero', 'translate(250,78) scale(1.35)', GEAR_LARGE)}
         </svg>`;
     document.body.appendChild(wrap);
@@ -407,6 +409,8 @@ function initPullToRefresh() {
         tr: { el: document.getElementById('ptr-g-tr'), pullMult: -85, spin: '-=230' },
         bl: { el: document.getElementById('ptr-g-bl'), pullMult: 95, spin: '+=260' },
         br: { el: document.getElementById('ptr-g-br'), pullMult: -75, spin: '-=210' },
+        ml: { el: document.getElementById('ptr-g-ml'), pullMult: -120, spin: '-=340' },
+        mr: { el: document.getElementById('ptr-g-mr'), pullMult: 130, spin: '+=360' },
         hero: { el: document.getElementById('ptr-g-hero'), pullMult: 200, spin: '+=560' },
     };
     Object.values(GEARS).forEach(g => gsap.set(g.el, { transformOrigin: '50% 50%' }));
@@ -501,11 +505,16 @@ function initPullToRefresh() {
     });
 
     // ---- Trackpad two-finger swipe down (wheel events) ----
+    // Requires the cursor to be hovering near the top nav band, same as the
+    // touch/mouse paths already require the gesture to start there. Without
+    // this, ordinary momentum-scrolling up to the top of a long page (very
+    // common) could accidentally trigger a reload with the cursor anywhere
+    // on screen — this is what actually causes that.
     const WHEEL_DEAD_ZONE = 15;
     let wheelRaw = 0, wheelTimeout = null;
     window.addEventListener('wheel', (e) => {
         if (triggered) return;
-        if (e.deltaY >= 0 || !atTop()) { wheelRaw = 0; return; } // only an upward/pull-style swipe while at the top
+        if (e.deltaY >= 0 || e.clientY > START_BAND || !atTop()) { wheelRaw = 0; return; }
         wheelRaw += -e.deltaY;
         if (wheelRaw < WHEEL_DEAD_ZONE) return; // ignore tiny incidental scroll-past-top blips
         e.preventDefault();
