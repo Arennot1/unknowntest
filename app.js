@@ -366,41 +366,51 @@ function initLogoCarousel() {
 }
 
 // ---------------- Pull-to-refresh: gear banner, every page ----------------
-// A black banner unrolls from the very top of the viewport as you pull,
-// with two meshed gears turning inside it — release past the threshold and
-// it spins up and reloads. Works with a real mouse click-and-drag on
-// desktop as well as touch; that's a distinct gesture from the multi-finger
-// trackpad swipe Safari intercepts natively, so it doesn't hit that conflict.
-// Only engages when starting near the very top of the viewport and while
-// already scrolled to the top, so it can't interfere with normal clicking,
-// dragging the logo carousel, or selecting text further down the page.
+// A black banner unrolls from the very top of the viewport as you pull, with
+// a small "glimpsed mechanism" of gears at different sizes turning inside —
+// release past the threshold and it spins up and reloads. Three separate
+// input paths feed the same shared pull state: touch (phone/tablet), a
+// plain mouse click-and-drag, and a trackpad two-finger swipe (wheel
+// events) — each is a genuinely different gesture, so none of them collide
+// with each other or with Safari's own native trackpad behavior.
 function initPullToRefresh() {
     if (REDUCE_MOTION || typeof gsap === 'undefined') return;
 
-    const GEAR_BIG = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
+    const GEAR_LARGE = 'M 85.0,50.0 L 91.52,56.35 L 89.13,65.26 L 80.31,67.5 L 80.31,67.5 L 82.78,76.26 L 76.26,82.78 L 67.5,80.31 L 67.5,80.31 L 65.26,89.13 L 56.35,91.52 L 50.0,85.0 L 50.0,85.0 L 43.65,91.52 L 34.74,89.13 L 32.5,80.31 L 32.5,80.31 L 23.74,82.78 L 17.22,76.26 L 19.69,67.5 L 19.69,67.5 L 10.87,65.26 L 8.48,56.35 L 15.0,50.0 L 15.0,50.0 L 8.48,43.65 L 10.87,34.74 L 19.69,32.5 L 19.69,32.5 L 17.22,23.74 L 23.74,17.22 L 32.5,19.69 L 32.5,19.69 L 34.74,10.87 L 43.65,8.48 L 50.0,15.0 L 50.0,15.0 L 56.35,8.48 L 65.26,10.87 L 67.5,19.69 L 67.5,19.69 L 76.26,17.22 L 82.78,23.74 L 80.31,32.5 L 80.31,32.5 L 89.13,34.74 L 91.52,43.65 L 85.0,50.0 Z M 61,50 A 11,11 0 1 0 39,50 A 11,11 0 1 0 61,50 Z';
+    const GEAR_MEDIUM = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
     const GEAR_SMALL = 'M 65.5,50.0 L 68.36,54.89 L 65.27,61.31 L 59.66,62.12 L 59.66,62.12 L 57.62,67.4 L 50.68,68.99 L 46.55,65.11 L 46.55,65.11 L 41.15,66.81 L 35.58,62.37 L 36.03,56.73 L 36.03,56.73 L 31.34,53.56 L 31.34,46.44 L 36.03,43.27 L 36.03,43.27 L 35.58,37.63 L 41.15,33.19 L 46.55,34.89 L 46.55,34.89 L 50.68,31.01 L 57.62,32.6 L 59.66,37.88 L 59.66,37.88 L 65.27,38.69 L 68.36,45.11 L 65.5,50.0 Z M 55,50 A 5,5 0 1 0 45,50 A 5,5 0 1 0 55,50 Z';
+    const GEAR_TINY = 'M 61.5,50.0 L 63.64,53.16 L 61.88,57.41 L 58.13,58.13 L 58.13,58.13 L 57.41,61.88 L 53.16,63.64 L 50.0,61.5 L 50.0,61.5 L 46.84,63.64 L 42.59,61.88 L 41.87,58.13 L 41.87,58.13 L 38.12,57.41 L 36.36,53.16 L 38.5,50.0 L 38.5,50.0 L 36.36,46.84 L 38.12,42.59 L 41.87,41.87 L 41.87,41.87 L 42.59,38.12 L 46.84,36.36 L 50.0,38.5 L 50.0,38.5 L 53.16,36.36 L 57.41,38.12 L 58.13,41.87 L 58.13,41.87 L 61.88,42.59 L 63.64,46.84 L 61.5,50.0 Z M 53.5,50 A 3.5,3.5 0 1 0 46.5,50 A 3.5,3.5 0 1 0 53.5,50 Z';
 
     const wrap = document.createElement('div');
     wrap.id = 'ptr-indicator';
     wrap.innerHTML = `
-        <svg id="ptr-gears" viewBox="0 0 130 100" width="84" height="65">
-            <path id="ptr-gear-big" d="${GEAR_BIG}"></path>
-            <path id="ptr-gear-small" d="${GEAR_SMALL}" transform="translate(38,-2) scale(0.62)"></path>
+        <svg id="ptr-gears" viewBox="0 0 500 160" preserveAspectRatio="xMidYMid slice">
+            <g id="ptr-g-bg1" class="ptr-g-bg" transform="translate(20,-25) scale(1.4)"><path d="${GEAR_LARGE}"></path></g>
+            <g id="ptr-g-bg2" class="ptr-g-bg" transform="translate(430,140) scale(1.3)"><path d="${GEAR_LARGE}"></path></g>
+            <g id="ptr-g-bg3" class="ptr-g-bg" transform="translate(345,15) scale(0.55)"><path d="${GEAR_TINY}"></path></g>
+            <g id="ptr-g-hero" transform="translate(220,72) scale(1.15)"><path d="${GEAR_MEDIUM}"></path></g>
+            <g id="ptr-g-mesh" transform="translate(270,54) scale(0.68)"><path d="${GEAR_SMALL}"></path></g>
         </svg>`;
     document.body.appendChild(wrap);
-    const gearBig = document.getElementById('ptr-gear-big');
-    const gearSmall = document.getElementById('ptr-gear-small');
-    gsap.set([gearBig, gearSmall], { transformOrigin: '50% 50%' });
+
+    const GEARS = {
+        bg1: { el: document.getElementById('ptr-g-bg1'), pullMult: 80, spin: '+=220' },
+        bg2: { el: document.getElementById('ptr-g-bg2'), pullMult: -90, spin: '-=240' },
+        bg3: { el: document.getElementById('ptr-g-bg3'), pullMult: 320, spin: '+=900' },
+        hero: { el: document.getElementById('ptr-g-hero'), pullMult: 200, spin: '+=560' },
+        mesh: { el: document.getElementById('ptr-g-mesh'), pullMult: -260, spin: '-=730' },
+    };
+    Object.values(GEARS).forEach(g => gsap.set(g.el, { transformOrigin: '50% 50%' }));
     gsap.set(wrap, { height: 0 });
 
     const THRESHOLD = 90;
     const MAX_PULL = 150;
-    const SETTLED_HEIGHT = 100;
+    const SETTLED_HEIGHT = 110;
     const DEAD_ZONE = 10;
     const DAMPING = 0.5;
-    const START_BAND = 160; // only engage if the gesture starts within this many px of the top
+    const START_BAND = 160; // gesture must start within this many px of the top
 
-    let startX = 0, startY = 0, tracking = false, isPull = null, pull = 0, triggered = false;
+    let pull = 0, triggered = false;
 
     function atTop() {
         const cv = document.getElementById('content-view');
@@ -411,8 +421,7 @@ function initPullToRefresh() {
         pull = p;
         const progress = pull / MAX_PULL;
         gsap.set(wrap, { height: pull });
-        gsap.set(gearBig, { rotation: progress * 200 });
-        gsap.set(gearSmall, { rotation: progress * -260 });
+        Object.values(GEARS).forEach(g => gsap.set(g.el, { rotation: progress * g.pullMult }));
     }
 
     function snapBack() {
@@ -423,51 +432,81 @@ function initPullToRefresh() {
     function fireRefresh() {
         triggered = true;
         gsap.to(wrap, { height: SETTLED_HEIGHT, duration: 0.25, ease: 'power2.out' });
-        gsap.to(gearBig, { rotation: '+=560', duration: 0.7, ease: 'none', repeat: -1 });
-        gsap.to(gearSmall, { rotation: '-=730', duration: 0.7, ease: 'none', repeat: -1 });
+        Object.values(GEARS).forEach(g => gsap.to(g.el, { rotation: g.spin, duration: 0.7, ease: 'none', repeat: -1 }));
         setTimeout(() => window.location.reload(), 750);
     }
 
-    function dragStart(x, y) {
-        if (triggered || y > START_BAND || !atTop()) { tracking = false; return; }
-        tracking = true; isPull = null; pull = 0;
-        startX = x; startY = y;
-    }
-
-    function dragMove(x, y, evt) {
-        if (!tracking || triggered) return;
-        const dx = x - startX;
-        const dy = y - startY;
-
-        if (isPull === null) {
+    // ---- Touch (phone/tablet) ----
+    let tStartX = 0, tStartY = 0, tTracking = false, tIsPull = null;
+    window.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        if (triggered || t.clientY > START_BAND || !atTop()) { tTracking = false; return; }
+        tTracking = true; tIsPull = null; pull = 0;
+        tStartX = t.clientX; tStartY = t.clientY;
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+        if (!tTracking || triggered) return;
+        const t = e.touches[0];
+        const dx = t.clientX - tStartX, dy = t.clientY - tStartY;
+        if (tIsPull === null) {
             if (Math.abs(dx) < DEAD_ZONE && Math.abs(dy) < DEAD_ZONE) return;
-            isPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4; // predominantly downward, not horizontal (carousel drag, text selection)
-            if (!isPull) { tracking = false; return; }
+            tIsPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4;
+            if (!tIsPull) { tTracking = false; return; }
         }
-        if (!isPull) return;
-
-        if (evt) evt.preventDefault();
+        if (!tIsPull) return;
+        e.preventDefault();
         setPull(Math.max(0, Math.min(dy * DAMPING, MAX_PULL)));
-    }
+    }, { passive: false });
+    window.addEventListener('touchend', () => {
+        if (!tTracking || !tIsPull || triggered) { tTracking = false; return; }
+        tTracking = false;
+        if (pull >= THRESHOLD) fireRefresh(); else snapBack();
+    });
 
-    function dragEnd() {
-        if (!tracking || !isPull || triggered) { tracking = false; return; }
-        tracking = false;
-        if (pull >= THRESHOLD) fireRefresh();
-        else snapBack();
-    }
+    // ---- Mouse click-and-drag (desktop) ----
+    let mStartX = 0, mStartY = 0, mDown = false, mIsPull = null;
+    window.addEventListener('mousedown', (e) => {
+        if (triggered || e.clientY > START_BAND || !atTop()) { mDown = false; return; }
+        mDown = true; mIsPull = null; pull = 0;
+        mStartX = e.clientX; mStartY = e.clientY;
+        // Prevent the browser's default text-selection drag from starting at
+        // all — without this, dragging down also highlights the page text.
+        e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+        if (!mDown || triggered) return;
+        const dx = e.clientX - mStartX, dy = e.clientY - mStartY;
+        if (mIsPull === null) {
+            if (Math.abs(dx) < DEAD_ZONE && Math.abs(dy) < DEAD_ZONE) return;
+            mIsPull = dy > 0 && Math.abs(dy) > Math.abs(dx) * 1.4;
+            if (!mIsPull) { mDown = false; return; }
+        }
+        if (!mIsPull) return;
+        e.preventDefault();
+        setPull(Math.max(0, Math.min(dy * DAMPING, MAX_PULL)));
+    });
+    window.addEventListener('mouseup', () => {
+        if (!mDown || !mIsPull || triggered) { mDown = false; return; }
+        mDown = false;
+        if (pull >= THRESHOLD) fireRefresh(); else snapBack();
+    });
 
-    // Touch
-    window.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-    window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
-    window.addEventListener('touchend', dragEnd);
-
-    // Mouse — a plain click-and-drag, a different gesture from the trackpad
-    // swipe, so it doesn't collide with Safari's native behavior.
-    let mouseDown = false;
-    window.addEventListener('mousedown', (e) => { mouseDown = true; dragStart(e.clientX, e.clientY); });
-    window.addEventListener('mousemove', (e) => { if (mouseDown) dragMove(e.clientX, e.clientY, e); });
-    window.addEventListener('mouseup', () => { mouseDown = false; dragEnd(); });
+    // ---- Trackpad two-finger swipe down (wheel events) ----
+    const WHEEL_DEAD_ZONE = 15;
+    let wheelRaw = 0, wheelTimeout = null;
+    window.addEventListener('wheel', (e) => {
+        if (triggered) return;
+        if (e.deltaY >= 0 || !atTop()) { wheelRaw = 0; return; } // only an upward/pull-style swipe while at the top
+        wheelRaw += -e.deltaY;
+        if (wheelRaw < WHEEL_DEAD_ZONE) return; // ignore tiny incidental scroll-past-top blips
+        e.preventDefault();
+        setPull(Math.max(0, Math.min((wheelRaw - WHEEL_DEAD_ZONE) * 0.5, MAX_PULL)));
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => {
+            if (pull >= THRESHOLD) fireRefresh(); else snapBack();
+            wheelRaw = 0;
+        }, 180); // no new wheel ticks for this long = treat the swipe as finished
+    }, { passive: false });
 }
 
 // ---------------- Boot ----------------
