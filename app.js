@@ -84,46 +84,201 @@ function startGreetingCarousel() {
 }
 
 // ---------------- Logo ripple effect (home page only) ----------------
-// Real frosted-glass circles (actual backdrop-filter blur of whatever page
-// content sits behind them), not canvas-drawn outlines — canvas has no way
-// to blur what's behind it, only a real DOM element does.
+// Real-time WebGL2 fragment shader — a lit, travelling wave height-field —
+// replacing the earlier DOM/backdrop-filter circles for a sharper, more
+// dimensional result. Same trigger as before (logo click, 4 staggered
+// pulses); only the rendering technique changed. Falls back to doing
+// nothing if WebGL2 isn't available or prefers-reduced-motion is set,
+// same as every other motion effect on this site.
 function initLogoRipple() {
     const brandingLogo = document.querySelector('.branding-logo');
-    if (!brandingLogo || REDUCE_MOTION || typeof gsap === 'undefined') return;
+    if (!brandingLogo || REDUCE_MOTION) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.id = 'ripple-canvas';
+    document.body.appendChild(canvas);
+    const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
+    if (!gl) return;
+
+    gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
+
+    const VERT = `#version 300 es
+    layout(location=0) in vec2 aPos;
+    void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+    `;
+
+    // Each ripple is a travelling ring in a height field. Lighting comes
+    // from the *slope* of that field (a real normal, via finite
+    // differences), which is what turns a plain sine wave into a sharp,
+    // faceted look. Colour is near-white, with a low-saturation hue tied to
+    // the wave's own height/facing direction riding along each ring's
+    // edge — genuine thin-film iridescence rather than a fixed tint.
+    const FRAG = `#version 300 es
+    precision highp float;
+    out vec4 fragColor;
+    uniform vec2 uResolution;
+    uniform float uTime;
+    uniform vec3 uRipples[10]; // xy = origin (aspect-corrected uv), z = spawn time
+    uniform int uRippleCount;
+
+    vec3 hsv2rgb(vec3 c) {
+      vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
+      vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+      return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+
+    float ringHeight(vec2 p, vec2 origin, float age) {
+      if (age < 0.0) return 0.0;
+      float r = length(p - origin);
+      float speed = 0.62;
+      float freq = 38.0;
+      float frontR = age * speed;
+      float d = frontR - r;
+      float bandFront = 0.035;
+      float bandBack = 0.14;
+      float band = smoothstep(0.0, bandFront, d) * (1.0 - smoothstep(bandBack*0.6, bandBack, d));
+      float decayT = exp(-age * 0.45);
+      float decayR = exp(-r * 0.55);
+      float birth = smoothstep(0.0, 0.5, age); // fades in from zero, no abrupt pop on click
+      return sin(r*freq - age*11.0) * band * decayT * decayR * birth;
+    }
+
+    float sceneHeight(vec2 p) {
+      float h = 0.0;
+      for (int i = 0; i < 10; i++) {
+        if (i >= uRippleCount) break;
+        h += ringHeight(p, uRipples[i].xy, uTime - uRipples[i].z);
+      }
+      return h;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution.xy;
+      float aspect = uResolution.x / uResolution.y;
+      vec2 p = uv;
+      p.x *= aspect;
+
+      float eps = 1.4 / uResolution.y;
+      float hC = sceneHeight(p);
+      float hL = sceneHeight(p - vec2(eps, 0.0));
+      float hR = sceneHeight(p + vec2(eps, 0.0));
+      float hD = sceneHeight(p - vec2(0.0, eps));
+      float hU = sceneHeight(p + vec2(0.0, eps));
+      vec3 normal = normalize(vec3((hL - hR) / (2.0*eps), (hD - hU) / (2.0*eps), 1.35));
+
+      vec3 lightDir = normalize(vec3(-0.35, 0.55, 0.75));
+      vec3 viewDir  = vec3(0.0, 0.0, 1.0);
+      vec3 halfV    = normalize(lightDir + viewDir);
+      float spec = pow(max(dot(normal, halfV), 0.0), 60.0);
+      float slope = length(normal.xy);
+
+      float hue = fract(hC*1.5 + normal.x*0.35 + normal.y*0.35 + uTime*0.015);
+      vec3 iridescent = hsv2rgb(vec3(hue, 0.24, 1.0));
+
+      float tint = clamp(slope*1.3, 0.0, 1.0) * 0.26 + spec*0.12;
+      vec3 col = mix(vec3(1.0), iridescent, clamp(tint, 0.0, 0.4));
+      col += spec * 0.15;
+
+      // Alpha follows the wave's own presence: calm, undisturbed areas are
+      // fully transparent so the page shows through untouched, and only
+      // the travelling ring itself is visible, composited over the site.
+      float alpha = clamp(abs(hC) * 6.0 + tint, 0.0, 1.0);
+      fragColor = vec4(col, alpha);
+    }
+    `;
+
+    function compile(type, src) {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(sh));
+        return sh;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+
+    const quad = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+    const uResolution = gl.getUniformLocation(prog, 'uResolution');
+    const uTime = gl.getUniformLocation(prog, 'uTime');
+    const uRipples = gl.getUniformLocation(prog, 'uRipples');
+    const uRippleCount = gl.getUniformLocation(prog, 'uRippleCount');
+
+    const MAX_RIPPLES = 10;
+    let ripples = [];
+    let looping = false;
+    const startTime = performance.now();
+    function now() { return (performance.now() - startTime) / 1000; }
+
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(window.innerWidth * dpr);
+        canvas.height = Math.round(window.innerHeight * dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function render() {
+        const t = now();
+        ripples = ripples.filter(r => t - r.t0 < 5.0);
+
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.uniform1f(uTime, t);
+        gl.uniform1i(uRippleCount, ripples.length);
+        if (ripples.length) {
+            const data = new Float32Array(MAX_RIPPLES * 3);
+            ripples.forEach((r, i) => { data[i*3] = r.x; data[i*3+1] = r.y; data[i*3+2] = r.t0; });
+            gl.uniform3fv(uRipples, data);
+        }
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Stop the render loop entirely once nothing is left on screen,
+        // rather than looping forever like the interactive demo did — this
+        // is a decorative, click-triggered accent, so it shouldn't cost
+        // anything while idle.
+        if (ripples.length > 0) {
+            requestAnimationFrame(render);
+        } else {
+            looping = false;
+        }
+    }
+    function ensureLoop() {
+        if (!looping) { looping = true; render(); }
+    }
 
     window.triggerLogoEffect = function () {
         const logoImg = brandingLogo.querySelector('img');
         const rect = logoImg.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        // Diameter needs to be ~2x the viewport diagonal to fully reach the
-        // farthest corner when the ripple originates near a corner (like the
-        // logo does) rather than dead-center.
-        const maxSize = 2 * Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const aspect = window.innerWidth / window.innerHeight;
+        const originX = (cx / window.innerWidth) * aspect;
+        const originY = 1.0 - (cy / window.innerHeight);
 
         let spawned = 0;
         const interval = setInterval(() => {
-            spawnGlassRipple(centerX, centerY, maxSize);
+            if (ripples.length >= MAX_RIPPLES) ripples.shift();
+            ripples.push({ x: originX, y: originY, t0: now() });
+            ensureLoop();
             spawned++;
             if (spawned >= 4) clearInterval(interval);
         }, 300);
     };
 }
 
-function spawnGlassRipple(x, y, maxSize) {
-    const el = document.createElement('div');
-    el.className = 'glass-ripple';
-    document.body.appendChild(el);
-    gsap.set(el, { x, y, xPercent: -50, yPercent: -50, width: 0, height: 0, opacity: 0 });
-
-    const tl = gsap.timeline({ onComplete: () => el.remove() });
-    // Strong, fast start (quick pop to near-full opacity + a burst of initial
-    // growth), then the expansion visibly decelerates as it spreads across
-    // the page, calming down into a slow fade rather than an abrupt cut-off.
-    tl.to(el, { opacity: 1, width: maxSize * 0.12, height: maxSize * 0.12, duration: 0.2, ease: 'power2.out' })
-      .to(el, { width: maxSize, height: maxSize, duration: 2.6, ease: 'power3.out' }, '<')
-      .to(el, { opacity: 0, duration: 1.4, ease: 'power1.in' }, '-=1.4');
-}
 
 // ---------------- Diecast Dash mini-game (About/Hi page only) ----------------
 function initCarGame() {
