@@ -174,16 +174,14 @@
             .journey-stats { gap: 2rem; }
         }
 
-        /* Uniform 3-per-row layout: every card spans the same 4 of 12
-           columns, so every card in a row shares the same width — and,
-           since they all share the same aspect ratio, the same height too.
-           The earlier version mixed wide/standard/narrow spans in the same
-           row, which gave differently-sized cards different heights and
-           left an uneven gap below the shorter one; this removes that
-           problem at the source rather than just tightening the gap value. */
-        @media (min-width: 1024px) {
-            .grid-col-4 { grid-column: span 4 / span 4; }
-        }
+        /* Masonry layout: cards flow into whichever column has room next,
+           via CSS multi-column (not CSS Grid) — this is what actually
+           avoids the "gap" problem. Grid forces every card in a row to
+           share that row's height (tallest card wins, leaving empty space
+           under shorter ones); multi-column has no such row concept, so a
+           short card is immediately followed by the next card, in the same
+           column, with no gap. break-inside-avoid (on .project-card) stops
+           a single card from being split across two columns. */
 
         /* Real <a> links replace what used to be onclick'd <div>s — keep them looking identical */
         .menu-item, .project-card, .back-btn, .content-logo a { text-decoration: none; }
