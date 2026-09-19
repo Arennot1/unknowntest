@@ -378,27 +378,36 @@ function initPullToRefresh() {
 
     const GEAR_LARGE = 'M 85.0,50.0 L 91.52,56.35 L 89.13,65.26 L 80.31,67.5 L 80.31,67.5 L 82.78,76.26 L 76.26,82.78 L 67.5,80.31 L 67.5,80.31 L 65.26,89.13 L 56.35,91.52 L 50.0,85.0 L 50.0,85.0 L 43.65,91.52 L 34.74,89.13 L 32.5,80.31 L 32.5,80.31 L 23.74,82.78 L 17.22,76.26 L 19.69,67.5 L 19.69,67.5 L 10.87,65.26 L 8.48,56.35 L 15.0,50.0 L 15.0,50.0 L 8.48,43.65 L 10.87,34.74 L 19.69,32.5 L 19.69,32.5 L 17.22,23.74 L 23.74,17.22 L 32.5,19.69 L 32.5,19.69 L 34.74,10.87 L 43.65,8.48 L 50.0,15.0 L 50.0,15.0 L 56.35,8.48 L 65.26,10.87 L 67.5,19.69 L 67.5,19.69 L 76.26,17.22 L 82.78,23.74 L 80.31,32.5 L 80.31,32.5 L 89.13,34.74 L 91.52,43.65 L 85.0,50.0 Z M 61,50 A 11,11 0 1 0 39,50 A 11,11 0 1 0 61,50 Z';
     const GEAR_MEDIUM = 'M 75.0,50.0 L 79.5,55.44 L 77.06,62.94 L 70.23,64.69 L 70.23,64.69 L 70.67,71.74 L 64.29,76.38 L 57.73,73.78 L 57.73,73.78 L 53.95,79.74 L 46.05,79.74 L 42.27,73.78 L 42.27,73.78 L 35.71,76.38 L 29.33,71.74 L 29.77,64.69 L 29.77,64.69 L 22.94,62.94 L 20.5,55.44 L 25.0,50.0 L 25.0,50.0 L 20.5,44.56 L 22.94,37.06 L 29.77,35.31 L 29.77,35.31 L 29.33,28.26 L 35.71,23.62 L 42.27,26.22 L 42.27,26.22 L 46.05,20.26 L 53.95,20.26 L 57.73,26.22 L 57.73,26.22 L 64.29,23.62 L 70.67,28.26 L 70.23,35.31 L 70.23,35.31 L 77.06,37.06 L 79.5,44.56 L 75.0,50.0 Z M 58,50 A 8,8 0 1 0 42,50 A 8,8 0 1 0 58,50 Z';
-    const GEAR_SMALL = 'M 65.5,50.0 L 68.36,54.89 L 65.27,61.31 L 59.66,62.12 L 59.66,62.12 L 57.62,67.4 L 50.68,68.99 L 46.55,65.11 L 46.55,65.11 L 41.15,66.81 L 35.58,62.37 L 36.03,56.73 L 36.03,56.73 L 31.34,53.56 L 31.34,46.44 L 36.03,43.27 L 36.03,43.27 L 35.58,37.63 L 41.15,33.19 L 46.55,34.89 L 46.55,34.89 L 50.68,31.01 L 57.62,32.6 L 59.66,37.88 L 59.66,37.88 L 65.27,38.69 L 68.36,45.11 L 65.5,50.0 Z M 55,50 A 5,5 0 1 0 45,50 A 5,5 0 1 0 55,50 Z';
-    const GEAR_TINY = 'M 61.5,50.0 L 63.64,53.16 L 61.88,57.41 L 58.13,58.13 L 58.13,58.13 L 57.41,61.88 L 53.16,63.64 L 50.0,61.5 L 50.0,61.5 L 46.84,63.64 L 42.59,61.88 L 41.87,58.13 L 41.87,58.13 L 38.12,57.41 L 36.36,53.16 L 38.5,50.0 L 38.5,50.0 L 36.36,46.84 L 38.12,42.59 L 41.87,41.87 L 41.87,41.87 L 42.59,38.12 L 46.84,36.36 L 50.0,38.5 L 50.0,38.5 L 53.16,36.36 L 57.41,38.12 L 58.13,41.87 L 58.13,41.87 L 61.88,42.59 L 63.64,46.84 L 61.5,50.0 Z M 53.5,50 A 3.5,3.5 0 1 0 46.5,50 A 3.5,3.5 0 1 0 53.5,50 Z';
 
     const wrap = document.createElement('div');
     wrap.id = 'ptr-indicator';
+    // Each gear is two stacked paths (a dark offset "shadow" + the lighter
+    // "face" on top) so the teeth read as embossed/beveled like the
+    // reference, instead of a single flat-filled shape.
+    function gearGroup(id, cls, transform, pathD) {
+        return `<g id="${id}" class="${cls}" transform="${transform}">
+            <path class="ptr-shadow" d="${pathD}" transform="translate(3,4)"></path>
+            <path class="ptr-face" d="${pathD}"></path>
+        </g>`;
+    }
     wrap.innerHTML = `
+        <div class="ptr-rod ptr-rod-left"></div>
+        <div class="ptr-rod ptr-rod-right"></div>
         <svg id="ptr-gears" viewBox="0 0 500 160" preserveAspectRatio="xMidYMid slice">
-            <g id="ptr-g-bg1" class="ptr-g-bg" transform="translate(20,-25) scale(1.4)"><path d="${GEAR_LARGE}"></path></g>
-            <g id="ptr-g-bg2" class="ptr-g-bg" transform="translate(430,140) scale(1.3)"><path d="${GEAR_LARGE}"></path></g>
-            <g id="ptr-g-bg3" class="ptr-g-bg" transform="translate(345,15) scale(0.55)"><path d="${GEAR_TINY}"></path></g>
-            <g id="ptr-g-hero" transform="translate(220,72) scale(1.15)"><path d="${GEAR_MEDIUM}"></path></g>
-            <g id="ptr-g-mesh" transform="translate(270,54) scale(0.68)"><path d="${GEAR_SMALL}"></path></g>
+            ${gearGroup('ptr-g-tl', 'ptr-g-bg', 'translate(8,-35) scale(1.3)', GEAR_LARGE)}
+            ${gearGroup('ptr-g-tr', 'ptr-g-bg', 'translate(465,-12) scale(1.15)', GEAR_MEDIUM)}
+            ${gearGroup('ptr-g-bl', 'ptr-g-bg', 'translate(55,152) scale(1.05)', GEAR_MEDIUM)}
+            ${gearGroup('ptr-g-br', 'ptr-g-bg', 'translate(460,150) scale(1.3)', GEAR_LARGE)}
+            ${gearGroup('ptr-g-hero', 'ptr-g-hero', 'translate(250,78) scale(1.35)', GEAR_LARGE)}
         </svg>`;
     document.body.appendChild(wrap);
 
     const GEARS = {
-        bg1: { el: document.getElementById('ptr-g-bg1'), pullMult: 80, spin: '+=220' },
-        bg2: { el: document.getElementById('ptr-g-bg2'), pullMult: -90, spin: '-=240' },
-        bg3: { el: document.getElementById('ptr-g-bg3'), pullMult: 320, spin: '+=900' },
+        tl: { el: document.getElementById('ptr-g-tl'), pullMult: 70, spin: '+=200' },
+        tr: { el: document.getElementById('ptr-g-tr'), pullMult: -85, spin: '-=230' },
+        bl: { el: document.getElementById('ptr-g-bl'), pullMult: 95, spin: '+=260' },
+        br: { el: document.getElementById('ptr-g-br'), pullMult: -75, spin: '-=210' },
         hero: { el: document.getElementById('ptr-g-hero'), pullMult: 200, spin: '+=560' },
-        mesh: { el: document.getElementById('ptr-g-mesh'), pullMult: -260, spin: '-=730' },
     };
     Object.values(GEARS).forEach(g => gsap.set(g.el, { transformOrigin: '50% 50%' }));
     gsap.set(wrap, { height: 0 });
