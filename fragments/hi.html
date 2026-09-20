@@ -41,17 +41,18 @@
                     <p class="italic text-gray-500 border-l-2 border-black pl-4 inline-block">"In case I am not building, breaking, or making new things, I will probably be out there collecting diecast models, my favorite hobby."</p>
                 </div>
 
-                <div class="w-full border-t border-gray-200 bg-gray-50 flex flex-col items-center">
-                    <div class="w-full max-w-4xl py-4 flex justify-between items-center px-4">
-                        <span class="font-pixel text-gray-400 text-xl">DIECAST DASH</span>
-                        <span class="font-pixel text-gray-400 text-sm">A DRIVABLE 3D WORLD</span>
-                    </div>
-                    <button id="diecastTrigger" type="button" data-cursor-icon="eye" data-cursor-text="PLAY" class="w-full h-[150px] relative bg-white border-t border-b border-gray-300 cursor-pointer group block">
-                        <div class="absolute inset-0 flex items-center justify-center bg-white group-hover:bg-gray-50 transition-colors">
-                            <p class="font-pixel text-4xl text-black animate-pulse">CLICK TO START THE ENGINE</p>
+                <button id="diecastTrigger" type="button" data-cursor-icon="eye" data-cursor-text="PLAY" class="w-full relative block cursor-pointer border-t border-b border-gray-200 overflow-hidden" style="background: linear-gradient(160deg, #4fa8e0 0%, #bfe6ff 45%, #ffb347 100%);">
+                    <div class="relative z-10 flex flex-col items-center text-center py-14 px-6">
+                        <h2 style="font-family:'Baloo 2','Manrope',sans-serif; font-weight:800; text-shadow:0 3px 0 rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.18);" class="text-white text-4xl md:text-5xl mb-3">Diecast Dash</h2>
+                        <p style="color:#5a3a22;" class="font-semibold text-sm md:text-base mb-7 max-w-md">A tiny 3D world you explore behind the wheel, inspired by Bruno Simon's bump‑the‑whole‑world portfolio.</p>
+                        <span style="font-family:'Baloo 2',sans-serif; font-weight:700; background:linear-gradient(180deg,#ff8a5c,#ff6b4a); box-shadow:0 10px 0 #c0431f, 0 16px 26px rgba(122,50,20,0.35); color:#fff7ef;" class="inline-block text-lg md:text-xl px-11 py-4 rounded-full mb-7">Start the engine</span>
+                        <div style="color:#5a3a22;" class="flex gap-4 flex-wrap justify-center font-semibold text-xs md:text-sm">
+                            <span class="flex items-center gap-2"><kbd class="bg-white rounded-md px-2 py-1 shadow-sm text-[11px]">W A S D</kbd> drive</span>
+                            <span class="flex items-center gap-2"><kbd class="bg-white rounded-md px-2 py-1 shadow-sm text-[11px]">Space</kbd> jump</span>
+                            <span class="flex items-center gap-2"><kbd class="bg-white rounded-md px-2 py-1 shadow-sm text-[11px]">scroll</kbd> zoom</span>
                         </div>
-                    </button>
-                </div>
+                    </div>
+                </button>
 
                 <div id="diecastOverlay" class="hidden-view fixed inset-0" style="z-index: 90; background: #000;">
                     <button id="diecastClose" type="button" data-cursor-quiet class="fixed top-24 md:top-28 right-4 md:right-8 z-10 font-meta text-xs tracking-[0.1em] uppercase bg-white/90 hover:bg-white text-black px-4 py-2 rounded-full shadow-md transition-colors">Close ✕</button>
