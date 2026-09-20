@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🚙 Diecast Dash</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sun:#ffb347; --coral:#ff6b4a; --sky-top:#4fa8e0; --sky-bottom:#bfe6ff;
+    --ink:#2b1a12; --cream:#fff6e9;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; width:100%; height:100%; overflow:hidden;
+    background:#241f33;
+    font-family:'Manrope', system-ui, sans-serif;
+    -webkit-user-select:none; user-select:none; touch-action:none;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  #c{ position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .bar{ position:fixed; left:0; right:0; height:8vh; pointer-events:none; z-index:5; }
+  .bar.top{ top:0; background:linear-gradient(to bottom, rgba(24,12,30,0.3), rgba(24,12,30,0)); }
+  .bar.bottom{ bottom:0; background:linear-gradient(to top, rgba(24,12,30,0.26), rgba(24,12,30,0)); }
+  .glow{ position:fixed; top:-10%; left:-10%; width:60vw; height:60vw; pointer-events:none; z-index:4;
+    background:radial-gradient(circle, rgba(255,205,140,0.24), rgba(255,205,140,0) 60%);
+    mix-blend-mode:screen; }
+  #overlay{
+    position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(120% 90% at 15% 15%, rgba(255,255,255,0.25), rgba(255,255,255,0) 55%),
+      linear-gradient(160deg, var(--sky-top) 0%, var(--sky-bottom) 45%, var(--sun) 100%);
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  #overlay.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+  .card{ text-align:center; color:var(--ink); padding:0 28px; max-width:480px; }
+  .card h1{
+    font-family:'Baloo 2','Manrope',sans-serif; font-weight:800;
+    font-size:clamp(2.2rem, 8vw, 3.4rem); margin:0 0 6px; line-height:1.05;
+    color:#fff; text-shadow:0 3px 0 rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.18);
+  }
+  .card p.tag{ margin:0 0 26px; font-size:1.02rem; color:#5a3a22; font-weight:600; }
+  .startBtn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:1.3rem;
+    padding:16px 44px; border:none; border-radius:999px; cursor:pointer;
+    background:linear-gradient(180deg,#ff8a5c,var(--coral));
+    color:#fff7ef; box-shadow:0 10px 0 #c0431f, 0 16px 26px rgba(122,50,20,0.35);
+    transform:translateY(0); transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .startBtn:disabled{ opacity:.65; cursor:progress; }
+  .startBtn:active:not(:disabled){ transform:translateY(8px); box-shadow:0 2px 0 #c0431f, 0 6px 14px rgba(122,50,20,0.3); }
+  .howto{ margin-top:28px; display:flex; gap:18px; justify-content:center; flex-wrap:wrap;
+    font-size:.85rem; color:#5a3a22; font-weight:600; }
+  .howto span{ display:flex; align-items:center; gap:7px; }
+  kbd{ background:#fff; border-radius:7px; padding:3px 8px; box-shadow:0 2px 0 rgba(0,0,0,0.18);
+    font-size:.8rem; color:#3a2414; }
+  .credit{ margin-top:22px; font-size:.72rem; color:#7a5232; opacity:.85; }
+  #hud{ position:fixed; left:0; right:0; bottom:calc(18px + env(safe-area-inset-bottom,0px));
+    display:flex; justify-content:center; pointer-events:none; z-index:6; opacity:0; transition:opacity .4s ease; }
+  #hud.show{ opacity:1; }
+  #speedo{ background:rgba(20,14,10,0.38); backdrop-filter:blur(6px); color:#fff7ef;
+    font-family:'Baloo 2',sans-serif; font-weight:700; padding:7px 18px; border-radius:999px;
+    font-size:.85rem; letter-spacing:.02em; }
+  #hint{ position:fixed; top:calc(18px + env(safe-area-inset-top,0px)); left:0; right:0;
+    text-align:center; pointer-events:none; z-index:6; color:#fff; font-weight:600;
+    font-size:.82rem; text-shadow:0 1px 6px rgba(0,0,0,.35); opacity:0; transition:opacity 1s ease; }
+  #hint.show{ opacity:.92; }
+  #mobile{ position:fixed; inset:0; z-index:7; pointer-events:none; display:none; }
+  #mobile.on{ display:block; }
+  #stick{ position:fixed; left:calc(26px + env(safe-area-inset-left,0px)); bottom:calc(26px + env(safe-area-inset-bottom,0px));
+    width:118px; height:118px; border-radius:50%; background:rgba(30,20,14,0.28);
+    border:2px solid rgba(255,255,255,0.5); pointer-events:auto; touch-action:none; }
+  #stickKnob{ position:absolute; width:52px; height:52px; border-radius:50%; left:33px; top:33px;
+    background:rgba(255,255,255,0.85); box-shadow:0 3px 8px rgba(0,0,0,.3); }
+  #jumpBtn{ position:fixed; right:calc(30px + env(safe-area-inset-right,0px)); bottom:calc(38px + env(safe-area-inset-bottom,0px));
+    width:78px; height:78px; border-radius:50%; pointer-events:auto; touch-action:none;
+    background:linear-gradient(180deg,#ff8a5c,var(--coral)); border:2px solid rgba(255,255,255,.6);
+    color:#fff; font-family:'Baloo 2',sans-serif; font-weight:800; font-size:.78rem;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 0 #b23c1c; }
+  #jumpBtn:active{ transform:translateY(4px); box-shadow:0 2px 0 #b23c1c; }
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div class="bar top"></div>
+<div class="bar bottom"></div>
+<div class="glow"></div>
+
+<div id="hint">WASD / Arrows to drive · Space or Shift to jump · Scroll to zoom</div>
+<div id="hud"><div id="speedo">0 mph</div></div>
+
+<div id="mobile">
+  <div id="stick"><div id="stickKnob"></div></div>
+  <div id="jumpBtn">JUMP</div>
+</div>
+
+<div id="overlay">
+  <div class="card">
+    <h1>Diecast Dash</h1>
+    <p class="tag">A tiny 3D world you explore behind the wheel, inspired by Bruno&nbsp;Simon's bump‑the‑whole‑world portfolio.</p>
+    <button class="startBtn" id="startBtn" disabled>Loading assets…</button>
+    <div class="howto">
+      <span><kbd>W A S D</kbd> drive</span>
+      <span><kbd>Space</kbd> jump</span>
+      <span><kbd>scroll</kbd> zoom</span>
+    </div>
+    <div class="credit">An original build in the spirit of bruno-simon.com. Not affiliated with Bruno Simon.</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/GammaCorrectionShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
