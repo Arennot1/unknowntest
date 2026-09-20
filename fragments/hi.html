@@ -12,7 +12,7 @@
                         <h1 class="font-black text-4xl md:text-5xl mb-6 tracking-tighter text-center md:text-left">About Me</h1>
                         <div class="prose prose-lg text-gray-600 font-light text-justify leading-relaxed">
                             <p class="mb-6">I am a Product & Industrial Designer passionate about translating user needs into functional, aesthetic solutions. With roots in engineering and design thinking, I craft intuitive experiences for physical products and digital interfaces. Collaborative and detail-oriented, I strive to merge practicality with visual storytelling.</p>
-                            <p class="font-bold text-black">Let’s connect to explore opportunities in product design and user experience innovation.</p>
+                            <p class="font-bold text-black">Let's connect to explore opportunities in product design and user experience innovation.</p>
                         </div>
                     </div>
                 </div>
@@ -44,13 +44,17 @@
                 <div class="w-full border-t border-gray-200 bg-gray-50 flex flex-col items-center">
                     <div class="w-full max-w-4xl py-4 flex justify-between items-center px-4">
                         <span class="font-pixel text-gray-400 text-xl">DIECAST DASH</span>
-                        <span class="font-pixel text-gray-400 text-sm blink">SPACE / TAP TO JUMP</span>
+                        <span class="font-pixel text-gray-400 text-sm">A DRIVABLE 3D WORLD</span>
                     </div>
-                    <div class="w-full h-[150px] relative bg-white border-t border-b border-gray-300" id="gameContainer">
-                        <canvas id="gameCanvas" class="w-full h-full cursor-pointer block"></canvas>
-                        <div id="gameOverlay" class="absolute inset-0 flex items-center justify-center bg-white/90 pointer-events-none transition-opacity duration-300">
-                            <div class="text-center"><p class="font-pixel text-4xl text-black mb-2 animate-pulse">CLICK TO START</p></div>
+                    <button id="diecastTrigger" type="button" data-cursor-icon="eye" data-cursor-text="PLAY" class="w-full h-[150px] relative bg-white border-t border-b border-gray-300 cursor-pointer group block">
+                        <div class="absolute inset-0 flex items-center justify-center bg-white group-hover:bg-gray-50 transition-colors">
+                            <p class="font-pixel text-4xl text-black animate-pulse">CLICK TO START THE ENGINE</p>
                         </div>
-                    </div>
+                    </button>
+                </div>
+
+                <div id="diecastOverlay" class="hidden-view fixed inset-0" style="z-index: 90; background: #000;">
+                    <button id="diecastClose" type="button" data-cursor-quiet class="fixed top-24 md:top-28 right-4 md:right-8 z-10 font-meta text-xs tracking-[0.1em] uppercase bg-white/90 hover:bg-white text-black px-4 py-2 rounded-full shadow-md transition-colors">Close ✕</button>
+                    <iframe id="diecastFrame" title="Diecast Dash" class="w-full border-0 block"></iframe>
                 </div>
             </div>
