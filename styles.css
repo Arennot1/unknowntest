@@ -91,6 +91,18 @@
         .content-header > * { pointer-events: auto; }
         .content-header.hide-header { transform: translateY(-100%); }
         .content-header.dark-mode { color: white !important; }
+
+        /* Diecast Dash: the 3D driving game loads lazily in an iframe
+           (its own window, so its own global keydown/wheel listeners for
+           driving never collide with this page's cursor/pull-to-refresh
+           listeners, and vice versa). The overlay sits BELOW the site's
+           fixed header (z-index 110) rather than duplicating it, so the
+           real logo/nav/back-button stay exactly where they always are —
+           only the iframe below that band is new. */
+        #diecastFrame { position: fixed; top: 104px; left: 0; right: 0; bottom: 0; height: calc(100% - 104px); }
+        @media (max-width: 767px) {
+            #diecastFrame { top: 96px; height: calc(100% - 96px); }
+        }
         .content-nav { gap: 2rem; align-items: center; }
         .content-nav-link { font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; color: #6b7280; transition: color 0.2s ease; }
         .content-nav-link:hover { color: var(--text-main); }
