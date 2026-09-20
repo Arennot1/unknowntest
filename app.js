@@ -300,10 +300,40 @@ function initDiecastDash() {
     if (!trigger || !overlay || !closeBtn || !frame) return;
 
     function openGame() {
-        if (!frame.src) frame.src = 'assets/diecast-dash/index.html';
+        // Always point the iframe at a fresh URL, rather than checking
+        // "if (!frame.src)" to decide whether this is a first load. After
+        // closeGame() clears it, reading frame.src back can resolve to the
+        // page's OWN url (not empty), which made that check silently skip
+        // reloading the game on a second open — the black-screen-on-reopen
+        // bug. The timestamp also busts any browser caching of the iframe
+        // document itself, so every open is a genuinely clean load.
+        frame.src = 'assets/diecast-dash/index.html?t=' + Date.now();
         overlay.classList.remove('hidden-view');
         document.body.style.overflow = 'hidden';
+        autoStartWhenReady();
     }
+
+    // The game has its own "Loading assets…" → "Start the engine" button
+    // (now a minimal loading state, not a duplicate hero) — rather than
+    // making someone click it a second time after they've already clicked
+    // the site's own banner, poll for the moment it becomes enabled and
+    // click it automatically, so one click on the site is all it takes.
+    function autoStartWhenReady() {
+        let attempts = 0;
+        const poll = setInterval(() => {
+            attempts++;
+            try {
+                const doc = frame.contentDocument;
+                const btn = doc && doc.getElementById('startBtn');
+                if (btn && !btn.disabled) {
+                    btn.click();
+                    clearInterval(poll);
+                }
+            } catch (e) { /* frame not ready yet; keep polling */ }
+            if (attempts > 200) clearInterval(poll); // ~30s safety cap
+        }, 150);
+    }
+
     function closeGame() {
         overlay.classList.add('hidden-view');
         document.body.style.overflow = '';
