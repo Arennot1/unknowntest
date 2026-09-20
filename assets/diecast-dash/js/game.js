@@ -6,13 +6,13 @@
    ============================================================================ */
 
 const ASSET_PATHS = {
-  car:       'assets/models/car.glb',        // Range_Rover_by_IvOfficial_-_8zk4o6nALW.glb
-  pine:      'assets/models/pine.glb',       // Pine_by_Quaternius_-_Zt62gceKXZ.glb
-  twisted:   'assets/models/twisted-tree.glb', // Twisted_Tree_by_Quaternius_-_8oraKn9m0x.glb
-  bush:      'assets/models/bush.glb',       // Bush_by_Quaternius_-_EoTERLq3z2.glb
-  pebble:    'assets/models/pebble.glb',     // Pebble_Round_by_Quaternius_-_kAMfq1uJUY.glb
-  pathstone: 'assets/models/rock-path.glb',  // Rock_Path_Round_Wide_by_Quaternius_-_mWb3XxOctl.glb
-  petal:     'assets/models/petal.glb'       // Flower_Petal_by_Quaternius_-_eVE0j49ux9.glb
+  car:       'models/car.glb',        // Range_Rover_by_IvOfficial_-_8zk4o6nALW.glb
+  pine:      'models/pine.glb',       // Pine_by_Quaternius_-_Zt62gceKXZ.glb
+  twisted:   'models/twisted-tree.glb', // Twisted_Tree_by_Quaternius_-_8oraKn9m0x.glb
+  bush:      'models/bush.glb',       // Bush_by_Quaternius_-_EoTERLq3z2.glb
+  pebble:    'models/pebble.glb',     // Pebble_Round_by_Quaternius_-_kAMfq1uJUY.glb
+  pathstone: 'models/rock-path.glb',  // Rock_Path_Round_Wide_by_Quaternius_-_mWb3XxOctl.glb
+  petal:     'models/petal.glb'       // Flower_Petal_by_Quaternius_-_eVE0j49ux9.glb
 };
 
 
