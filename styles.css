@@ -126,7 +126,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; }
     #contact-content { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 115px; }
 }
 .social-links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
-.social-links a { color: #888; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'Inter', sans-serif; }
+.social-links a { color: #888; text-decoration: none; transition: color 0.2s; font-size: 1.1rem; font-family: 'Inter', sans-serif; display: inline-flex; align-items: baseline; gap: 0.2em; }
+.social-arrow { width: 1em; height: 1em; flex: none; overflow: visible; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; fill: none; transform: translateY(0.08em); }
 .social-links a:hover { color: white; }
 
 #research-content { background-color: #f4f4f4; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 8rem; }
