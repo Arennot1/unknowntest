@@ -191,6 +191,10 @@ function renderSectionHTML(project, key, label) {
     return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><p class="text-lg text-gray-600 font-light">${s.content}</p></div>`;
 }
 
+function renderCustomSectionHTML(project, section) {
+    return `<section id="${project.id}-${section.id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${section.label}</h2><div class="case-study-rich">${section.content}</div></section>`;
+}
+
 function renderCaseStudyStatusScript(projectId) {
     return `<script>
 (function () {
@@ -280,12 +284,18 @@ function renderCaseStudyBody(p) {
         `<div><span class="block text-black font-bold mb-2 font-heading-sans tracking-tight">${label}</span>${value}</div>`
     ).join('');
 
-    const sidebarHTML = [['overview', 'Overview'], ...SECTION_ORDER].map(([key, label], index) => {
+    const projectSections = p.caseSections
+        ? p.caseSections.map(section => [section.id, section.label])
+        : SECTION_ORDER;
+
+    const sidebarHTML = [['overview', 'Overview'], ...projectSections].map(([key, label], index) => {
         const target = key === 'overview' ? `${p.id}-overview` : `${p.id}-${key}`;
         return `<button onclick="scrollToSection('${target}')" data-case-nav data-target="${target}" data-scroll-active="${index === 0 ? 'true' : 'false'}" aria-current="${index === 0 ? 'true' : 'false'}" data-cursor-quiet class="case-nav-status-link text-left hover:text-black transition-colors">${label}</button>`;
     }).join('\n');
 
-    const sectionsHTML = SECTION_ORDER.map(([key, label]) => renderSectionHTML(p, key, label)).join('\n');
+    const sectionsHTML = p.caseSections
+        ? p.caseSections.map(section => renderCustomSectionHTML(p, section)).join('\n')
+        : SECTION_ORDER.map(([key, label]) => renderSectionHTML(p, key, label)).join('\n');
 
     return `        <div class="bg-white w-full min-h-screen text-black pb-32">
             <div id="${p.id}-overview" class="w-full scroll-mt-32">

@@ -7,10 +7,37 @@
     "tagLine": "The Future of Wave Tracking",
     "tagMeta": "SURFING APP • UI/UX CONCEPT • 2024",
     "meta": [
+      ["Year", "2024"],
       ["Timeline", "8 Weeks"],
       ["Role", "UI/UX Strategist"],
-      ["Platform", "iOS Mobile"],
-      ["Deliverables", "Research, IA, Prototype"]
+      ["Disciplines", "UI/UX Concept, Behavioral Strategy"]
+    ],
+    "caseSections": [
+      {
+        "id": "context",
+        "label": "Context & Friction",
+        "content": "<div class=\"case-lede\">Surfing relies heavily on environmental intuition, yet existing digital tools isolate telemetry data to pre-session planning.</div><div class=\"case-copy\"><p>Surfers check their phones on the beach, but once they enter the water, the feedback loop breaks.</p><p>This project explores an interruption-tolerant mobile ecosystem designed for the hostile environment of the ocean. The challenge was designing an interface that surfers could interact with under extreme physical constraints (glare, water, motion) without breaking their state of flow, while simultaneously solving the high barrier to entry for tourists navigating expensive local coaching networks.</p></div>"
+      },
+      {
+        "id": "analysis",
+        "label": "Systems Analysis",
+        "content": "<div class=\"case-subhead\">Behavioral Gap Analysis: The Pre-Entry Wall</div><div class=\"case-copy\"><p>Using Synthetic Users for rapid AI-simulated interviews, followed by contextual field studies, I mapped the complete user journey to identify where the data loop failed.</p></div><div class=\"case-table-wrap\"><table class=\"case-table\"><thead><tr><th>Session Phase</th><th>User Behavior</th><th>System Friction</th><th>The Design Opportunity</th></tr></thead><tbody><tr><td>Pre-Entry</td><td>Aggressively checks wind, tide, and swell data.</td><td>High cognitive load; attempting to memorize patterns.</td><td><strong>Session Setup Swipe:</strong> A single-action, high-contrast lock screen that initiates passive background telemetry.</td></tr><tr><td>Active Session</td><td>Relies entirely on physical intuition; device is locked or left behind.</td><td>Wet screens and extreme glare render standard UI completely unusable.</td><td><strong>Glanceable Architecture:</strong> Absolute black-and-white contrast prioritizing a single metric per screen; edge-to-edge swipe targets.</td></tr><tr><td>Post-Session</td><td>Attempts to recall specific waves or tricks to track progression.</td><td>Memory degradation; tourists lack local knowledge to benchmark against.</td><td><strong>Gamified Progression Journaling:</strong> Correlating time-stamped tricks with localized wave data to map unknown patterns.</td></tr></tbody></table></div>"
+      },
+      {
+        "id": "testing",
+        "label": "Testing & Constraints",
+        "content": "<div class=\"case-subhead\">Testing Pivots & The Reality of the Environment</div><div class=\"case-copy\"><p>Because of the tight 8-week timeline, I moved rapidly from \"Crazy Eights\" ideation directly into mid-fidelity greyscale testing in Figma to stress-test the interaction models.</p></div><div class=\"case-table-wrap\"><table class=\"case-table\"><thead><tr><th>Concept Tested</th><th>User / Environmental Feedback</th><th>Strategic Pivot</th></tr></thead><tbody><tr><td>Voice AI (Agentic Feedback)</td><td>Users reported their own voices sound muffled or trapped in their heads while surfing. Audio models failed against wave noise.</td><td><strong>Abandoned Voice UI:</strong> Despite the 2024 trend of AI agents, I stripped out voice entirely in favor of high-contrast visual continuity.</td></tr><tr><td>High-Contrast Motion UI</td><td>Senior stakeholders noted the specific color contrasts combined with moving water induced motion sickness (hallucinations).</td><td><strong>WCAG Motion Calibration:</strong> Recalibrated the color system and contrast ratios to meet strict accessibility standards for aquatic motion.</td></tr><tr><td>Hardware Agnosticism</td><td>A user tested the prototype on a folding Samsung flip phone, completely breaking the standard tap targets.</td><td><strong>Responsive Constraints:</strong> Acknowledged the severe impact of unique form factors on touch targets, logging it as a critical v2 requirement while locking v1 to a standard viewport.</td></tr></tbody></table></div>"
+      },
+      {
+        "id": "architecture",
+        "label": "Solution Architecture",
+        "content": "<div class=\"case-subhead\">The Architecture of Session-Based Continuity</div><div class=\"case-copy\"><p>Good UX is not just about the screen you are on; it is about how the system remembers where you were. I engineered the app around Session-Based Continuity. Information does not carry over unnecessarily, but the active state never resets until manually stopped.</p><p>This architecture solved the core problem of aquatic lockouts. It allowed for the integration of a localized equipment marketplace and video coaching module—bypassing expensive local tourist traps—by keeping the user anchored in a single, continuous retention loop from the beach, to the water, and back to the journal.</p></div>"
+      },
+      {
+        "id": "outcome",
+        "label": "Outcome & Reflection",
+        "content": "<div class=\"case-note\">The final system turns a fragmented pre-session tool into one interruption-tolerant journey: setup on the beach, passive continuity in the water, and meaningful progression afterward.</div>"
+      }
     ],
     "thumbnail": {
       "image": null,
@@ -71,10 +98,37 @@
     "previewText": "Connecting buyers directly to craftsmen by replacing screens with a dust-resistant native-audio terminal.",
     "tags": ["Service Design", "Industrial Design", "UI/UX"],
     "meta": [
-      ["Role", "Service Designer — Client app flows, Artisan backend, CAD modeling, Rapid prototyping"],
+      ["Year", "2023"],
       ["Timeline", "12 Weeks / July 2023 – September 2023"],
-      ["Team", "3 Designers"],
-      ["Skills", "Service Design, Industrial Design, Ethnography, Information Architecture"]
+      ["Role", "Service Designer • 3-designer team"],
+      ["Disciplines", "Service Design, Industrial Design, Strategy"]
+    ],
+    "caseSections": [
+      {
+        "id": "context",
+        "label": "Context & Friction",
+        "content": "<div class=\"case-lede\">The artisanal supply chain is fundamentally broken by a reliance on middlemen.</div><div class=\"case-copy\"><p>Buyers—such as design students, boutique owners, and export houses—struggle to communicate directly with karigars (craftsmen) due to severe language barriers and logistical friction. Consequently, brokers step in, taking a massive percentage of the profit simply to act as translators and shippers.</p><p>Kaari is a holistic service design intervention that bridges the gap between modern e-commerce and traditional, dusty workshops. The challenge was not just building a digital app, but designing a dual-sided platform paired with a physical hardware device that speaks the artisan's native language—rendering the broker entirely obsolete without forcing the artisan to become a digital expert.</p></div>"
+      },
+      {
+        "id": "analysis",
+        "label": "Systems Analysis",
+        "content": "<div class=\"case-subhead\">Qualitative Systems Analysis: The Middleman Tax</div><div class=\"case-copy\"><p>Our initial ethnographic research mapped the existing business model against the proposed Kaari ecosystem to isolate where value was being lost.</p></div><div class=\"case-table-wrap\"><table class=\"case-table\"><thead><tr><th>Workflow Stage</th><th>Traditional Broker Model</th><th>The Kaari Ecosystem Model</th></tr></thead><tbody><tr><td>Order Intake</td><td>Buyer contacts broker; broker travels to workshop to translate the brief.</td><td>Buyer submits digital spec sheet; translated instantly via Kaari API.</td></tr><tr><td>Communication</td><td>Dependent on the broker's availability and translation accuracy.</td><td>Direct native-audio announcements broadcasted on the workshop floor.</td></tr><tr><td>Logistics</td><td>Broker manually collects and ships the finished product, charging a premium.</td><td>Automated API trigger dispatches Porter/Dunzo directly to the workshop.</td></tr><tr><td>Margin Retention</td><td>Artisan retains ~40–50% of the true project value.</td><td>Artisan retains 100% of the fabrication value, minus standard SaaS/API fees.</td></tr></tbody></table></div>"
+      },
+      {
+        "id": "testing",
+        "label": "Testing & Constraints",
+        "content": "<div class=\"case-subhead\">Ethnographic Realities & Environmental Constraints</div><div class=\"case-copy\"><p>Research was conducted not via surveys, but through deep field studies on the workshop floor. We observed that existing digital platforms assumed high digital literacy and English proficiency, making them entirely useless in a noisy, high-heat environment.</p></div><div class=\"case-table-wrap\"><table class=\"case-table\"><thead><tr><th>Observation</th><th>Implication</th><th>Design Pivot</th></tr></thead><tbody><tr><td>The \"Paytm Box\" Mental Model</td><td>Artisans trust and rely on audio-based payment confirmation boxes to verify transactions without stopping physical labor.</td><td><strong>The Audio Handoff:</strong> We abandoned screen-heavy tablets for the artisan, pivoting to a native-audio terminal that reads orders aloud in local dialects.</td></tr><tr><td>The Workshop Environment</td><td>Heavy dust, micro-particles, and high heat destroy standard consumer electronics rapidly.</td><td><strong>Industrial Design Constraints:</strong> Modeled and 3D-printed a sealed, CMF-optimized hardware terminal with minimal crevices and robust thermal management.</td></tr><tr><td>Digital Admin Aversion</td><td>Traditional form-filling causes severe drop-off during onboarding; artisans prefer physical labor over admin.</td><td><strong>API Trust Bridge:</strong> Integrated DigiLocker and Aadhaar APIs for instant, paperless verification to build immediate trust.</td></tr></tbody></table></div>"
+      },
+      {
+        "id": "architecture",
+        "label": "Solution Architecture",
+        "content": "<div class=\"case-subhead\">The Hardware-Software Bridge</div><div class=\"case-copy\"><p>Testing physical mockups in the workshop proved that screens fail when hands are covered in dust. I modeled and 3D-printed a sleek, sealed hardware terminal that sits in the workspace.</p><p>When a buyer places a custom order through the modern Kaari app, the physical terminal lights up and announces the order details in the karigar's native language. The artisan accepts the job via a tactile, dust-proof button. Once fabrication is complete, hitting a second tactile trigger pings the Dunzo/Porter API, dispatching a driver for final-mile logistics.</p></div>"
+      },
+      {
+        "id": "outcome",
+        "label": "Outcome & Reflection",
+        "content": "<div class=\"case-subhead\">Outcome & Strategic Reflection</div><div class=\"case-copy\"><p>Kaari culminated in a thoroughly validated service ecosystem featuring a tested digital application and a functional 3D-printed hardware prototype. By stepping off the screen and into the physical reality of the user, this project proved that true innovation happens when you stop forcing users to learn your interface, and instead build an ecosystem that survives their reality.</p></div>"
+      }
     ],
     "thumbnail": {
       "image": null,
