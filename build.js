@@ -340,6 +340,13 @@ routes.push({
 });
 
 routes.push({
+    outPath: 'off-canvas/index.html', depth: 1,
+    title: 'Off-Canvas | Areen Pednekar',
+    description: 'A personal collection of creative practices by Areen Pednekar.',
+    body: `    <div id="content-view">\n${renderHeader({ backHref: 'about/', active: '' })}\n        <div id="offcanvas-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
+});
+
+routes.push({
     outPath: 'projects/index.html', depth: 1,
     title: 'Projects | Areen Pednekar',
     description: 'Portfolio of UI/UX, industrial, and interior design projects by Areen Pednekar.',
