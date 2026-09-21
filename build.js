@@ -124,7 +124,7 @@ function renderCard(p) {
     return `<a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group mb-6 lg:mb-8 block" data-category="${p.category}">
                         <div class="w-full ${CARD_ASPECT} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
-                            <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><span class="text-[10px] text-gray-500 font-meta uppercase tracking-[0.15em] mt-1 xl:mt-0">${p.tagMeta}</span>
+                            <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><div class="flex flex-wrap items-center gap-2 mt-1 xl:mt-0"><span class="text-[10px] text-gray-500 font-meta uppercase tracking-[0.15em]">${p.tagMeta}</span>${p.badge ? `<span class="rounded-full border border-black px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-black">${p.badge}</span>` : ''}</div>
                         </div>
                     </a>`;
 }
@@ -303,7 +303,7 @@ function renderCaseStudyBody(p) {
             <div id="${p.id}-${customSections ? 'hero' : 'overview'}" class="w-full scroll-mt-32">
                 <div class="w-full h-[60vh] pt-20 md:pt-0 ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero, p.title + ' hero image')}</div>
                 <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-12">
-                    ${p.projectLabel ? `<p class="font-meta text-xs uppercase tracking-[0.18em] text-gray-500 mb-5">${p.projectLabel}</p>` : ''}
+                    ${p.projectLabel ? `<div class="flex flex-wrap items-center gap-3 mb-5"><p class="font-meta text-xs uppercase tracking-[0.18em] text-gray-500">${p.projectLabel}</p>${p.badge ? `<span class="rounded-full border border-black px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-black">${p.badge}</span>` : ''}</div>` : ''}
                     <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">${p.heroTitle || p.title}</h1>
                     <p class="text-xl md:text-2xl text-gray-500 font-light max-w-3xl">${p.subtitle}</p>
                 </div>
