@@ -3,14 +3,26 @@
     "id": "surfing",
     "category": "uiux",
     "title": "Surfing App",
-    "subtitle": "Redefining wave tracking through intuitive session management.",
-    "tagLine": "The future of wave tracking",
-    "tagMeta": "SURFING APP \u2022 CONCEPT 2025",
+    "subtitle": "A mobile telemetry and progression system designed to help surfers track wave mechanics before, during, and after a session.",
+    "tagLine": "The Future of Wave Tracking",
+    "tagMeta": "SURFING APP • UI/UX CONCEPT • 2024",
     "meta": [
-      ["Timeline", "8 Weeks"],
-      ["Role", "UI/UX Designer"],
-      ["Platform", "iOS Mobile"],
-      ["Deliverables", "Wireframes, Prototype"]
+      [
+        "Timeline",
+        "8 Weeks"
+      ],
+      [
+        "Role",
+        "UI/UX Strategist"
+      ],
+      [
+        "Platform",
+        "iOS Mobile"
+      ],
+      [
+        "Deliverables",
+        "Research, IA, Prototype"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -21,17 +33,41 @@
     "hero": {
       "image": null,
       "bgClass": "bg-gradient-to-br from-orange-300 to-pink-400",
-      "placeholderHTML": "<span class=\"text-white font-mono text-sm\">[ Surfing App Hero - 1920x1080 ]</span>"
+      "placeholderHTML": "<span class=\"text-white font-meta text-sm tracking-[0.18em] uppercase\">[ Surfing App Hero Visual ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "rich",
+        "content": "<div class=\"case-lede\">How can wave tracking survive the friction of an active surf session?</div><div class=\"case-copy\"><p>Surfing depends heavily on environmental intuition. Most digital surf tools help users prepare before entering the water, but the moment the session begins, the feedback loop breaks.</p><p>This project explores a mobile ecosystem designed around that gap. It connects predictive ocean data, active session tracking, personal progression, and local surf support into one continuous experience.</p><p>The challenge was not simply to design another sports-tracking app. It was to design an interface that could survive glare, water, motion, interrupted attention, and the physical rhythm of surfing without breaking the user’s state of flow.</p></div><div class=\"case-visual-slot\">Hero visual slot: phone mockup, wave map, telemetry overlay, or animated session screen</div><div class=\"case-grid\"><div class=\"case-card\"><h3>Behavioral Research</h3><p>Understanding how surfers interact with digital tools before, during, and after a session.</p></div><div class=\"case-card\"><h3>Environmental Prototyping</h3><p>Testing how glare, water, motion, and touch inaccuracy affect interface decisions.</p></div><div class=\"case-card\"><h3>Session-Based Continuity</h3><p>Designing a system that preserves context across interrupted, fragmented interactions.</p></div></div><div class=\"case-spacer\"></div><div class=\"case-subhead\">An interruption-tolerant tracking system built for the water.</div><div class=\"case-copy\"><p>The Surfing App is a conceptual mobile platform that tracks wave mechanics and physical performance through a simplified, high-contrast interface.</p><p>The product is structured around session-based continuity. Instead of treating every screen as a separate interaction, the app preserves the active session state until the user manually ends it.</p><p>This allows the surfer to interact in short bursts without losing context. The system also extends beyond active tracking through progression journaling, embedded tutorials, and localized equipment rentals.</p></div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Session-Based Continuity</h3><p>The app preserves active session data without requiring manual saves. This matters because surfers interact with devices in short, interrupted moments and cannot afford to restart tracking logic mid-session.</p></div><div class=\"case-list-item\"><h3>Glanceable Telemetry</h3><p>The interface prioritizes one key metric at a time. It avoids dense dashboards because bright sunlight, movement, and water droplets make complex UI layouts harder to read.</p></div><div class=\"case-list-item\"><h3>Progression Journaling and Embedded Classes</h3><p>Users can log named tricks, review personal bests, and access video tutorials. The app becomes a learning system, not just a tracking surface.</p></div><div class=\"case-list-item\"><h3>Localized Equipment Marketplace</h3><p>The app connects users to local surf shops for rentals and gear access. This reduces friction for tourists who often face hidden charges or fragmented local information.</p></div></div><div class=\"case-visual-slot\">Solution visual slot: final app screens, onboarding flow, active tracking UI, progression journal, rental module</div>"
+      },
+      "flows": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">The experience is built around two high-friction moments: entering the water and returning from it.</div><div class=\"case-copy\"><p>The core flows were designed to reduce interaction during the session and move deeper reflection to the moment after the surfer returns to land.</p></div><div class=\"case-grid\"><div class=\"case-card\"><h3>Flow 1: Session Setup</h3><p><strong>Trigger:</strong> The user initiates a new surf session on the beach.</p><p><strong>Action:</strong> The user defines location and targets with a simple setup interaction.</p><p><strong>System response:</strong> The app locks the screen for water use and begins background telemetry.</p><p><strong>Value:</strong> It removes pre-entry friction and prevents accidental touches in the water.</p></div><div class=\"case-card\"><h3>Flow 2: Skill Progression Logging</h3><p><strong>Trigger:</strong> The user completes a session and returns to land.</p><p><strong>Action:</strong> The user reviews telemetry and logs named tricks.</p><p><strong>System response:</strong> The app connects trick timestamps with localized wave-pattern data.</p><p><strong>Value:</strong> It builds a personal progression journal and contributes to long-term wave behavior mapping.</p></div><div class=\"case-card\"><h3>Flow 3: Equipment and Learning Support</h3><p><strong>Trigger:</strong> A tourist or beginner needs gear, lessons, or skill guidance.</p><p><strong>Action:</strong> The user browses trusted rental options or embedded learning content.</p><p><strong>System response:</strong> The app surfaces localized support without relying on informal networks.</p><p><strong>Value:</strong> It reduces the cost and trust barrier around surf coaching and rentals.</p></div></div><div class=\"case-visual-slot\">Flow visual slot: journey map, app flow diagram, session loop animation, or wireflow</div>"
+      },
+      "research": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">Users checked their phones before entering the water, then abandoned the interface completely.</div><div class=\"case-copy\"><p>To understand the friction points of aquatic tech use, the research combined rapid early validation with deeper behavioral observation.</p><p>Synthetic Users were used to generate early interview patterns and pressure-test assumptions. These were followed by contextual inquiry and diary-style observation to understand how surfers actually behave before, during, and after sessions.</p></div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Method: Contextual Inquiry</h3><p>Used to understand the physical and environmental conditions around surf preparation, device use, and session entry.</p></div><div class=\"case-list-item\"><h3>Method: Diary Studies</h3><p>Used to observe patterns across sessions rather than relying only on one-time recall.</p></div><div class=\"case-list-item\"><h3>Method: Synthetic User AI Testing</h3><p>Used for rapid early validation and to identify possible friction points before moving into grounded research.</p></div><div class=\"case-list-item\"><h3>Method: Quantitative Behavioral Parsing</h3><p>Used to make sense of repeated behavioral patterns and translate them into product decisions.</p></div></div><div class=\"case-visual-slot\">Research visual slot: observation notes, journey mapping, research synthesis clusters, or insight cards</div><div class=\"case-grid\"><div class=\"case-card\"><h3>The Pre-Entry Wall</h3><p>Users leave devices behind because current interfaces are not usable when wet. The design implication was clear: the app needed an aquatic lock state and passive tracking capabilities.</p></div><div class=\"case-card\"><h3>The Coaching Cost Barrier</h3><p>Tourists and beginners often navigate steep costs, hidden charges, and unreliable local networks. This shaped the decision to include tutorials and trusted rental access.</p></div><div class=\"case-card\"><h3>The Voice UI Trap</h3><p>Voice interaction seemed relevant at first, but the surfing environment made it unreliable. The final interface avoids voice input and depends on visual clarity instead.</p></div></div>"
+      },
+      "formFactors": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">The project shifted from feature density to environmental restraint.</div><div class=\"case-copy\"><p>Early exploration focused on how much information the app should expose during a session. The strongest direction was not the one with the most features, but the one that asked the least from the user while they were physically engaged with the water.</p></div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Audio-First Feedback</h3><p><strong>What it was:</strong> A waterproof earbud-based flow that delivered wave stats through an AI voice layer.</p><p><strong>Why it seemed promising:</strong> It bypassed the screen visibility problem completely.</p><p><strong>Why it changed:</strong> Ocean acoustics made voice input and feedback unreliable. Repeating commands would break concentration and increase frustration.</p></div><div class=\"case-list-item\"><h3>High-Density Dashboard</h3><p><strong>What it was:</strong> A data-heavy screen showing wind, swell, tide, and performance metrics together.</p><p><strong>Why it seemed promising:</strong> It gave the user more control over environmental variables.</p><p><strong>Why it changed:</strong> It caused too much cognitive load during the session and became harder to read in glare and motion.</p></div><div class=\"case-list-item\"><h3>Simplified Visual Telemetry</h3><p><strong>Where the direction landed:</strong> The final direction prioritizes one metric at a time through a high-contrast interface, while the system architecture remembers the larger session context in the background.</p></div></div><div class=\"case-visual-slot\">Exploration visual slot: rejected voice UI concept, dense dashboard concept, simplified telemetry comparison</div>"
+      },
+      "prototyping": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">Testing revealed that visibility was not only about contrast. It was about motion, context, and device behavior.</div><div class=\"case-copy\"><p>Due to the eight-week timeline, the project moved quickly from ideation into mid-fidelity prototyping. Crazy Eights was used for rapid concept generation, Relume supported early information architecture, and Figma was used to build testable greyscale prototypes.</p><p>The goal was not to perfect visual design early. It was to expose the interaction model to physical and behavioral stress as quickly as possible.</p></div><div class=\"case-visual-slot\">Prototype visual slot: Figma mid-fidelity screens, greyscale flow, or before-after interface iterations</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Testing Insight 1: High contrast can still create discomfort</h3><p>Senior stakeholders noted that the initial high-contrast palette could induce motion discomfort or visual vibration in moving water. The color system was recalibrated to reduce harshness while retaining legibility.</p></div><div class=\"case-list-item\"><h3>Testing Insight 2: Hardware variation changes the interaction model</h3><p>One user attempted to interact with the prototype on a folded Samsung flip phone. This revealed that aquatic hardware constraints go beyond waterproofing. Form factor, viewport, and touch target behavior need to be treated as future design requirements.</p></div><div class=\"case-list-item\"><h3>Testing Insight 3: Scope had to protect the core interaction</h3><p>The first version remained locked to a standard viewport so the session logic could be resolved clearly before expanding into responsive edge cases.</p></div></div>"
+      },
+      "decisions": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">The final design was shaped by environmental realities, not interface trends.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Decision 1: Preserve the session until the user ends it</h3><p><strong>Problem:</strong> Users frequently lose context when an app auto-locks, reloads, or resets during physical activity.</p><p><strong>Options considered:</strong> Standard app state management versus persistent background session logic.</p><p><strong>Final decision:</strong> The active state remains continuous until manually stopped.</p><p><strong>Rationale:</strong> This mirrors the mental model of surfing as one continuous physical session.</p><p><strong>Tradeoff:</strong> It requires more complex backend state logic.</p></div><div class=\"case-list-item\"><h3>Decision 2: Remove AI voice interaction</h3><p><strong>Problem:</strong> Users cannot easily look at screens while paddling or moving through water.</p><p><strong>Options considered:</strong> Voice agents versus high-contrast visual feedback.</p><p><strong>Final decision:</strong> Voice interaction was removed entirely.</p><p><strong>Rationale:</strong> Muffled acoustics and ocean noise made voice models too unreliable for this context.</p><p><strong>Tradeoff:</strong> The user still needs occasional visual attention, but the system avoids misinterpreted commands.</p></div><div class=\"case-list-item\"><h3>Decision 3: Include the market ecosystem lightly</h3><p><strong>Problem:</strong> Tourists face hidden charges when seeking coaching or renting surf equipment.</p><p><strong>Options considered:</strong> A pure telemetry app versus an integrated support ecosystem.</p><p><strong>Final decision:</strong> The app includes a lightweight rental and embedded video class module.</p><p><strong>Rationale:</strong> It responds to a real pain point while giving the product a stronger retention loop.</p><p><strong>Tradeoff:</strong> It increases the information architecture scope.</p></div></div><div class=\"case-visual-slot\">Design decision visual slot: system logic diagram, voice UI rejection diagram, or feature tradeoff matrix</div>"
+      },
+      "hardware": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">Designing for an interface that is wet, glaring, and moving.</div><div class=\"case-copy\"><p>The interface had to respond to a hostile environment. The screen was not treated as a stable surface. It was treated as something affected by water, glare, inaccurate touch, interruptions, and body movement.</p></div><div class=\"case-grid\"><div class=\"case-card\"><h3>Eight-Week Time Constraint</h3><p>The timeline limited the ability to design a fully responsive ecosystem from day one. The first version stayed locked to a single viewport so the core session logic could be resolved well.</p></div><div class=\"case-card\"><h3>High Glare</h3><p>Sunlight makes subtle UI elements disappear. The interface removed soft grayscale dependence and moved toward stronger contrast and clearer hierarchy.</p></div><div class=\"case-card\"><h3>Touch Inaccuracy</h3><p>Wet fingers and screens increase mis-taps. Standard tap targets were replaced by larger, simpler interaction zones where possible.</p></div></div><div class=\"case-visual-slot\">Constraint visual slot: glare test, wet-screen touch diagram, hardware stress states, or responsive notes</div>"
+      },
+      "reflection": {
+        "type": "rich",
+        "content": "<div class=\"case-subhead\">Moving from screen-led to context-led design.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Scoping against trends</h3><p>This project reinforced the importance of ignoring industry trends when the context demands it. Voice AI was a strong trend during the project, but the ocean made it unreliable. The best technology was not the most current one. It was the one that worked in the user’s environment.</p></div><div class=\"case-list-item\"><h3>Designing for hostile environments</h3><p>The surfing context forced the interface to become more disciplined. Decorative UI had to be stripped away because every pixel needed to support visibility, orientation, or action.</p></div><div class=\"case-list-item\"><h3>Systems thinking in state management</h3><p>The strongest learning was that good UX is not only about the screen in front of the user. It is also about how the system remembers what the user was doing. Session-based continuity became the anchor of the entire product.</p></div></div><div class=\"case-note\">This project clarified a larger design belief: digital architecture should adapt to human behavior, instead of forcing people to adapt to the screen.</div>"
+      }
     },
     "gridSize": "wide"
   },
@@ -41,12 +77,24 @@
     "title": "Kaari",
     "subtitle": "A digital experience bridging artisanal craft and modern commerce.",
     "tagLine": "Kaari Digital Experience",
-    "tagMeta": "KAARI \u2022 SHIPPED 2024",
+    "tagMeta": "KAARI • SHIPPED 2024",
     "meta": [
-      ["Timeline", "12 Weeks"],
-      ["Role", "Product Designer"],
-      ["Platform", "Web & Mobile App"],
-      ["Deliverables", "End-to-End UI/UX"]
+      [
+        "Timeline",
+        "12 Weeks"
+      ],
+      [
+        "Role",
+        "Product Designer"
+      ],
+      [
+        "Platform",
+        "Web & Mobile App"
+      ],
+      [
+        "Deliverables",
+        "End-to-End UI/UX"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -59,14 +107,40 @@
       "placeholderHTML": "<span class=\"text-gray-500 font-mono text-sm\">[ Kaari Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "narrow"
   },
@@ -76,12 +150,24 @@
     "title": "IRCTC Redesign",
     "subtitle": "Modernizing India's largest ticketing platform for accessibility and speed.",
     "tagLine": "IRCTC Redesign",
-    "tagMeta": "IRCTC \u2022 CONCEPT 2023",
+    "tagMeta": "IRCTC • CONCEPT 2023",
     "meta": [
-      ["Timeline", "4 Weeks"],
-      ["Role", "UI/UX Designer"],
-      ["Platform", "Web Platform"],
-      ["Deliverables", "UI Systems"]
+      [
+        "Timeline",
+        "4 Weeks"
+      ],
+      [
+        "Role",
+        "UI/UX Designer"
+      ],
+      [
+        "Platform",
+        "Web Platform"
+      ],
+      [
+        "Deliverables",
+        "UI Systems"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -94,14 +180,40 @@
       "placeholderHTML": "<span class=\"text-blue-400 font-mono text-sm\">[ IRCTC Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "standard"
   },
@@ -111,12 +223,24 @@
     "title": "KOYA Space",
     "subtitle": "Harmonizing physical layout with human behavioral patterns.",
     "tagLine": "KOYA Space Integration",
-    "tagMeta": "INTERIOR \u2022 2024",
+    "tagMeta": "INTERIOR • 2024",
     "meta": [
-      ["Timeline", "6 Months"],
-      ["Role", "Interior Designer"],
-      ["Category", "Commercial"],
-      ["Deliverables", "CAD, 3D Renders"]
+      [
+        "Timeline",
+        "6 Months"
+      ],
+      [
+        "Role",
+        "Interior Designer"
+      ],
+      [
+        "Category",
+        "Commercial"
+      ],
+      [
+        "Deliverables",
+        "CAD, 3D Renders"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -129,14 +253,40 @@
       "placeholderHTML": "<span class=\"text-stone-500 font-mono text-sm\">[ Koya Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "standard"
   },
@@ -146,12 +296,24 @@
     "title": "Hand Sewing Machine",
     "subtitle": "Ergonomic redesign of a classic utilitarian tool.",
     "tagLine": "Hand Sewing Machine",
-    "tagMeta": "INDUSTRIAL \u2022 REDESIGN",
+    "tagMeta": "INDUSTRIAL • REDESIGN",
     "meta": [
-      ["Timeline", "10 Weeks"],
-      ["Role", "Industrial Designer"],
-      ["Category", "Hardware"],
-      ["Deliverables", "CAD, Physical Prototype"]
+      [
+        "Timeline",
+        "10 Weeks"
+      ],
+      [
+        "Role",
+        "Industrial Designer"
+      ],
+      [
+        "Category",
+        "Hardware"
+      ],
+      [
+        "Deliverables",
+        "CAD, Physical Prototype"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -164,14 +326,40 @@
       "placeholderHTML": "<span class=\"text-neutral-500 font-mono text-sm\">[ Sewing Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "narrow"
   },
@@ -181,12 +369,24 @@
     "title": "Yuma Hardware",
     "subtitle": "Next generation IoT device enclosure design.",
     "tagLine": "Yuma Hardware Design",
-    "tagMeta": "INDUSTRIAL \u2022 2023",
+    "tagMeta": "INDUSTRIAL • 2023",
     "meta": [
-      ["Timeline", "14 Weeks"],
-      ["Role", "Industrial Designer"],
-      ["Category", "Hardware"],
-      ["Deliverables", "CMF, CAD"]
+      [
+        "Timeline",
+        "14 Weeks"
+      ],
+      [
+        "Role",
+        "Industrial Designer"
+      ],
+      [
+        "Category",
+        "Hardware"
+      ],
+      [
+        "Deliverables",
+        "CMF, CAD"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -199,14 +399,40 @@
       "placeholderHTML": "<span class=\"text-gray-400 font-mono text-sm\">[ Yuma Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "wide"
   },
@@ -216,12 +442,24 @@
     "title": "Smoothie Machine",
     "subtitle": "Industrial design concept for a high-volume commercial blender.",
     "tagLine": "Smoothie Machine",
-    "tagMeta": "INDUSTRIAL \u2022 CONCEPT",
+    "tagMeta": "INDUSTRIAL • CONCEPT",
     "meta": [
-      ["Timeline", "4 Weeks"],
-      ["Role", "Industrial Designer"],
-      ["Category", "Hardware"],
-      ["Deliverables", "Concept Renders"]
+      [
+        "Timeline",
+        "4 Weeks"
+      ],
+      [
+        "Role",
+        "Industrial Designer"
+      ],
+      [
+        "Category",
+        "Hardware"
+      ],
+      [
+        "Deliverables",
+        "Concept Renders"
+      ]
     ],
     "thumbnail": {
       "image": null,
@@ -234,14 +472,40 @@
       "placeholderHTML": "<span class=\"text-orange-300 font-mono text-sm\">[ Smoothie Hero - 1920x1080 ]</span>"
     },
     "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
+      "solution": {
+        "type": "video",
+        "content": "[ Solution Concept Video Placeholder - 16:9 ]",
+        "image": null
+      },
+      "flows": {
+        "type": "text",
+        "content": "[ Flow documentation goes here ]"
+      },
+      "research": {
+        "type": "text",
+        "content": "[ Research findings go here ]"
+      },
+      "formFactors": {
+        "type": "images",
+        "content": "[ Form Factor Images ]",
+        "image": null
+      },
+      "prototyping": {
+        "type": "text",
+        "content": "[ Prototyping data goes here ]"
+      },
+      "decisions": {
+        "type": "text",
+        "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks."
+      },
+      "hardware": {
+        "type": "text",
+        "content": "[ Hardware constraint details ]"
+      },
+      "reflection": {
+        "type": "text",
+        "content": "[ Final takeaways ]"
+      }
     },
     "gridSize": "standard"
   }
