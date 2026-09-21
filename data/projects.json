@@ -3,11 +3,11 @@
     "id": "dr-reddys-npd",
     "category": "research",
     "title": "Dr. Reddy's Tech Transfer Redesign",
-    "projectLabel": "Dr. Reddy's Laboratories • Service & Information Design • 2026",
+    "projectLabel": "Dr. Reddy's Laboratories • Service & Information Design • 2025",
     "heroTitle": "Accelerating Tech Transfer",
     "subtitle": "A strategic overhaul of New Product Development handovers to reduce cognitive overload on the manufacturing floor.",
     "tagLine": "Dr. Reddy's Tech Transfer Redesign",
-    "tagMeta": "SERVICE & INFORMATION DESIGN • 2026",
+    "tagMeta": "SERVICE & INFORMATION DESIGN • 2025",
     "badge": "NDA + capstone",
     "pageTitle": "Dr. Reddy's NPD Service Design | Areen Pednekar",
     "metaDescription": "A UX and service design case study detailing the redesign of Standard Operating Procedures to accelerate New Product Development and scale-up in pharmaceutical manufacturing.",
@@ -15,7 +15,7 @@
     "tags": ["Service Design", "Systems Thinking", "UX Research", "NDA + capstone"],
     "meta": [
       ["Role", "Service & UX Designer"],
-      ["Timeline", "6 Months / February to July 2026"],
+      ["Timeline", "6 Months / February to July 2025"],
       ["Team", "Solo Contributor"],
       ["Skills", "Service Design, Systems Thinking, Cognitive Ergonomics, Information Architecture"]
     ],
@@ -162,18 +162,18 @@
     "id": "kaari",
     "category": "uiux",
     "title": "Kaari",
-    "projectLabel": "Kaari • Service & Hardware Design • 2023",
+    "projectLabel": "Kaari • Service & Hardware Design • 2024",
     "heroTitle": "Bypassing the Middleman",
     "subtitle": "A service ecosystem and physical hardware product that connects artisans directly to buyers across language barriers.",
     "tagLine": "Kaari",
-    "tagMeta": "SERVICE & HARDWARE DESIGN • 2023",
+    "tagMeta": "SERVICE & HARDWARE DESIGN • 2024",
     "pageTitle": "Kaari Service Design Ecosystem | Areen Pednekar",
     "metaDescription": "A comprehensive service design and hardware case study exploring how native audio terminals and integrated logistics can bypass middlemen in the artisanal craft sector.",
     "previewText": "Connecting buyers directly to craftsmen by replacing screens with a dust-resistant native-audio terminal.",
     "tags": ["Service Design", "Industrial Design", "UI/UX"],
     "meta": [
       ["Role", "Service Designer — Client app flows, Artisan backend, CAD modeling, Rapid prototyping"],
-      ["Timeline", "12 Weeks / July 2023 to September 2023"],
+      ["Timeline", "12 Weeks / July 2024 to September 2024"],
       ["Team", "3 Designers"],
       ["Skills", "Service Design, Industrial Design, Ethnography, Information Architecture"]
     ],
@@ -187,7 +187,7 @@
       {"id":"exploration","label":"Exploration","content":"<div class=\"case-subhead\">Engineering a form factor for heat, dust, and heavy use.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Screen-Heavy Tablet App</h3><p><strong>What it was:</strong> A rugged storefront tablet. <strong>Why promising:</strong> Dense information and images. <strong>Why it changed:</strong> Dusty hands made constant tapping disruptive.</p></div><div class=\"case-list-item\"><h3>Exposed Speaker Terminal</h3><p><strong>What it was:</strong> A highly perforated smart speaker. <strong>Why promising:</strong> Maximum audio clarity. <strong>Why it changed:</strong> Workshop dust clogged the grille and threatened mechanics.</p></div><div class=\"case-list-item\"><h3>Where the direction landed</h3><p>A sealed 3D-printed terminal with thermal management, minimal tactile buttons, protected audio, and an app using earthy tones and accessible digital-ID integration.</p></div></div>"},
       {"id":"prototyping","label":"Prototyping and Testing","content":"<div class=\"case-subhead\">Validating physical durability and digital accessibility.</div><div class=\"case-copy\"><p>Digital buyer flows and CAD-printed structural mockups were tested in real artisan environments for usability and environmental stress.</p></div><div class=\"case-callout-grid\"><div class=\"case-visual-slot\">3D-printed prototype photo placeholder</div><div class=\"case-callout\"><h3>Workshop Dust Test</h3><p><strong>What happened:</strong> Dust entered standard seams after several days.</p><p><strong>What it meant:</strong> Consumer electronics would not survive.</p><p><strong>What changed:</strong> A sleeker sealed form balancing dust resistance and heat dissipation.</p></div><div class=\"case-callout\"><h3>Onboarding Test</h3><p><strong>What happened:</strong> Traditional forms caused friction.</p><p><strong>What it meant:</strong> Digital admin was too tedious.</p><p><strong>What changed:</strong> DigiLocker-based verification made onboarding almost instantaneous.</p></div></div>"},
       {"id":"decisions","label":"Design Decisions","content":"<div class=\"case-subhead\">The final ecosystem was shaped by physical realities, not just digital best practices.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Designing Hardware, Not Just Software</h3><p><strong>Decision:</strong> Build a bespoke audio terminal. <strong>Rationale:</strong> It matches payment-announcer mental models and keeps hands free. <strong>Tradeoff:</strong> Manufacturing complexity.</p></div><div class=\"case-list-item\"><h3>Native Audio Translation</h3><p><strong>Decision:</strong> Speak orders aloud in local dialects. <strong>Rationale:</strong> Removes literacy and screen-time requirements. <strong>Tradeoff:</strong> Real-time localized text-to-speech complexity.</p></div><div class=\"case-list-item\"><h3>Outsourcing Logistics</h3><p><strong>Decision:</strong> Integrate Dunzo and Porter. <strong>Rationale:</strong> Automates the final mile. <strong>Tradeoff:</strong> Third-party API dependence.</p></div></div>"},
-      {"id":"constraints","label":"Constraints","content":"<div class=\"case-subhead\">Designing ahead of the available technological infrastructure.</div><div class=\"case-callout\"><h3>API Limitations in 2023</h3><p><strong>Why it mattered:</strong> DigiLocker infrastructure was still emerging, complicating seamless ID handoffs.</p><p><strong>Response:</strong> The flow was designed as a forward-looking architecture for how the APIs would behave at scale.</p></div>"},
+      {"id":"constraints","label":"Constraints","content":"<div class=\"case-subhead\">Designing ahead of the available technological infrastructure.</div><div class=\"case-callout\"><h3>API Limitations in 2024</h3><p><strong>Why it mattered:</strong> DigiLocker infrastructure was still emerging, complicating seamless ID handoffs.</p><p><strong>Response:</strong> The flow was designed as a forward-looking architecture for how the APIs would behave at scale.</p></div>"},
       {"id":"outcome","label":"Outcome","content":"<div class=\"case-subhead\">A comprehensive ecosystem bridging the digital and physical divide.</div><div class=\"case-copy\"><p>Kaari culminated in a thoroughly validated service ecosystem featuring a tested digital application and a functional 3D-printed hardware prototype. It mapped a realistic route around industry middlemen, helping artisans retain margins while buyers gain direct access to custom craft.</p></div>"},
       {"id":"reflection","label":"Reflection","content":"<div class=\"case-subhead\">Service design is about observing invisible systems.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>Empathy requires physical presence</h3><p>Seeing the dust and hearing the noise changed what usability meant; this could not be designed from behind a screen.</p></div><div class=\"case-list-item\"><h3>The hardware-software bridge</h3><p>A digital app is useless if the physical environment rejects it. Hardware was the necessary bridge.</p></div></div><div class=\"case-note\">True innovation happens when you stop forcing users to learn your interface, and instead build your interface to survive their reality.</div>"}
     ],
@@ -255,7 +255,7 @@
       },
       "hardware": {
         "type": "rich",
-        "content": "<div class=\"case-subhead\">Designing ahead of the available technological infrastructure.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>API Limitations in 2023</h3><p><strong>Why it mattered:</strong> At the time of development, infrastructure like DigiLocker was still emerging, making seamless digital ID handoffs complex to execute perfectly in a live build.</p><p><strong>How the design responded:</strong> We had to pitch the integration as a forward-looking architectural concept, designing the user flow for how the APIs would eventually behave at scale rather than limiting the vision to what was strictly available that month.</p></div></div><div class=\"case-spacer\"></div><div class=\"case-subhead\">A comprehensive ecosystem bridging the digital and physical divide.</div><div class=\"case-copy\"><p>Kaari culminated in a thoroughly validated service ecosystem featuring a tested digital application and a 3D-printed hardware prototype. The project successfully mapped a realistic route to bypass industry middlemen, empowering artisans to retain their margins while giving buyers direct access to custom craft.</p></div><div class=\"case-visual-slot\">Detail visual slot: close-up render of the final hardware form factor emphasizing the sealed, dust-resistant design</div>"
+        "content": "<div class=\"case-subhead\">Designing ahead of the available technological infrastructure.</div><div class=\"case-list\"><div class=\"case-list-item\"><h3>API Limitations in 2024</h3><p><strong>Why it mattered:</strong> At the time of development, infrastructure like DigiLocker was still emerging, making seamless digital ID handoffs complex to execute perfectly in a live build.</p><p><strong>How the design responded:</strong> We had to pitch the integration as a forward-looking architectural concept, designing the user flow for how the APIs would eventually behave at scale rather than limiting the vision to what was strictly available that month.</p></div></div><div class=\"case-spacer\"></div><div class=\"case-subhead\">A comprehensive ecosystem bridging the digital and physical divide.</div><div class=\"case-copy\"><p>Kaari culminated in a thoroughly validated service ecosystem featuring a tested digital application and a 3D-printed hardware prototype. The project successfully mapped a realistic route to bypass industry middlemen, empowering artisans to retain their margins while giving buyers direct access to custom craft.</p></div><div class=\"case-visual-slot\">Detail visual slot: close-up render of the final hardware form factor emphasizing the sealed, dust-resistant design</div>"
       },
       "reflection": {
         "type": "rich",
