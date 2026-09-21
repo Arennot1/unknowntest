@@ -346,13 +346,15 @@ function initDiecastDash() {
 
 // ---------------- Off-Canvas image lightbox (About/Hi page only) ----------------
 function initOffCanvas() {
+    const trigger = document.getElementById('offCanvasTrigger');
+    const gallery = document.getElementById('offCanvasGallery');
     const lightbox = document.getElementById('offCanvasLightbox');
     const closeBtn = document.getElementById('offCanvasClose');
     const image = document.getElementById('offCanvasLightboxImage');
     const title = document.getElementById('offCanvasLightboxTitle');
     const description = document.getElementById('offCanvasLightboxDescription');
     const cards = document.querySelectorAll('[data-off-canvas-card]');
-    if (!lightbox || !closeBtn || !image || !title || !description || !cards.length) return;
+    if (!trigger || !gallery || !lightbox || !closeBtn || !image || !title || !description || !cards.length) return;
 
     let lastTrigger = null;
     function closeLightbox() {
@@ -373,6 +375,12 @@ function initOffCanvas() {
         closeBtn.focus();
     }
 
+    trigger.addEventListener('click', () => {
+        const isOpen = gallery.classList.toggle('is-open');
+        gallery.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        trigger.setAttribute('data-cursor-text', isOpen ? 'CLOSE' : 'OPEN');
+    });
     cards.forEach(card => card.addEventListener('click', () => openLightbox(card)));
     closeBtn.addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
