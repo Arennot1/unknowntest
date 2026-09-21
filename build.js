@@ -192,7 +192,7 @@ function renderSectionHTML(project, key, label) {
 }
 
 function renderCustomSectionHTML(project, section) {
-    return `<section id="${project.id}-${section.id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${section.label}</h2><div class="case-study-rich">${section.content}</div></section>`;
+    return `<section id="${project.id}-${section.id}" class="scroll-mt-32"><div class="case-study-rich"><div class="case-eyebrow">${section.label}</div>${section.content}</div></section>`;
 }
 
 function renderCaseStudyStatusScript(projectId) {
@@ -284,24 +284,27 @@ function renderCaseStudyBody(p) {
         `<div><span class="block text-black font-bold mb-2 font-heading-sans tracking-tight">${label}</span>${value}</div>`
     ).join('');
 
-    const projectSections = p.caseSections
-        ? p.caseSections.map(section => [section.id, section.label])
+    const customSections = p.presentationSections || p.caseSections;
+    const projectSections = customSections
+        ? customSections.map(section => [section.id, section.label])
         : SECTION_ORDER;
 
-    const sidebarHTML = [['overview', 'Overview'], ...projectSections].map(([key, label], index) => {
+    const sidebarItems = customSections ? projectSections : [['overview', 'Overview'], ...projectSections];
+    const sidebarHTML = sidebarItems.map(([key, label], index) => {
         const target = key === 'overview' ? `${p.id}-overview` : `${p.id}-${key}`;
         return `<button onclick="scrollToSection('${target}')" data-case-nav data-target="${target}" data-scroll-active="${index === 0 ? 'true' : 'false'}" aria-current="${index === 0 ? 'true' : 'false'}" data-cursor-quiet class="case-nav-status-link text-left hover:text-black transition-colors">${label}</button>`;
     }).join('\n');
 
-    const sectionsHTML = p.caseSections
-        ? p.caseSections.map(section => renderCustomSectionHTML(p, section)).join('\n')
+    const sectionsHTML = customSections
+        ? customSections.map(section => renderCustomSectionHTML(p, section)).join('\n')
         : SECTION_ORDER.map(([key, label]) => renderSectionHTML(p, key, label)).join('\n');
 
     return `        <div class="bg-white w-full min-h-screen text-black pb-32">
-            <div id="${p.id}-overview" class="w-full scroll-mt-32">
+            <div id="${p.id}-${customSections ? 'hero' : 'overview'}" class="w-full scroll-mt-32">
                 <div class="w-full h-[60vh] pt-20 md:pt-0 ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero, p.title + ' hero image')}</div>
                 <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-12">
-                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">${p.title}</h1>
+                    ${p.projectLabel ? `<p class="font-meta text-xs uppercase tracking-[0.18em] text-gray-500 mb-5">${p.projectLabel}</p>` : ''}
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">${p.heroTitle || p.title}</h1>
                     <p class="text-xl md:text-2xl text-gray-500 font-light max-w-3xl">${p.subtitle}</p>
                 </div>
             </div>
