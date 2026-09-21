@@ -41,6 +41,44 @@
                     <p class="italic text-gray-500 border-l-2 border-black pl-4 inline-block">"In case I am not building, breaking, or making new things, I will probably be out there collecting diecast models, my favorite hobby."</p>
                 </div>
 
+                <section class="off-canvas-section" aria-labelledby="off-canvas-title">
+                    <div class="off-canvas-intro">
+                        <div class="off-canvas-atmosphere" aria-hidden="true"></div>
+                        <h2 id="off-canvas-title" class="off-canvas-pill">Off-Canvas</h2>
+                        <p>Small practices that keep my hands, eyes, and appetite curious.</p>
+                    </div>
+                    <div class="off-canvas-grid">
+                        <button type="button" class="off-canvas-card off-canvas-card-designer" data-off-canvas-card data-cursor-icon="eye" data-cursor-text="EXPAND" data-image="assets/off-canvas/designer.png" data-alt="Sketchbook, material swatches and prototype on a designer's worktable" data-title="Designer" data-description="Sketching possibilities into objects you can hold.">
+                            <span class="off-canvas-image"><img src="assets/off-canvas/designer.png" alt="Sketchbook, material swatches and prototype on a designer's worktable" loading="lazy"></span>
+                            <span class="off-canvas-copy"><strong>Designer</strong><small>Sketching possibilities into objects you can hold.</small></span>
+                        </button>
+                        <button type="button" class="off-canvas-card off-canvas-card-artist" data-off-canvas-card data-cursor-icon="eye" data-cursor-text="EXPAND" data-image="assets/off-canvas/artist.png" data-alt="Paper sculpture with graphite studies and cobalt paint" data-title="Artist" data-description="Making room for experiments without a brief.">
+                            <span class="off-canvas-image"><img src="assets/off-canvas/artist.png" alt="Paper sculpture with graphite studies and cobalt paint" loading="lazy"></span>
+                            <span class="off-canvas-copy"><strong>Artist</strong><small>Making room for experiments without a brief.</small></span>
+                        </button>
+                        <button type="button" class="off-canvas-card off-canvas-card-collector" data-off-canvas-card data-cursor-icon="eye" data-cursor-text="EXPAND" data-image="assets/off-canvas/collector.png" data-alt="Diecast model cars on a collector's display shelf" data-title="Collector" data-description="Tiny machines, big stories, and the joy of detail.">
+                            <span class="off-canvas-image"><img src="assets/off-canvas/collector.png" alt="Diecast model cars on a collector's display shelf" loading="lazy"></span>
+                            <span class="off-canvas-copy"><strong>Collector</strong><small>Tiny machines, big stories, and the joy of detail.</small></span>
+                        </button>
+                        <button type="button" class="off-canvas-card off-canvas-card-maker" data-off-canvas-card data-cursor-icon="eye" data-cursor-text="EXPAND" data-image="assets/off-canvas/model-maker.png" data-alt="Architectural scale model on a model maker's workbench" data-title="Model Maker" data-description="Learning by cutting, fitting, and trying again.">
+                            <span class="off-canvas-image"><img src="assets/off-canvas/model-maker.png" alt="Architectural scale model on a model maker's workbench" loading="lazy"></span>
+                            <span class="off-canvas-copy"><strong>Model Maker</strong><small>Learning by cutting, fitting, and trying again.</small></span>
+                        </button>
+                        <button type="button" class="off-canvas-card off-canvas-card-foodie" data-off-canvas-card data-cursor-icon="eye" data-cursor-text="EXPAND" data-image="assets/off-canvas/foodie.png" data-alt="Contemporary Indian meal served on a steel tray" data-title="Foodie" data-description="Following flavour, craft, and a very good cup of chai.">
+                            <span class="off-canvas-image"><img src="assets/off-canvas/foodie.png" alt="Contemporary Indian meal served on a steel tray" loading="lazy"></span>
+                            <span class="off-canvas-copy"><strong>Foodie</strong><small>Following flavour, craft, and a very good cup of chai.</small></span>
+                        </button>
+                    </div>
+                </section>
+
+                <div id="offCanvasLightbox" class="off-canvas-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="offCanvasLightboxTitle">
+                    <button id="offCanvasClose" type="button" class="off-canvas-close" aria-label="Close image">×</button>
+                    <figure class="off-canvas-lightbox-figure">
+                        <img id="offCanvasLightboxImage" src="" alt="">
+                        <figcaption><strong id="offCanvasLightboxTitle"></strong><span id="offCanvasLightboxDescription"></span></figcaption>
+                    </figure>
+                </div>
+
                 <button id="diecastTrigger" type="button" data-cursor-icon="eye" data-cursor-text="PLAY" class="w-full relative block cursor-pointer border-t border-b border-gray-200 overflow-hidden" style="background: linear-gradient(160deg, #4fa8e0 0%, #bfe6ff 45%, #ffb347 100%);">
                     <div class="relative z-10 flex flex-col items-center text-center py-14 px-6">
                         <h2 style="font-family:'Baloo 2','Manrope',sans-serif; font-weight:800; text-shadow:0 3px 0 rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.18);" class="text-white text-4xl md:text-5xl mb-3">Diecast Dash</h2>

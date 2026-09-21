@@ -344,6 +344,41 @@ function initDiecastDash() {
     closeBtn.addEventListener('click', closeGame);
 }
 
+// ---------------- Off-Canvas image lightbox (About/Hi page only) ----------------
+function initOffCanvas() {
+    const lightbox = document.getElementById('offCanvasLightbox');
+    const closeBtn = document.getElementById('offCanvasClose');
+    const image = document.getElementById('offCanvasLightboxImage');
+    const title = document.getElementById('offCanvasLightboxTitle');
+    const description = document.getElementById('offCanvasLightboxDescription');
+    const cards = document.querySelectorAll('[data-off-canvas-card]');
+    if (!lightbox || !closeBtn || !image || !title || !description || !cards.length) return;
+
+    let lastTrigger = null;
+    function closeLightbox() {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastTrigger) lastTrigger.focus();
+    }
+    function openLightbox(card) {
+        lastTrigger = card;
+        image.src = card.dataset.image;
+        image.alt = card.dataset.alt;
+        title.textContent = card.dataset.title;
+        description.textContent = card.dataset.description;
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    cards.forEach(card => card.addEventListener('click', () => openLightbox(card)));
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox(); });
+}
+
 // ---------------- Custom cursor: glass dot, three tiers ----------------
 // - data-cursor-icon + data-cursor-text on any <a>/<button> → rich glass pill
 //   with that icon and label (e.g. the eye icon + "VIEW CASE STUDY" on
@@ -855,6 +890,7 @@ window.addEventListener('DOMContentLoaded', () => {
     wireTransitionLinks();
     initLogoRipple();
     initDiecastDash();
+    initOffCanvas();
     startGreetingCarousel();
     initCustomCursor();
     initStatCounters();
