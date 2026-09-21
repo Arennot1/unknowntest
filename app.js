@@ -194,201 +194,69 @@ function spawnGlassRipple(x, y, maxSize) {
         }, '-=1.4');
 }
 
-// ---------------- Diecast Dash mini-game ----------------
+// ---------------- Diecast Dash mini-game (About/Hi page only) ----------------
+// A full 3D driving game lives at assets/diecast-dash/index.html, built on
+// Three.js plus a handful of GLB models. It is never inlined into the main
+// page -- it's loaded into an iframe on demand, and fully unloaded again on
+// close, so no visitor pays for Three.js or WebGL unless they actually open
+// it. The game's own page shows a "Loading assets..." button (#startBtn)
+// that stays disabled until its assets are ready; once it flips to enabled
+// we click it for the visitor automatically, so opening the site's trigger
+// leads straight into the race instead of a second, redundant start screen.
+function initDiecastDash() {
+    const trigger = document.getElementById('diecastTrigger');
+    const overlay = document.getElementById('diecastOverlay');
+    const frame = document.getElementById('diecastFrame');
+    const closeBtn = document.getElementById('diecastClose');
 
-function initCarGame() {
-    const canvas = document.getElementById('gameCanvas');
+    if (!trigger || !overlay || !frame || !closeBtn) return;
 
-    if (!canvas) return;
+    const GAME_SRC = 'assets/diecast-dash/index.html';
+    let pollId = null;
 
-    const ctx = canvas.getContext('2d');
-    const overlay = document.getElementById('gameOverlay');
-    const gameContainer = document.getElementById('gameContainer');
-
-    if (!ctx || !overlay || !gameContainer) return;
-
-    let gameRunning = false;
-    let score = 0;
-    let speed = 5;
-    let obstacles = [];
-    let animationId;
-    let groundY = 0;
-
-    const car = {
-        x: 50,
-        y: 0,
-        width: 40,
-        height: 20,
-        dy: 0,
-        jumpPower: -10,
-        gravity: 0.6,
-        grounded: true
-    };
-
-    function resizeGame() {
-        const parent = canvas.parentElement;
-
-        if (!parent) return;
-
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-        groundY = canvas.height - 30;
-
-        if (car.grounded) {
-            car.y = groundY - 25;
+    function stopPolling() {
+        if (pollId) {
+            clearInterval(pollId);
+            pollId = null;
         }
     }
 
-    function drawRect(x, y, w, h, color) {
-        ctx.fillStyle = color;
-        ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
-    }
-
-    function drawPixelCar(x, y) {
-        drawRect(x, y, 40, 20, '#000');
-        drawRect(x + 10, y - 10, 20, 10, '#000');
-        drawRect(x + 12, y - 8, 8, 6, '#fff');
-        drawRect(x + 22, y - 8, 6, 6, '#fff');
-        drawRect(x + 5, y + 15, 10, 10, '#555');
-        drawRect(x + 25, y + 15, 10, 10, '#555');
-    }
-
-    function spawnObstacle() {
-        if (!gameRunning) return;
-
-        const minGap = 300;
-        const randomGap = Math.random() * 400;
-
-        if (
-            obstacles.length === 0 ||
-            canvas.width - obstacles[obstacles.length - 1].x > minGap + randomGap
-        ) {
-            obstacles.push({
-                x: canvas.width,
-                y: groundY - 25,
-                width: 20,
-                height: 20
-            });
-        }
-    }
-
-    function resetGame() {
-        gameRunning = false;
-        cancelAnimationFrame(animationId);
-
-        overlay.style.opacity = '1';
-        overlay.style.pointerEvents = 'auto';
-        overlay.innerHTML = `
-            <div class="text-center">
-                <p class="font-pixel text-4xl text-red-600 mb-2">GAME OVER</p>
-                <p class="font-pixel text-xl text-black">SCORE: ${score}</p>
-                <p class="font-sans text-xs text-gray-500 mt-2">Click to Restart</p>
-            </div>
-        `;
-    }
-
-    function update() {
-        if (!gameRunning) return;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        drawRect(0, groundY, canvas.width, 2, '#000');
-
-        if (!car.grounded) {
-            car.dy += car.gravity;
-            car.y += car.dy;
-        }
-
-        if (car.y >= groundY - 25) {
-            car.y = groundY - 25;
-            car.dy = 0;
-            car.grounded = true;
-        } else {
-            car.grounded = false;
-        }
-
-        drawPixelCar(car.x, car.y);
-
-        if (Math.random() < 0.015) {
-            spawnObstacle();
-        }
-
-        for (let i = 0; i < obstacles.length; i++) {
-            const obs = obstacles[i];
-            const obsY = groundY - obs.height;
-
-            obs.x -= speed;
-
-            drawRect(obs.x, obsY, obs.width, obs.height, '#ff4400');
-            drawRect(obs.x + 2, obsY + 8, obs.width - 4, 4, '#fff');
-
-            const hit =
-                car.x < obs.x + obs.width &&
-                car.x + car.width > obs.x &&
-                car.y < obsY + obs.height &&
-                car.y + car.height > obsY;
-
-            if (hit) {
-                resetGame();
+    function autoStartWhenReady() {
+        stopPolling();
+        pollId = setInterval(() => {
+            let doc;
+            try {
+                doc = frame.contentDocument;
+            } catch (err) {
+                stopPolling();
                 return;
             }
-
-            if (obs.x + obs.width < 0) {
-                obstacles.splice(i, 1);
-                i--;
-                score++;
+            const startBtn = doc && doc.getElementById('startBtn');
+            if (startBtn && !startBtn.disabled) {
+                stopPolling();
+                startBtn.click();
             }
-        }
-
-        ctx.font = '24px "VT323"';
-        ctx.fillStyle = '#000';
-        ctx.fillText(`SCORE: ${score}`, 20, 40);
-
-        animationId = requestAnimationFrame(update);
+        }, 150);
     }
 
-    function jump() {
-        if (!car.grounded) return;
-
-        car.dy = car.jumpPower;
-        car.grounded = false;
+    function openGame() {
+        overlay.classList.remove('hidden-view');
+        document.body.style.overflow = 'hidden';
+        frame.addEventListener('load', autoStartWhenReady, { once: true });
+        frame.src = GAME_SRC;
     }
 
-    function startGame(e) {
-        if (e && e.type === 'keydown') {
-            e.preventDefault();
-        }
-
-        if (!gameRunning) {
-            gameRunning = true;
-            score = 0;
-            obstacles = [];
-
-            car.y = groundY - 25;
-            car.dy = 0;
-            car.grounded = true;
-
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-
-            update();
-        } else {
-            jump();
-        }
+    function closeGame() {
+        stopPolling();
+        overlay.classList.add('hidden-view');
+        document.body.style.overflow = '';
+        frame.src = 'about:blank'; // fully unloads Three.js/WebGL + stops audio
     }
 
-    window.addEventListener('resize', resizeGame);
-    resizeGame();
-
-    gameContainer.addEventListener('mousedown', startGame);
-
-    gameContainer.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        startGame(e);
-    });
-
+    trigger.addEventListener('click', openGame);
+    closeBtn.addEventListener('click', closeGame);
     window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') startGame(e);
+        if (e.key === 'Escape' && !overlay.classList.contains('hidden-view')) closeGame();
     });
 }
 
@@ -1006,7 +874,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     wireTransitionLinks();
     initLogoRipple();
-    initCarGame();
+    initDiecastDash();
     startGreetingCarousel();
     initCustomCursor();
     initStatCounters();
