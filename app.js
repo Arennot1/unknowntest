@@ -869,3 +869,102 @@ window.onload = function () {
     }
     playCurtainReveal();
 };
+// ---------- case study sidebar scroll status ----------
+
+function initCaseStudyScrollStatus() {
+    const sidebarButtons = Array.from(document.querySelectorAll('button[onclick^="scrollToSection"]'));
+
+    if (!sidebarButtons.length) return;
+
+    const sectionLinks = sidebarButtons
+        .map((button) => {
+            const onclickValue = button.getAttribute('onclick') || '';
+            const match = onclickValue.match(/scrollToSection\('([^']+)'\)/);
+
+            if (!match) return null;
+
+            const sectionId = match[1];
+            const section = document.getElementById(sectionId);
+
+            if (!section) return null;
+
+            button.classList.add('case-nav-status-link');
+            button.dataset.scrollTarget = sectionId;
+            button.setAttribute('aria-current', 'false');
+
+            return { button, section, sectionId };
+        })
+        .filter(Boolean);
+
+    if (!sectionLinks.length) return;
+
+    const sidebar = sidebarButtons[0].parentElement;
+
+    if (sidebar) {
+        sidebar.classList.add('case-study-scroll-nav');
+    }
+
+    let ticking = false;
+
+    function setActiveSection(activeItem) {
+        sectionLinks.forEach(({ button }) => {
+            const isActive = button === activeItem.button;
+
+            button.dataset.scrollActive = isActive ? 'true' : 'false';
+            button.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+    }
+
+    function getActiveSection() {
+        const viewportAnchor = window.innerHeight * 0.32;
+
+        let activeItem = sectionLinks[0];
+        let smallestDistance = Infinity;
+
+        sectionLinks.forEach((item) => {
+            const rect = item.section.getBoundingClientRect();
+
+            const sectionHasEntered = rect.top <= viewportAnchor;
+            const sectionHasNotPassed = rect.bottom >= viewportAnchor;
+
+            if (sectionHasEntered && sectionHasNotPassed) {
+                activeItem = item;
+                smallestDistance = 0;
+                return;
+            }
+
+            const distance = Math.abs(rect.top - viewportAnchor);
+
+            if (distance < smallestDistance && rect.top < window.innerHeight) {
+                smallestDistance = distance;
+                activeItem = item;
+            }
+        });
+
+        return activeItem;
+    }
+
+    function updateActiveSection() {
+        const activeItem = getActiveSection();
+        setActiveSection(activeItem);
+        ticking = false;
+    }
+
+    function requestUpdate() {
+        if (ticking) return;
+
+        ticking = true;
+        window.requestAnimationFrame(updateActiveSection);
+    }
+
+    updateActiveSection();
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCaseStudyScrollStatus);
+} else {
+    initCaseStudyScrollStatus();
+}
