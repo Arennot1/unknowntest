@@ -625,3 +625,98 @@
     .case-study-rich .case-grid { grid-template-columns: 1fr; }
     .case-study-rich .case-visual-slot { min-height: 240px; }
 }
+/* ---------- Case study sidebar active section status ---------- */
+
+.case-study-scroll-nav {
+    position: relative;
+    padding-left: 1.35rem;
+}
+
+.case-study-scroll-nav::before {
+    content: "";
+    position: absolute;
+    left: 0.18rem;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    width: 1px;
+    background: #e5e7eb;
+}
+
+.case-nav-status-link {
+    position: relative;
+    display: block;
+    width: fit-content;
+    color: #9ca3af;
+    font-weight: 700;
+    line-height: 1.25;
+    transition:
+        color 220ms ease,
+        transform 220ms ease,
+        opacity 220ms ease;
+}
+
+.case-nav-status-link::before {
+    content: "";
+    position: absolute;
+    left: -1.35rem;
+    top: 50%;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    transform: translateY(-50%);
+    transition:
+        background 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        width 220ms ease,
+        height 220ms ease;
+}
+
+.case-nav-status-link::after {
+    content: "";
+    position: absolute;
+    left: -0.78rem;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: #111111;
+    transform: translateY(-50%);
+    transition: width 220ms ease;
+}
+
+.case-nav-status-link:hover {
+    color: #111111;
+    transform: translateX(0.25rem);
+}
+
+.case-nav-status-link[data-scroll-active="true"] {
+    color: #111111;
+    transform: translateX(0.45rem);
+}
+
+.case-nav-status-link[data-scroll-active="true"]::before {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: #111111;
+    border-color: #111111;
+    box-shadow: 0 0 0 0.38rem rgba(17, 17, 17, 0.08);
+}
+
+.case-nav-status-link[data-scroll-active="true"]::after {
+    width: 0.85rem;
+}
+
+.case-nav-status-link[data-scroll-active="true"] + .case-nav-status-link {
+    color: #6b7280;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .case-nav-status-link,
+    .case-nav-status-link::before,
+    .case-nav-status-link::after {
+        transition: none;
+    }
+}
