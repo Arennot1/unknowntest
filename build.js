@@ -402,8 +402,8 @@ routes.push({
 for (const p of projects) {
     routes.push({
         outPath: `projects/${p.id}/index.html`, depth: 2,
-        title: `${p.title} | Areen Pednekar`,
-        description: p.subtitle,
+        title: p.pageTitle || `${p.title} | Areen Pednekar`,
+        description: p.metaDescription || p.subtitle,
         body: `    <div id="content-view">\n${renderHeader({ backHref: 'projects/', active: 'Projects' })}\n${renderCaseStudyBody(p)}\n${FOOTER}\n    </div>`,
     });
 }
