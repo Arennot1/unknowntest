@@ -234,7 +234,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; }
 .research-view-more:hover { opacity: 0.55; }
 .research-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .research-grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.research-track { display: flex; gap: 1rem; padding: 0.25rem 1.25rem 1.75rem 0.25rem; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-width: thin; touch-action: pan-y; cursor: grab; }
+.research-track { display: flex; gap: 1rem; padding: 0.25rem 1.25rem 1.75rem 0.25rem; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-width: thin; -webkit-overflow-scrolling: touch; touch-action: pan-x; cursor: grab; }
 .research-track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
 .research-track .research-entry { flex: 0 0 clamp(12.5rem, 20vw, 17rem); aspect-ratio: 0.74; min-height: 0; scroll-snap-align: start; }
 .research-entry { display: flex; min-height: 260px; flex-direction: column; justify-content: flex-end; padding: clamp(1.4rem, 2.2vw, 2.15rem); border: 1px solid #e5e7eb; border-radius: 1rem; background: #fafafa; color: #111827; transition: transform 180ms ease, box-shadow 180ms ease; }
@@ -273,6 +273,13 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; }
 .research-paper-card-body a { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.7rem; margin-top: auto; border-radius: 999px; padding: 0.72rem 0.8rem; background: #000; color: white; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
 .research-paper-card-body a:hover { opacity: 0.75; }
 .research-catalog-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.research-breadcrumbs { margin: 0 0 clamp(2rem, 5vw, 4rem); color: #6b7280; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+.research-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+.research-breadcrumbs li { display: flex; align-items: center; gap: 0.5rem; }
+.research-breadcrumbs li:not(:last-child)::after { content: '/'; color: #9ca3af; }
+.research-breadcrumbs a { color: inherit; text-decoration: none; }
+.research-breadcrumbs a:hover { color: #111827; }
+.research-breadcrumbs [aria-current="page"] { color: #111827; }
 .research-article { width: min(100% - 2.5rem, 780px); margin: 0 auto; padding: 9rem 0 7rem; }
 .research-article header { margin-bottom: 4rem; }
 .research-article header p { margin: 0 0 1rem; color: #6b7280; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
@@ -282,7 +289,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; }
 .research-article-copy h2 { margin: 3rem 0 1rem; color: #111827; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.04em; }
 .research-article-copy p { margin: 0 0 1.25rem; }
 @media (max-width: 1100px) { .research-catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 767px) { .research-track .research-paper-card { flex-basis: min(78vw, 19rem); } .research-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .research-catalog-grid .research-paper-card { min-height: 28rem; } .research-catalog-grid .research-paper-card-head { min-height: 13.5rem; } }
+@media (max-width: 767px) { .research-track .research-paper-card { flex-basis: min(78vw, 19rem); } .research-catalog-grid { grid-template-columns: 1fr; } .research-catalog-grid .research-paper-card { min-height: 31rem; } .research-catalog-grid .research-paper-card-head { min-height: 15.5rem; } }
 @media (max-width: 900px) { .research-grid-three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) { #research-content { padding: 6rem 1.25rem 4rem; } .research-hero { margin-bottom: 4rem; } .research-stream-heading { gap: 1rem; } .research-view-more { font-size: 0.68rem; } .research-grid, .research-grid-three { grid-template-columns: 1fr; } .research-track { padding-right: 1rem; cursor: auto; } .research-track .research-entry { flex-basis: min(68vw, 17rem); } .research-entry, .research-entry-featured { min-height: 240px; } .research-entry h3 { font-size: 1.65rem; } }
 

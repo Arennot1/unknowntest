@@ -339,6 +339,12 @@ const RESEARCH_COLLECTIONS = [
 ];
 
 function researchArticleSlug(title) { return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function renderBreadcrumbs(items) {
+    return `<nav class="research-breadcrumbs" aria-label="Breadcrumb"><ol>${items.map((item, index) => `<li>${index === items.length - 1 ? `<span aria-current="page">${item.name}</span>` : `<a href="${item.href}" data-transition>${item.name}</a>`}</li>`).join('')}</ol></nav>`;
+}
+function breadcrumbData(items) {
+    return { '@type': 'BreadcrumbList', itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) };
+}
 function renderResearchCard(collection, title, index) {
     const slug = researchArticleSlug(title);
     const subtitle = index === 1 && collection.slug === 'methodology' ? 'A Comparative Analysis of Ergonomic Feedback in Gaming.' : 'A working research note on systems, behavior, and practical design decisions.';
@@ -346,10 +352,10 @@ function renderResearchCard(collection, title, index) {
     return `<article class="research-paper-card"><div class="research-paper-card-head"><p>Published draft</p><h3>${title}</h3><span>${subtitle}</span><small>September 2026 <b>•</b> 8 min read</small></div><div class="research-paper-card-body"><div class="research-paper-tags">${collection.tags.map(tag => `<span>${tag}</span>`).join('')}</div><p>${abstract}</p><a href="research/${collection.slug}/${slug}/" data-transition>Read full paper <span aria-hidden="true">→</span></a></div></article>`;
 }
 function renderResearchIndex() {
-    return `<main class="research-index" aria-labelledby="research-page-title"><header class="research-hero"><h1 id="research-page-title">Research</h1><p>Notes on systems, behavior, and the practical realities that shape products.</p></header>${RESEARCH_COLLECTIONS.map(collection => `<section class="research-stream" aria-labelledby="${collection.slug}-title"><div class="research-stream-heading"><div><h2 id="${collection.slug}-title">${collection.title}</h2><p>${collection.description}</p></div><a href="research/${collection.slug}/" data-transition class="research-view-more">View collection</a></div><div class="research-track">${collection.items.map((title, index) => renderResearchCard(collection, title, index)).join('')}</div></section>`).join('')}</main>`;
+    return `<main class="research-index" aria-labelledby="research-page-title">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research' }])}<header class="research-hero"><h1 id="research-page-title">Research</h1><p>Notes on systems, behavior, and the practical realities that shape products.</p></header>${RESEARCH_COLLECTIONS.map(collection => `<section class="research-stream" aria-labelledby="${collection.slug}-title"><div class="research-stream-heading"><div><h2 id="${collection.slug}-title">${collection.title}</h2><p>${collection.description}</p></div><a href="research/${collection.slug}/" data-transition class="research-view-more">View collection</a></div><div class="research-track" role="region" aria-label="${collection.title} article carousel" tabindex="0">${collection.items.map((title, index) => renderResearchCard(collection, title, index)).join('')}</div></section>`).join('')}</main>`;
 }
 function renderResearchCollection(collection) {
-    return `<main class="research-catalog" aria-labelledby="catalog-title"><header><p class="research-catalog-kicker">Research collection</p><h1 id="catalog-title">${collection.title}</h1><p>${collection.description}</p></header><section aria-labelledby="catalog-entries-title"><h2 id="catalog-entries-title">All entries</h2><div class="research-catalog-grid">${collection.items.map((item, index) => renderResearchCard(collection, item, index)).join('')}</div></section></main>`;
+    return `<main class="research-catalog" aria-labelledby="catalog-title">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research', href: 'research/' }, { name: collection.title }])}<header><p class="research-catalog-kicker">Research collection</p><h1 id="catalog-title">${collection.title}</h1><p>${collection.description}</p></header><section aria-labelledby="catalog-entries-title"><h2 id="catalog-entries-title">All entries</h2><div class="research-catalog-grid">${collection.items.map((item, index) => renderResearchCard(collection, item, index)).join('')}</div></section></main>`;
 }
 
 routes.push({
@@ -430,12 +436,13 @@ routes.push({
     outPath: 'research/index.html', depth: 1,
     title: 'Research | Areen Pednekar',
     description: 'The Tactile Dissonance: a comparative analysis of ergonomic feedback in gaming, by Areen Pednekar.',
+    extraHead: `<link rel="canonical" href="${SITE_URL}/research/"><meta property="og:type" content="website"><meta property="og:title" content="Research | Areen Pednekar"><meta property="og:description" content="Notes on systems, behavior, and the practical realities that shape products."><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'CollectionPage', name: 'Research', url: `${SITE_URL}/research/` }, breadcrumbData([{ name: 'Home', url: SITE_URL }, { name: 'Research', url: `${SITE_URL}/research/` }])] })}</script>`,
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${renderResearchIndex()}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 for (const collection of RESEARCH_COLLECTIONS) {
     const canonical = `${SITE_URL}/research/${collection.slug}/`;
-    const structuredData = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: collection.title, description: collection.description, url: canonical });
+    const structuredData = JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'CollectionPage', name: collection.title, description: collection.description, url: canonical }, breadcrumbData([{ name: 'Home', url: SITE_URL }, { name: 'Research', url: `${SITE_URL}/research/` }, { name: collection.title, url: canonical }])] });
     routes.push({
         outPath: `research/${collection.slug}/index.html`, depth: 2,
         title: `${collection.title} | Areen Pednekar`,
@@ -446,7 +453,8 @@ for (const collection of RESEARCH_COLLECTIONS) {
     for (const item of collection.items) {
         const slug = researchArticleSlug(item);
         const articleUrl = `${canonical}${slug}/`;
-        routes.push({ outPath: `research/${collection.slug}/${slug}/index.html`, depth: 3, title: `${item} | Areen Pednekar`, description: `Research article: ${item}.`, extraHead: `<link rel="canonical" href="${articleUrl}"><meta property="og:type" content="article"><meta property="og:title" content="${item} | Areen Pednekar"><meta property="og:description" content="Research article: ${item}.">`, body: `    <div id="content-view">\n${renderHeader({ backHref: `research/${collection.slug}/`, active: 'Research' })}\n        <article class="research-article"><header><p>${collection.title}</p><h1>${item}</h1><span>September 2026 · 8 min read</span></header><div class="research-article-copy"><h2>Research note</h2><p>This is a placeholder for the complete article. It is structured as a focused research paper, with a clear argument, supporting evidence, and practical implications for designers.</p><p>The full piece will place the research in context, explain the methods used, and document the observations that informed the final point of view.</p><h2>Working implications</h2><p>These notes will expand into examples, source material, and decision-making guidance as the article is developed.</p></div></article>\n${FOOTER}\n    </div>` });
+        const articleSchema = JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'Article', headline: item, description: `Research article: ${item}.`, datePublished: '2026-09-01', dateModified: '2026-09-01', mainEntityOfPage: articleUrl, author: { '@type': 'Person', name: 'Areen Pednekar' } }, breadcrumbData([{ name: 'Home', url: SITE_URL }, { name: 'Research', url: `${SITE_URL}/research/` }, { name: collection.title, url: canonical }, { name: item, url: articleUrl }])] });
+        routes.push({ outPath: `research/${collection.slug}/${slug}/index.html`, depth: 3, title: `${item} | Areen Pednekar`, description: `Research article: ${item}.`, extraHead: `<link rel="canonical" href="${articleUrl}"><meta property="og:type" content="article"><meta property="og:title" content="${item} | Areen Pednekar"><meta property="og:description" content="Research article: ${item}."><script type="application/ld+json">${articleSchema}</script>`, body: `    <div id="content-view">\n${renderHeader({ backHref: `research/${collection.slug}/`, active: 'Research' })}\n        <article class="research-article">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research', href: 'research/' }, { name: collection.title, href: `research/${collection.slug}/` }, { name: item }])}<header><p>${collection.title}</p><h1>${item}</h1><span>September 2026 · 8 min read</span></header><div class="research-article-copy"><h2>Research note</h2><p>This is a placeholder for the complete article. It is structured as a focused research paper, with a clear argument, supporting evidence, and practical implications for designers.</p><p>The full piece will place the research in context, explain the methods used, and document the observations that informed the final point of view.</p><h2>Working implications</h2><p>These notes will expand into examples, source material, and decision-making guidance as the article is developed.</p></div></article>\n${FOOTER}\n    </div>` });
     }
 }
 
