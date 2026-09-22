@@ -332,6 +332,15 @@ ${renderCaseStudyStatusScript(p.id)}
 
 // ---------- route table ----------
 const routes = [];
+const RESEARCH_COLLECTIONS = [
+    { slug: 'strategic-hot-takes', title: 'Strategic Hot Takes & Articles', description: 'Short-form essays on systems design, session-based continuity, and generative discovery.', items: ['Why products need session-based continuity', 'Designing for generative engines', 'When terminology gets in the way of usability'] },
+    { slug: 'methodology', title: 'Methodology Deep Dives', description: 'Evidence-led studies on specialist design methods, cognitive ergonomics, and inclusive interfaces.', items: ['Designing complex financial interfaces for older adults', 'The Tactile Dissonance', 'Making cognitive load visible in service systems'] },
+    { slug: 'field-notes', title: 'Unpublished Field Notes', description: 'Working observations from fabrication, manufacturing floors, and artisan workshops.', items: ['What full-scale metalwork taught us about domestic comfort', 'Cognitive load on the manufacturing floor', 'Designing for the reality of an artisan workshop'] },
+];
+
+function renderResearchCollection(collection) {
+    return `<main class="research-catalog" aria-labelledby="catalog-title"><header><p class="research-catalog-kicker">Research collection</p><h1 id="catalog-title">${collection.title}</h1><p>${collection.description}</p></header><section aria-labelledby="catalog-entries-title"><h2 id="catalog-entries-title">All entries</h2><div class="research-catalog-grid">${collection.items.map((item, index) => `<article class="research-entry${index === 1 ? ' research-entry-dark' : ''}"><p class="research-entry-meta">Research note · In development</p><h3>${item}</h3><p>Full notes, sources, and working observations for this research stream.</p></article>`).join('')}</div></section></main>`;
+}
 
 routes.push({
     outPath: 'index.html', depth: 0,
@@ -413,6 +422,18 @@ routes.push({
     description: 'The Tactile Dissonance: a comparative analysis of ergonomic feedback in gaming, by Areen Pednekar.',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${fragments.research}\n        </div>\n${FOOTER}\n    </div>`,
 });
+
+for (const collection of RESEARCH_COLLECTIONS) {
+    const canonical = `${SITE_URL}/research/${collection.slug}/`;
+    const structuredData = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: collection.title, description: collection.description, url: canonical });
+    routes.push({
+        outPath: `research/${collection.slug}/index.html`, depth: 2,
+        title: `${collection.title} | Areen Pednekar`,
+        description: collection.description,
+        extraHead: `<link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:title" content="${collection.title} | Areen Pednekar"><meta property="og:description" content="${collection.description}"><script type="application/ld+json">${structuredData}</script>`,
+        body: `    <div id="content-view">\n${renderHeader({ backHref: 'research/', active: 'Research' })}\n        <div id="research-content">\n${renderResearchCollection(collection)}\n        </div>\n${FOOTER}\n    </div>`,
+    });
+}
 
 routes.push({
     outPath: 'resume/index.html', depth: 1,

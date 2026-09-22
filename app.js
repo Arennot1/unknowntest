@@ -399,6 +399,34 @@ function initOffCanvasTracks() {
     });
 }
 
+function initResearchTracks() {
+    document.querySelectorAll('.research-track').forEach(track => {
+        let dragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+        track.addEventListener('pointerdown', event => {
+            if (event.pointerType !== 'mouse') return;
+            dragging = true;
+            startX = event.clientX;
+            startScrollLeft = track.scrollLeft;
+            track.classList.add('is-dragging');
+            track.setPointerCapture(event.pointerId);
+        });
+        track.addEventListener('pointermove', event => {
+            if (!dragging) return;
+            track.scrollLeft = startScrollLeft - (event.clientX - startX);
+        });
+        const stopDragging = event => {
+            if (!dragging) return;
+            dragging = false;
+            track.classList.remove('is-dragging');
+            if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        };
+        track.addEventListener('pointerup', stopDragging);
+        track.addEventListener('pointercancel', stopDragging);
+    });
+}
+
 // ---------------- Off-Canvas image lightbox ----------------
 function initOffCanvas() {
     const lightbox = document.getElementById('offCanvasLightbox');
@@ -946,6 +974,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initLogoRipple();
     initDiecastDash();
     initOffCanvasTracks();
+    initResearchTracks();
     initOffCanvas();
     startGreetingCarousel();
     initCustomCursor();
