@@ -41,7 +41,7 @@ const fragments = {
     research: readFragment('research.html'),
 };
 
-const BASE_BY_DEPTH = ['./', '../', '../../'];
+const BASE_BY_DEPTH = ['./', '../', '../../', '../../../'];
 
 // ---------- shared page shell ----------
 function renderShell({ depth, title, description, body: bodyHTML, extraHead = '' }) {
@@ -333,13 +333,23 @@ ${renderCaseStudyStatusScript(p.id)}
 // ---------- route table ----------
 const routes = [];
 const RESEARCH_COLLECTIONS = [
-    { slug: 'strategic-hot-takes', title: 'Strategic Hot Takes & Articles', description: 'Short-form essays on systems design, session-based continuity, and generative discovery.', items: ['Why products need session-based continuity', 'Designing for generative engines', 'When terminology gets in the way of usability'] },
-    { slug: 'methodology', title: 'Methodology Deep Dives', description: 'Evidence-led studies on specialist design methods, cognitive ergonomics, and inclusive interfaces.', items: ['Designing complex financial interfaces for older adults', 'The Tactile Dissonance', 'Making cognitive load visible in service systems'] },
-    { slug: 'field-notes', title: 'Unpublished Field Notes', description: 'Working observations from fabrication, manufacturing floors, and artisan workshops.', items: ['What full-scale metalwork taught us about domestic comfort', 'Cognitive load on the manufacturing floor', 'Designing for the reality of an artisan workshop'] },
+    { slug: 'strategic-hot-takes', title: 'Strategic Hot Takes & Articles', description: 'Short-form essays on systems design, session-based continuity, and generative discovery.', tags: ['SYSTEMS', 'UX', 'STRATEGY'], items: ['Why products need session-based continuity', 'Designing for generative engines', 'When terminology gets in the way of usability', 'The hidden cost of broken context', 'Designing for discovery beyond search'] },
+    { slug: 'methodology', title: 'Methodology Deep Dives', description: 'Evidence-led studies on specialist design methods, cognitive ergonomics, and inclusive interfaces.', tags: ['HCI', 'ERGONOMICS', 'RESEARCH'], items: ['Designing complex financial interfaces for older adults', 'The Tactile Dissonance', 'Making cognitive load visible in service systems', 'A field guide to contextual inquiry', 'Testing interfaces under real constraints'] },
+    { slug: 'field-notes', title: 'Unpublished Field Notes', description: 'Working observations from fabrication, manufacturing floors, and artisan workshops.', tags: ['FIELDWORK', 'SYSTEMS', 'MAKING'], items: ['What full-scale metalwork taught us about domestic comfort', 'Cognitive load on the manufacturing floor', 'Designing for the reality of an artisan workshop', 'Fabrication notes from Koya', 'What dust and heat change in a product system'] },
 ];
 
+function researchArticleSlug(title) { return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function renderResearchCard(collection, title, index) {
+    const slug = researchArticleSlug(title);
+    const subtitle = index === 1 && collection.slug === 'methodology' ? 'A Comparative Analysis of Ergonomic Feedback in Gaming.' : 'A working research note on systems, behavior, and practical design decisions.';
+    const abstract = index === 1 && collection.slug === 'methodology' ? 'The contemporary video game industry faces a paradox...' : 'A concise starting point for the full article and its supporting observations.';
+    return `<article class="research-paper-card"><div class="research-paper-card-head"><p>Published draft</p><h3>${title}</h3><span>${subtitle}</span><small>September 2026 <b>•</b> 8 min read</small></div><div class="research-paper-card-body"><div class="research-paper-tags">${collection.tags.map(tag => `<span>${tag}</span>`).join('')}</div><p>${abstract}</p><a href="research/${collection.slug}/${slug}/" data-transition>Read full paper <span aria-hidden="true">→</span></a></div></article>`;
+}
+function renderResearchIndex() {
+    return `<main class="research-index" aria-labelledby="research-page-title"><header class="research-hero"><h1 id="research-page-title">Research</h1><p>Notes on systems, behavior, and the practical realities that shape products.</p></header>${RESEARCH_COLLECTIONS.map(collection => `<section class="research-stream" aria-labelledby="${collection.slug}-title"><div class="research-stream-heading"><div><h2 id="${collection.slug}-title">${collection.title}</h2><p>${collection.description}</p></div><a href="research/${collection.slug}/" data-transition class="research-view-more">View collection</a></div><div class="research-track">${collection.items.map((title, index) => renderResearchCard(collection, title, index)).join('')}</div></section>`).join('')}</main>`;
+}
 function renderResearchCollection(collection) {
-    return `<main class="research-catalog" aria-labelledby="catalog-title"><header><p class="research-catalog-kicker">Research collection</p><h1 id="catalog-title">${collection.title}</h1><p>${collection.description}</p></header><section aria-labelledby="catalog-entries-title"><h2 id="catalog-entries-title">All entries</h2><div class="research-catalog-grid">${collection.items.map((item, index) => `<article class="research-entry${index === 1 ? ' research-entry-dark' : ''}"><p class="research-entry-meta">Research note · In development</p><h3>${item}</h3><p>Full notes, sources, and working observations for this research stream.</p></article>`).join('')}</div></section></main>`;
+    return `<main class="research-catalog" aria-labelledby="catalog-title"><header><p class="research-catalog-kicker">Research collection</p><h1 id="catalog-title">${collection.title}</h1><p>${collection.description}</p></header><section aria-labelledby="catalog-entries-title"><h2 id="catalog-entries-title">All entries</h2><div class="research-catalog-grid">${collection.items.map((item, index) => renderResearchCard(collection, item, index)).join('')}</div></section></main>`;
 }
 
 routes.push({
@@ -420,7 +430,7 @@ routes.push({
     outPath: 'research/index.html', depth: 1,
     title: 'Research | Areen Pednekar',
     description: 'The Tactile Dissonance: a comparative analysis of ergonomic feedback in gaming, by Areen Pednekar.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${fragments.research}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Research' })}\n        <div id="research-content">\n${renderResearchIndex()}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 for (const collection of RESEARCH_COLLECTIONS) {
@@ -433,6 +443,11 @@ for (const collection of RESEARCH_COLLECTIONS) {
         extraHead: `<link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:title" content="${collection.title} | Areen Pednekar"><meta property="og:description" content="${collection.description}"><script type="application/ld+json">${structuredData}</script>`,
         body: `    <div id="content-view">\n${renderHeader({ backHref: 'research/', active: 'Research' })}\n        <div id="research-content">\n${renderResearchCollection(collection)}\n        </div>\n${FOOTER}\n    </div>`,
     });
+    for (const item of collection.items) {
+        const slug = researchArticleSlug(item);
+        const articleUrl = `${canonical}${slug}/`;
+        routes.push({ outPath: `research/${collection.slug}/${slug}/index.html`, depth: 3, title: `${item} | Areen Pednekar`, description: `Research article: ${item}.`, extraHead: `<link rel="canonical" href="${articleUrl}"><meta property="og:type" content="article"><meta property="og:title" content="${item} | Areen Pednekar"><meta property="og:description" content="Research article: ${item}.">`, body: `    <div id="content-view">\n${renderHeader({ backHref: `research/${collection.slug}/`, active: 'Research' })}\n        <article class="research-article"><header><p>${collection.title}</p><h1>${item}</h1><span>September 2026 · 8 min read</span></header><div class="research-article-copy"><h2>Research note</h2><p>This is a placeholder for the complete article. It is structured as a focused research paper, with a clear argument, supporting evidence, and practical implications for designers.</p><p>The full piece will place the research in context, explain the methods used, and document the observations that informed the final point of view.</p><h2>Working implications</h2><p>These notes will expand into examples, source material, and decision-making guidance as the article is developed.</p></div></article>\n${FOOTER}\n    </div>` });
+    }
 }
 
 routes.push({

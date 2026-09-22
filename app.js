@@ -402,11 +402,13 @@ function initOffCanvasTracks() {
 function initResearchTracks() {
     document.querySelectorAll('.research-track').forEach(track => {
         let dragging = false;
+        let moved = false;
         let startX = 0;
         let startScrollLeft = 0;
         track.addEventListener('pointerdown', event => {
             if (event.pointerType !== 'mouse') return;
             dragging = true;
+            moved = false;
             startX = event.clientX;
             startScrollLeft = track.scrollLeft;
             track.classList.add('is-dragging');
@@ -414,7 +416,9 @@ function initResearchTracks() {
         });
         track.addEventListener('pointermove', event => {
             if (!dragging) return;
-            track.scrollLeft = startScrollLeft - (event.clientX - startX);
+            const distance = event.clientX - startX;
+            if (Math.abs(distance) > 6) moved = true;
+            track.scrollLeft = startScrollLeft - distance;
         });
         const stopDragging = event => {
             if (!dragging) return;
@@ -424,6 +428,12 @@ function initResearchTracks() {
         };
         track.addEventListener('pointerup', stopDragging);
         track.addEventListener('pointercancel', stopDragging);
+        track.addEventListener('click', event => {
+            if (!moved) return;
+            event.preventDefault();
+            event.stopPropagation();
+            moved = false;
+        }, true);
     });
 }
 
