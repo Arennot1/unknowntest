@@ -344,7 +344,61 @@ function initDiecastDash() {
     closeBtn.addEventListener('click', closeGame);
 }
 
-// ---------------- Off-Canvas image lightbox (About/Hi page only) ----------------
+// ---------------- Off-Canvas gallery ----------------
+function initOffCanvasTracks() {
+    const gallery = document.getElementById('offcanvas-content');
+    if (!gallery) return;
+
+    gallery.querySelectorAll('.off-canvas-track').forEach(track => {
+        const sourceCard = track.querySelector('[data-off-canvas-card]');
+        if (!sourceCard) return;
+
+        // Repeat the supplied image as a layout preview until each collection
+        // receives its own additional photographs.
+        for (let index = 0; index < 3; index += 1) {
+            track.appendChild(sourceCard.cloneNode(true));
+        }
+
+        let dragging = false;
+        let moved = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        track.addEventListener('pointerdown', event => {
+            if (event.pointerType !== 'mouse') return;
+            dragging = true;
+            moved = false;
+            startX = event.clientX;
+            startScrollLeft = track.scrollLeft;
+            track.classList.add('is-dragging');
+            track.setPointerCapture(event.pointerId);
+        });
+
+        track.addEventListener('pointermove', event => {
+            if (!dragging) return;
+            const distance = event.clientX - startX;
+            if (Math.abs(distance) > 6) moved = true;
+            track.scrollLeft = startScrollLeft - distance;
+        });
+
+        const stopDragging = event => {
+            if (!dragging) return;
+            dragging = false;
+            track.classList.remove('is-dragging');
+            if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        };
+        track.addEventListener('pointerup', stopDragging);
+        track.addEventListener('pointercancel', stopDragging);
+        track.addEventListener('click', event => {
+            if (!moved) return;
+            event.preventDefault();
+            event.stopPropagation();
+            moved = false;
+        }, true);
+    });
+}
+
+// ---------------- Off-Canvas image lightbox ----------------
 function initOffCanvas() {
     const lightbox = document.getElementById('offCanvasLightbox');
     const closeBtn = document.getElementById('offCanvasClose');
@@ -890,6 +944,7 @@ window.addEventListener('DOMContentLoaded', () => {
     wireTransitionLinks();
     initLogoRipple();
     initDiecastDash();
+    initOffCanvasTracks();
     initOffCanvas();
     startGreetingCarousel();
     initCustomCursor();
