@@ -35,7 +35,7 @@ function wireTransitionLinks() {
 
 window.scrollToSection = function (sectionId) {
     const target = document.getElementById(sectionId);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (target) target.scrollIntoView({ behavior: REDUCE_MOTION ? 'auto' : 'smooth', block: 'start' });
 };
 
 window.filterProjects = function (event, category) {
@@ -49,7 +49,7 @@ window.filterProjects = function (event, category) {
         const categories = (card.getAttribute('data-categories') || '').split(' ');
         if (category === 'all' || categories.includes(category)) {
             card.style.display = 'block';
-            if (typeof gsap !== 'undefined') {
+            if (!REDUCE_MOTION && typeof gsap !== 'undefined') {
                 gsap.fromTo(card, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
             }
         } else {
@@ -73,7 +73,7 @@ window.openResearchFull = function () {
 
 function startGreetingCarousel() {
     const words = document.querySelectorAll('.greeting-word');
-    if (!words.length) return;
+    if (!words.length || REDUCE_MOTION) return;
     let currentIndex = 0;
     words.forEach(w => w.classList.remove('active'));
     words[0].classList.add('active');
@@ -610,7 +610,7 @@ function initStatCounters() {
 function initLogoCarousel() {
     const carousel = document.getElementById('logo-carousel');
     const track = document.getElementById('logo-carousel-track');
-    if (!carousel || !track) return;
+    if (!carousel || !track || REDUCE_MOTION) return;
 
     let offset = 0;
     let isDown = false, startX = 0, startOffset = 0, paused = false;
