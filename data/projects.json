@@ -2,6 +2,7 @@
   {
     "id": "dr-reddys-npd",
     "category": "research",
+    "filterCategories": ["uiux", "research"],
     "title": "Dr. Reddy's Tech Transfer Redesign",
     "projectLabel": "Dr. Reddy's Laboratories • Service & Information Design • 2025",
     "heroTitle": "Accelerating Tech Transfer",
@@ -58,6 +59,7 @@
   {
     "id": "surfing",
     "category": "uiux",
+    "filterCategories": ["uiux"],
     "title": "Surfing App",
     "projectLabel": "Surfing App • UI/UX Concept • 2024",
     "heroTitle": "The Future of Wave Tracking",
@@ -161,6 +163,7 @@
   {
     "id": "kaari",
     "category": "uiux",
+    "filterCategories": ["uiux", "research"],
     "title": "Kaari",
     "projectLabel": "Kaari • Service & Hardware Design • 2024",
     "heroTitle": "Bypassing the Middleman",
@@ -302,6 +305,7 @@
   {
     "id": "koya",
     "category": "industrial",
+    "filterCategories": ["industrial", "research"],
     "title": "Koya",
     "projectLabel": "Koya • Industrial Design & Branding • 2024",
     "heroTitle": "Brutalism Meets the Living Room",
@@ -392,6 +396,7 @@
   {
     "id": "yuma",
     "category": "industrial",
+    "filterCategories": ["uiux", "industrial"],
     "title": "Yuma Hardware",
     "subtitle": "Next generation IoT device enclosure design.",
     "tagLine": "Yuma Hardware Design",
@@ -427,6 +432,7 @@
   {
     "id": "smoothie",
     "category": "industrial",
+    "filterCategories": ["uiux", "industrial"],
     "title": "Smoothie Machine",
     "subtitle": "Industrial design concept for a high-volume commercial blender.",
     "tagLine": "Smoothie Machine",

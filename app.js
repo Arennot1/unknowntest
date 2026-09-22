@@ -46,7 +46,8 @@ window.filterProjects = function (event, category) {
     activeBtn.classList.add('filter-active');
 
     document.querySelectorAll('.project-card').forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
+        const categories = (card.getAttribute('data-categories') || '').split(' ');
+        if (category === 'all' || categories.includes(category)) {
             card.style.display = 'block';
             if (typeof gsap !== 'undefined') {
                 gsap.fromTo(card, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });

@@ -122,7 +122,8 @@ const CARD_ASPECT = 'aspect-[4/3]';
 const CARD_ASPECT_RATIO = 4 / 3;
 
 function renderCard(p) {
-    return `<a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group mb-6 lg:mb-8 block" data-category="${p.category}">
+    const filterCategories = p.filterCategories || [p.category];
+    return `<a href="projects/${p.id}/" data-transition data-cursor-icon="eye" data-cursor-text="VIEW CASE STUDY" class="project-card cursor-pointer group mb-6 lg:mb-8 block" data-categories="${filterCategories.join(' ')}">
                         <div class="w-full ${CARD_ASPECT} ${p.thumbnail.bgClass} overflow-hidden relative mb-4 flex items-center justify-center">${renderMedia(p.thumbnail, p.title + ' thumbnail')}</div>
                         <div class="flex flex-col xl:flex-row xl:justify-between xl:items-baseline">
                             <h4 class="text-xl font-bold text-black">${p.tagLine}</h4><div class="flex flex-wrap items-center gap-2 mt-1 xl:mt-0"><span class="text-[10px] text-gray-500 font-meta uppercase tracking-[0.15em]">${p.tagMeta}</span>${p.badge ? `<span class="rounded-full border border-black px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-black">${p.badge}</span>` : ''}</div>
