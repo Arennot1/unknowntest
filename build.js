@@ -138,6 +138,8 @@ const CLIENT_LOGOS = [
     { name: 'Prototyze', image: 'assets/clients/prototyze.png' },
     { name: 'Screen Root', image: 'assets/clients/screenroot.png' },
     { name: 'Deck Sherpa', image: 'assets/clients/deck-sherpa.png' },
+    { name: 'SIT', image: 'assets/clients/sit.png' },
+    { name: 'Future Factory', image: 'assets/clients/future-factory.png' },
 ];
 
 function renderLogoChip(client, hidden) {
@@ -368,8 +370,8 @@ routes.push({
                                 <span class="stat-label">Domains Explored</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-count" data-count-to="30" data-suffix="+">0</span>
-                                <span class="stat-label">Client Partnerships</span>
+                                <span class="stat-count" data-count-to="12" data-suffix="+">0</span>
+                                <span class="stat-label">Ecosystems Designed</span>
                             </div>
                         </div>
                     </div>
