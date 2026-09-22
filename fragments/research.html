@@ -1,16 +1,32 @@
-<div id="research-preview">
-                <div class="research-card">
-                    <div class="card-left">
-                        <div><div class="card-label">PUBLISHED DRAFT</div><h1 class="card-title">The Tactile Dissonance</h1><p class="card-subtitle">A Comparative Analysis of Ergonomic Feedback in Gaming.</p></div>
-                        <div class="card-meta"><span>Nov 2023</span><span>•</span><span>15 min read</span></div>
-                    </div>
-                    <div class="card-right">
-                        <div class="card-tags"><span class="card-tag">HCI</span><span class="card-tag">Ergonomics</span><span class="card-tag">Game Design</span></div>
-                        <p class="card-abstract">The contemporary video game industry faces a paradox...</p>
-                        <button class="btn-primary" onclick="openResearchFull()" data-cursor-quiet>Read Full Paper <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ml-2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></button>
-                    </div>
-                </div>
-            </div>
-            <div id="research-full">
-                <!-- Shortened for structure matching, fully handled in actual implementation -->
-            </div>
+<main class="research-index" aria-labelledby="research-page-title">
+    <header class="research-hero">
+        <h1 id="research-page-title">Research</h1>
+        <p>Notes on systems, behavior, and the practical realities that shape products.</p>
+    </header>
+
+    <section class="research-stream" aria-labelledby="strategic-takes-title">
+        <div class="research-stream-heading"><h2 id="strategic-takes-title">Strategic Hot Takes &amp; Articles</h2><p>Short-form essays on the shifts changing digital products and the language we use to describe them.</p></div>
+        <div class="research-grid">
+            <article class="research-entry research-entry-featured"><p class="research-entry-meta">In development · Systems design</p><h3>Why products need session-based continuity</h3><p>When information disappears between moments, users are forced to rebuild context. A case for systems that remember the work already done.</p></article>
+            <article class="research-entry"><p class="research-entry-meta">In development · Generative discovery</p><h3>Designing for generative engines</h3><p>What Generative Engine Optimization and a well-structured llms.txt file can mean for clearer, more discoverable design work.</p></article>
+        </div>
+    </section>
+
+    <section class="research-stream" aria-labelledby="methodology-title">
+        <div class="research-stream-heading"><h2 id="methodology-title">Methodology Deep Dives</h2><p>Longer, evidence-led studies on specialist design problems and the methods used to make them legible.</p></div>
+        <div class="research-grid research-grid-three">
+            <article class="research-entry"><p class="research-entry-meta">Research framework · 55+ interfaces</p><h3>Designing complex financial interfaces for older adults</h3><p>An ergonomic approach to banking and insurance platforms for people aged 55 and above.</p></article>
+            <article class="research-entry research-entry-dark"><p class="research-entry-meta">Published draft · HCI</p><h3>The Tactile Dissonance</h3><p>A comparative analysis of ergonomic feedback in gaming.</p><p class="research-entry-detail">November 2023 · 15 min read</p></article>
+            <article class="research-entry"><p class="research-entry-meta">Methods · Cognitive ergonomics</p><h3>Making cognitive load visible in service systems</h3><p>How observation, task analysis, and information hierarchy turn latent friction into design decisions.</p></article>
+        </div>
+    </section>
+
+    <section class="research-stream" aria-labelledby="field-notes-title">
+        <div class="research-stream-heading"><h2 id="field-notes-title">Unpublished Field Notes</h2><p>Raw observations that are too detailed for the main case studies, kept here as working evidence.</p></div>
+        <div class="research-grid research-grid-three">
+            <article class="research-entry"><p class="research-entry-meta">Koya · Fabrication</p><h3>What full-scale metalwork taught us about domestic comfort</h3><p>Notes from material trials, sharp-edge revisions, and the gap between a CAD model and a lived-in object.</p></article>
+            <article class="research-entry"><p class="research-entry-meta">Dr. Reddy's · Field observation</p><h3>Cognitive load on the manufacturing floor</h3><p>Observations on PPE, memory reliance, and why high-stakes instructions must be scannable in seconds.</p></article>
+            <article class="research-entry"><p class="research-entry-meta">Kaari · Ethnography</p><h3>Designing for the reality of an artisan workshop</h3><p>Field notes on dust, heat, language, and the physical conditions that determine whether a service can work.</p></article>
+        </div>
+    </section>
+</main>

@@ -174,12 +174,17 @@ function renderProjectGridDesktop() {
     ).join('\n');
 }
 
+function normalizeCaseHeadings(content) {
+    return content.replace(/<div class="case-subhead">([\s\S]*?)<\/div>/g, '<h3 class="case-subhead">$1</h3>');
+}
+
 function renderSectionHTML(project, key, label) {
     const s = project.sections[key];
     const id = `${project.id}-${key}`;
+    const content = normalizeCaseHeadings(s.content || '');
 
     if (s.type === 'rich') {
-        return `<section id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><div class="case-study-rich">${s.content}</div></section>`;
+        return `<section id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><div class="case-study-rich">${content}</div></section>`;
     }
 
     if (s.type === 'video') {
@@ -192,11 +197,11 @@ function renderSectionHTML(project, key, label) {
         return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><div class="w-full h-64 bg-gray-100 flex items-center justify-center rounded-lg">${body}</div></div>`;
     }
 
-    return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><p class="text-lg text-gray-600 font-light">${s.content}</p></div>`;
+    return `<div id="${id}" class="scroll-mt-32"><h2 class="text-2xl font-bold uppercase tracking-tight mb-8 border-b border-gray-200 pb-4">${label}</h2><p class="text-lg text-gray-600 font-light">${content}</p></div>`;
 }
 
 function renderCustomSectionHTML(project, section) {
-    return `<section id="${project.id}-${section.id}" class="scroll-mt-32"><div class="case-study-rich"><div class="case-eyebrow">${section.label}</div>${section.content}</div></section>`;
+    return `<section id="${project.id}-${section.id}" class="scroll-mt-32"><div class="case-study-rich"><div class="case-eyebrow">${section.label}</div>${normalizeCaseHeadings(section.content)}</div></section>`;
 }
 
 function renderCaseStudyStatusScript(projectId) {
@@ -339,14 +344,14 @@ routes.push({
     outPath: 'about/index.html', depth: 1,
     title: 'About | Areen Pednekar',
     description: 'Learn about Areen Pednekar, Product & Industrial Designer: background, roots, and how to get in touch.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Hi' })}\n        <div id="hi-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Hi' })}\n        <div id="hi-content">\n${fragments.hi.replace('<h1>Off-Canvas</h1>', '<h2>Off-Canvas</h2>')}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
     outPath: 'off-canvas/index.html', depth: 1,
     title: 'Off-Canvas | Areen Pednekar',
     description: 'A personal collection of creative practices by Areen Pednekar.',
-    body: `    <div id="content-view">\n${renderHeader({ backHref: 'about/', active: '' })}\n        <div id="offcanvas-content">\n${fragments.hi}\n        </div>\n${FOOTER}\n    </div>`,
+    body: `    <div id="content-view">\n${renderHeader({ backHref: 'about/', active: '' })}\n        <div id="offcanvas-content">\n${fragments.hi.replace('<h1 class="font-black text-4xl md:text-5xl mb-6 tracking-tighter text-center md:text-left">About Me</h1>', '<h2 class="font-black text-4xl md:text-5xl mb-6 tracking-tighter text-center md:text-left">About Me</h2>')}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
 routes.push({
