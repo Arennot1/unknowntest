@@ -46,6 +46,7 @@ const BASE_BY_DEPTH = ['./', '../', '../../', '../../../'];
 // ---------- shared page shell ----------
 function renderShell({ depth, title, description, body: bodyHTML, extraHead = '' }) {
     const base = BASE_BY_DEPTH[depth];
+    const hasInnerGrid = depth > 0;
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +64,8 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <link rel="stylesheet" href="styles.css">
     ${extraHead}
 </head>
-<body>
+<body${hasInnerGrid ? ' class="has-inner-grid"' : ''}>
+    ${hasInnerGrid ? '<canvas id="inner-webgl-grid" aria-hidden="true"></canvas><div id="inner-grid-coordinate" aria-hidden="true"></div>' : ''}
     <div id="transition-curtain"></div>
 ${bodyHTML}
     <script src="app.js"></script>
@@ -310,7 +312,7 @@ function renderCaseStudyBody(p) {
         ? customSections.map(section => renderCustomSectionHTML(p, section)).join('\n')
         : SECTION_ORDER.map(([key, label]) => renderSectionHTML(p, key, label)).join('\n');
 
-    return `        <div class="bg-white w-full min-h-screen text-black pb-32">
+    return `        <div class="inner-grid-surface bg-white w-full min-h-screen text-black pb-32">
             <div id="${p.id}-${customSections ? 'hero' : 'overview'}" class="w-full scroll-mt-32">
                 <div class="w-full h-[60vh] pt-20 md:pt-0 ${p.hero.bgClass} flex items-center justify-center">${renderMedia(p.hero, p.title + ' hero image')}</div>
                 <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-12">

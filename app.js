@@ -956,11 +956,142 @@ function initPullToRefresh() {
 
 }
 
+// ---------------- Inner-page WebGL grid ----------------
+// A single fragment-shader pass draws the low-contrast grid and faceted,
+// four-point stars. It is intentionally absent from the home route, which
+// owns its own click-reactive shader.
+function initInnerWebGLGrid() {
+    const canvas = document.getElementById('inner-webgl-grid');
+    const label = document.getElementById('inner-grid-coordinate');
+    if (!canvas || !label) return;
+
+    const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
+    if (!gl) return;
+
+    const vertexSource = `
+        attribute vec2 aPosition;
+        void main() { gl_Position = vec4(aPosition, 0.0, 1.0); }
+    `;
+    const fragmentSource = `
+        precision mediump float;
+        uniform vec2 uResolution;
+        uniform vec2 uPointer;
+        uniform float uCell;
+
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+        float roundedBox(vec2 p, vec2 b, float r) {
+            vec2 q = abs(p) - b + r;
+            return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+        }
+
+        void main() {
+            vec2 pixel = gl_FragCoord.xy;
+            vec2 grid = pixel / uCell;
+            vec2 id = floor(grid);
+            vec2 p = fract(grid) - 0.5;
+            float isCircle = step(0.5, hash(id));
+            float circle = abs(length(p) - 0.37);
+            float square = abs(roundedBox(p, vec2(0.38), 0.085));
+            float outlineDistance = mix(square, circle, isCircle);
+            float outline = 1.0 - smoothstep(0.006, 0.016, outlineDistance);
+
+            vec3 white = vec3(1.0);
+            vec3 grey = vec3(0.96862745);
+            vec3 color = mix(white, grey, outline * 0.92);
+
+            if (isCircle > 0.5) {
+                vec2 pointerCell = uPointer / uCell;
+                vec2 delta = pointerCell - (id + 0.5);
+                float proximity = 1.0 - smoothstep(0.0, 2.2, length(delta));
+                float tilt = atan(delta.y, delta.x) * 0.18;
+                float angle = atan(p.y, p.x) + tilt;
+                float radius = length(p);
+                float pointRadius = 0.105 + 0.15 * pow(abs(cos(angle * 2.0)), 7.0);
+                float star = 1.0 - smoothstep(pointRadius, pointRadius + 0.012, radius);
+                float facet = 0.32 + 0.68 * (0.5 + 0.5 * cos(angle * 2.0 - tilt * 3.0));
+                float lift = proximity * 0.22;
+                vec3 starColor = mix(grey, white, facet * 0.42 - lift * 0.12);
+                color = mix(color, starColor, star * 0.94);
+            }
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `;
+
+    function compile(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return gl.getShaderParameter(shader, gl.COMPILE_STATUS) ? shader : null;
+    }
+    const vertex = compile(gl.VERTEX_SHADER, vertexSource);
+    const fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+    if (!vertex || !fragment) return;
+    const program = gl.createProgram();
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+    gl.useProgram(program);
+
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const position = gl.getAttribLocation(program, 'aPosition');
+    gl.enableVertexAttribArray(position);
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+    const resolution = gl.getUniformLocation(program, 'uResolution');
+    const pointer = gl.getUniformLocation(program, 'uPointer');
+    const cell = gl.getUniformLocation(program, 'uCell');
+    let dpr = 1;
+    let cellSize = 96;
+    let pointerX = -1000;
+    let pointerY = -1000;
+
+    function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(window.innerWidth * dpr);
+        canvas.height = Math.round(window.innerHeight * dpr);
+        cellSize = Math.round(Math.max(76, Math.min(132, Math.min(window.innerWidth, window.innerHeight) / 7.5))) * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    function draw() {
+        gl.uniform2f(resolution, canvas.width, canvas.height);
+        gl.uniform2f(pointer, pointerX, pointerY);
+        gl.uniform1f(cell, cellSize);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    function updatePointer(event) {
+        pointerX = event.clientX * dpr;
+        pointerY = (window.innerHeight - event.clientY) * dpr;
+        const col = Math.floor(pointerX / cellSize) + 1;
+        const row = Math.floor(pointerY / cellSize) + 1;
+        label.textContent = `${row}, ${col}`;
+        label.style.left = `${Math.min(event.clientX + 12, window.innerWidth - 64)}px`;
+        label.style.top = `${Math.min(event.clientY + 12, window.innerHeight - 28)}px`;
+        label.classList.add('is-visible');
+        draw();
+    }
+    function clearPointer() {
+        pointerX = -1000;
+        pointerY = -1000;
+        label.classList.remove('is-visible');
+        draw();
+    }
+
+    window.addEventListener('resize', () => { resize(); draw(); }, { passive: true });
+    window.addEventListener('pointermove', updatePointer, { passive: true });
+    window.addEventListener('pointerleave', clearPointer, { passive: true });
+    resize();
+    draw();
+}
+
 // ---------------- Boot ----------------
 window.addEventListener('DOMContentLoaded', () => {
     curtain = document.getElementById('transition-curtain');
     wireTransitionLinks();
     initLogoRipple();
+    initInnerWebGLGrid();
     initDiecastDash();
     initOffCanvasTracks();
     initResearchTracks();
