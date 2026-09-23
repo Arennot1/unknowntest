@@ -41,8 +41,6 @@ body {
 /* Inner-page WebGL grid: fixed behind page content, without capturing input. */
 body.has-inner-grid { position: relative; isolation: isolate; background: #FFFFFF; }
 #inner-webgl-grid { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
-#inner-grid-coordinate { position: fixed; z-index: 120; pointer-events: none; padding: 0.2rem 0.35rem; border-radius: 0.25rem; background: rgba(255, 255, 255, 0.78); color: #6b7280; font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; opacity: 0; transform: translateY(3px); transition: opacity 160ms ease, transform 160ms ease; }
-#inner-grid-coordinate.is-visible { opacity: 1; transform: translateY(0); }
 body.has-inner-grid #content-view,
 body.has-inner-grid #hi-content,
 body.has-inner-grid #offcanvas-content,
@@ -54,13 +52,9 @@ body.has-inner-grid .inner-grid-surface { background-color: transparent !importa
 body.inner-grid-case-study #inner-webgl-grid { clip-path: inset(0 100% 0 0); opacity: 0; }
 body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 66% 0 0); opacity: 0.68; }
 body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 76%); opacity: 0.7; }
-body.inner-grid-case-study #inner-grid-coordinate,
-body.inner-grid-research-article #inner-grid-coordinate,
-body.inner-grid-dark #inner-grid-coordinate { display: none; }
 body.inner-grid-dark { background: #050505; }
 body.inner-grid-dark #contact-content { background-color: transparent; }
-body.diecast-playing #inner-webgl-grid,
-body.diecast-playing #inner-grid-coordinate { display: none; }
+body.diecast-playing #inner-webgl-grid { display: none; }
 @media (max-width: 767px) {
     body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 62% 0 0); opacity: 0.38; }
     body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 70%); opacity: 0.45; }

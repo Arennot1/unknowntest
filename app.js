@@ -979,8 +979,7 @@ function initPullToRefresh() {
 // owns its own click-reactive shader.
 function initInnerWebGLGrid() {
     const canvas = document.getElementById('inner-webgl-grid');
-    const label = document.getElementById('inner-grid-coordinate');
-    if (!canvas || !label) return;
+    if (!canvas) return;
 
     const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
     if (!gl) return;
@@ -995,6 +994,7 @@ function initInnerWebGLGrid() {
         uniform vec2 uPointer;
         uniform float uCell;
         uniform float uDarkTone;
+        uniform float uTime;
 
         float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
         float roundedBox(vec2 p, vec2 b, float r) {
@@ -1021,14 +1021,17 @@ function initInnerWebGLGrid() {
                 vec2 pointerCell = uPointer / uCell;
                 vec2 delta = pointerCell - (id + 0.5);
                 float proximity = 1.0 - smoothstep(0.0, 2.2, length(delta));
+                float hover = 1.0 - smoothstep(0.0, 0.62, length(delta));
                 float tilt = atan(delta.y, delta.x) * 0.18;
-                float angle = atan(p.y, p.x) + tilt;
+                float angle = atan(p.y, p.x) + tilt + uTime * hover * 3.4;
                 float radius = length(p);
                 float pointRadius = 0.105 + 0.15 * pow(abs(cos(angle * 2.0)), 7.0);
                 float star = 1.0 - smoothstep(pointRadius, pointRadius + 0.012, radius);
                 float facet = 0.32 + 0.68 * (0.5 + 0.5 * cos(angle * 2.0 - tilt * 3.0));
                 float lift = proximity * 0.22;
                 vec3 starColor = mix(grey, white, facet * 0.42 - lift * 0.12);
+                vec3 hoverInk = mix(vec3(0.72), vec3(0.24), uDarkTone);
+                starColor = mix(starColor, hoverInk, hover * 0.58);
                 color = mix(color, starColor, star * 0.94);
             }
             gl_FragColor = vec4(color, 1.0);
@@ -1062,10 +1065,13 @@ function initInnerWebGLGrid() {
     const pointer = gl.getUniformLocation(program, 'uPointer');
     const cell = gl.getUniformLocation(program, 'uCell');
     const darkTone = gl.getUniformLocation(program, 'uDarkTone');
+    const time = gl.getUniformLocation(program, 'uTime');
     let dpr = 1;
     let cellSize = 96;
     let pointerX = -1000;
     let pointerY = -1000;
+    let hoveringCircle = false;
+    let animationFrame = 0;
 
     function resize() {
         dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1074,28 +1080,41 @@ function initInnerWebGLGrid() {
         cellSize = Math.round(Math.max(52, Math.min(88, Math.min(window.innerWidth, window.innerHeight) / 12))) * dpr;
         gl.viewport(0, 0, canvas.width, canvas.height);
     }
-    function draw() {
+    function draw(timestamp = 0) {
         gl.uniform2f(resolution, canvas.width, canvas.height);
         gl.uniform2f(pointer, pointerX, pointerY);
         gl.uniform1f(cell, cellSize);
         gl.uniform1f(darkTone, document.body.classList.contains('inner-grid-dark') ? 1 : 0);
+        gl.uniform1f(time, timestamp * 0.001);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    function gridHash(x, y) {
+        const value = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+        return value - Math.floor(value);
+    }
+    function animateHover(timestamp) {
+        draw(timestamp);
+        animationFrame = hoveringCircle ? window.requestAnimationFrame(animateHover) : 0;
+    }
+    function startHoverAnimation() {
+        if (!hoveringCircle || REDUCE_MOTION || animationFrame) return;
+        animationFrame = window.requestAnimationFrame(animateHover);
     }
     function updatePointer(event) {
         pointerX = event.clientX * dpr;
         pointerY = (window.innerHeight - event.clientY) * dpr;
-        const col = Math.floor(pointerX / cellSize) + 1;
-        const row = Math.floor(pointerY / cellSize) + 1;
-        label.textContent = `${row}, ${col}`;
-        label.style.left = `${Math.min(event.clientX + 12, window.innerWidth - 64)}px`;
-        label.style.top = `${Math.min(event.clientY + 12, window.innerHeight - 28)}px`;
-        label.classList.add('is-visible');
+        const col = Math.floor(pointerX / cellSize);
+        const row = Math.floor(pointerY / cellSize);
+        hoveringCircle = gridHash(col, row) >= 0.5;
+        startHoverAnimation();
         draw();
     }
     function clearPointer() {
         pointerX = -1000;
         pointerY = -1000;
-        label.classList.remove('is-visible');
+        hoveringCircle = false;
+        if (animationFrame) window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
         draw();
     }
 

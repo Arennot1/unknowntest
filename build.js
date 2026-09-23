@@ -66,7 +66,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     ${extraHead}
 </head>
 <body${bodyClass ? ` class="${bodyClass}"` : ''}>
-    ${hasInnerGrid ? '<canvas id="inner-webgl-grid" aria-hidden="true"></canvas><div id="inner-grid-coordinate" aria-hidden="true"></div>' : ''}
+    ${hasInnerGrid ? '<canvas id="inner-webgl-grid" aria-hidden="true"></canvas>' : ''}
     <div id="transition-curtain"></div>
 ${bodyHTML}
     <script src="app.js"></script>
