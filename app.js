@@ -994,7 +994,6 @@ function initInnerWebGLGrid() {
         uniform vec2 uPointer;
         uniform float uCell;
         uniform float uDarkTone;
-        uniform float uTime;
 
         float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
         float roundedBox(vec2 p, vec2 b, float r) {
@@ -1023,7 +1022,7 @@ function initInnerWebGLGrid() {
                 float proximity = 1.0 - smoothstep(0.0, 2.2, length(delta));
                 float hover = 1.0 - smoothstep(0.0, 0.62, length(delta));
                 float tilt = atan(delta.y, delta.x) * 0.18;
-                float angle = atan(p.y, p.x) + tilt + uTime * hover * 3.4;
+                float angle = atan(p.y, p.x) + tilt;
                 float radius = length(p);
                 float pointRadius = 0.105 + 0.15 * pow(abs(cos(angle * 2.0)), 7.0);
                 float star = 1.0 - smoothstep(pointRadius, pointRadius + 0.012, radius);
@@ -1065,13 +1064,10 @@ function initInnerWebGLGrid() {
     const pointer = gl.getUniformLocation(program, 'uPointer');
     const cell = gl.getUniformLocation(program, 'uCell');
     const darkTone = gl.getUniformLocation(program, 'uDarkTone');
-    const time = gl.getUniformLocation(program, 'uTime');
     let dpr = 1;
     let cellSize = 96;
     let pointerX = -1000;
     let pointerY = -1000;
-    let hoveringCircle = false;
-    let animationFrame = 0;
 
     function resize() {
         dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1080,41 +1076,21 @@ function initInnerWebGLGrid() {
         cellSize = Math.round(Math.max(52, Math.min(88, Math.min(window.innerWidth, window.innerHeight) / 12))) * dpr;
         gl.viewport(0, 0, canvas.width, canvas.height);
     }
-    function draw(timestamp = 0) {
+    function draw() {
         gl.uniform2f(resolution, canvas.width, canvas.height);
         gl.uniform2f(pointer, pointerX, pointerY);
         gl.uniform1f(cell, cellSize);
         gl.uniform1f(darkTone, document.body.classList.contains('inner-grid-dark') ? 1 : 0);
-        gl.uniform1f(time, timestamp * 0.001);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-    function gridHash(x, y) {
-        const value = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
-        return value - Math.floor(value);
-    }
-    function animateHover(timestamp) {
-        draw(timestamp);
-        animationFrame = hoveringCircle ? window.requestAnimationFrame(animateHover) : 0;
-    }
-    function startHoverAnimation() {
-        if (!hoveringCircle || REDUCE_MOTION || animationFrame) return;
-        animationFrame = window.requestAnimationFrame(animateHover);
     }
     function updatePointer(event) {
         pointerX = event.clientX * dpr;
         pointerY = (window.innerHeight - event.clientY) * dpr;
-        const col = Math.floor(pointerX / cellSize);
-        const row = Math.floor(pointerY / cellSize);
-        hoveringCircle = gridHash(col, row) >= 0.5;
-        startHoverAnimation();
         draw();
     }
     function clearPointer() {
         pointerX = -1000;
         pointerY = -1000;
-        hoveringCircle = false;
-        if (animationFrame) window.cancelAnimationFrame(animationFrame);
-        animationFrame = 0;
         draw();
     }
 
