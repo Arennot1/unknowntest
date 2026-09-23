@@ -59,6 +59,8 @@ body.inner-grid-research-article #inner-grid-coordinate,
 body.inner-grid-dark #inner-grid-coordinate { display: none; }
 body.inner-grid-dark { background: #050505; }
 body.inner-grid-dark #contact-content { background-color: transparent; }
+body.diecast-playing #inner-webgl-grid,
+body.diecast-playing #inner-grid-coordinate { display: none; }
 @media (max-width: 767px) {
     body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 62% 0 0); opacity: 0.38; }
     body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 70%); opacity: 0.45; }

@@ -310,6 +310,7 @@ function initDiecastDash() {
         // document itself, so every open is a genuinely clean load.
         frame.src = 'assets/diecast-dash/index.html?t=' + Date.now();
         overlay.classList.remove('hidden-view');
+        document.body.classList.add('diecast-playing');
         document.body.style.overflow = 'hidden';
         autoStartWhenReady();
     }
@@ -337,6 +338,7 @@ function initDiecastDash() {
 
     function closeGame() {
         overlay.classList.add('hidden-view');
+        document.body.classList.remove('diecast-playing');
         document.body.style.overflow = '';
         frame.src = ''; // tear down the WebGL context rather than leave it running hidden
     }
