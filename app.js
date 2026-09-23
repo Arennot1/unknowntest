@@ -409,6 +409,10 @@ function initResearchTracks() {
         let startScrollLeft = 0;
         track.addEventListener('pointerdown', event => {
             if (event.pointerType !== 'mouse') return;
+            // A research card is a direct article link. Do not capture its
+            // pointer for carousel dragging, otherwise a tiny hand movement
+            // can cancel the click before the anchor receives it.
+            if (event.target.closest('.research-paper-card')) return;
             dragging = true;
             moved = false;
             startX = event.clientX;
