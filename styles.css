@@ -51,15 +51,16 @@ body.has-inner-grid #research-content,
 body.has-inner-grid #resume-content,
 body.has-inner-grid .inner-grid-surface { background-color: transparent !important; }
 /* Reading surfaces keep the pattern peripheral, not beneath long-form copy. */
-body.inner-grid-case-study #inner-webgl-grid { clip-path: inset(0 0 0 72%); opacity: 0.78; }
+body.inner-grid-case-study #inner-webgl-grid { clip-path: inset(0 100% 0 0); opacity: 0; }
+body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 66% 0 0); opacity: 0.68; }
 body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 76%); opacity: 0.7; }
 body.inner-grid-case-study #inner-grid-coordinate,
 body.inner-grid-research-article #inner-grid-coordinate,
-body.inner-grid-dark #inner-webgl-grid,
 body.inner-grid-dark #inner-grid-coordinate { display: none; }
-body.inner-grid-resume #inner-webgl-grid { opacity: 0.9; }
+body.inner-grid-dark { background: #050505; }
+body.inner-grid-dark #contact-content { background-color: transparent; }
 @media (max-width: 767px) {
-    body.inner-grid-case-study #inner-webgl-grid,
+    body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 62% 0 0); opacity: 0.38; }
     body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 70%); opacity: 0.45; }
 }
 

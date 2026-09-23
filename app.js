@@ -21,7 +21,7 @@ function wireTransitionLinks() {
     document.querySelectorAll('a[data-transition]').forEach(link => {
         link.addEventListener('click', function (e) {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; // let modified clicks behave natively (open in new tab, etc.)
-            const href = this.getAttribute('href');
+            const href = this.href;
             if (!href) return;
             if (typeof gsap === 'undefined' || !curtain) { window.location.href = href; return; }
             e.preventDefault();
@@ -435,6 +435,17 @@ function initResearchTracks() {
             moved = false;
         }, true);
     });
+}
+
+function initCaseStudyGridRegion() {
+    if (!document.body.classList.contains('inner-grid-case-study')) return;
+    const region = document.querySelector('.case-study-reading');
+    if (!region || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(entries => {
+        document.body.classList.toggle('case-grid-active', entries.some(entry => entry.isIntersecting));
+    }, { threshold: 0 });
+    observer.observe(region);
 }
 
 // ---------------- Off-Canvas image lightbox ----------------
@@ -977,7 +988,7 @@ function initInnerWebGLGrid() {
         uniform vec2 uResolution;
         uniform vec2 uPointer;
         uniform float uCell;
-        uniform float uResumeTone;
+        uniform float uDarkTone;
 
         float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
         float roundedBox(vec2 p, vec2 b, float r) {
@@ -996,8 +1007,8 @@ function initInnerWebGLGrid() {
             float outlineDistance = mix(square, circle, isCircle);
             float outline = 1.0 - smoothstep(0.006, 0.016, outlineDistance);
 
-            vec3 white = vec3(1.0);
-            vec3 grey = mix(vec3(0.96862745), vec3(0.91, 0.94, 0.93), uResumeTone);
+            vec3 white = mix(vec3(1.0), vec3(0.01960784), uDarkTone);
+            vec3 grey = mix(vec3(0.96862745), vec3(0.09), uDarkTone);
             vec3 color = mix(white, grey, outline * 0.92);
 
             if (isCircle > 0.5) {
@@ -1044,7 +1055,7 @@ function initInnerWebGLGrid() {
     const resolution = gl.getUniformLocation(program, 'uResolution');
     const pointer = gl.getUniformLocation(program, 'uPointer');
     const cell = gl.getUniformLocation(program, 'uCell');
-    const resumeTone = gl.getUniformLocation(program, 'uResumeTone');
+    const darkTone = gl.getUniformLocation(program, 'uDarkTone');
     let dpr = 1;
     let cellSize = 96;
     let pointerX = -1000;
@@ -1061,7 +1072,7 @@ function initInnerWebGLGrid() {
         gl.uniform2f(resolution, canvas.width, canvas.height);
         gl.uniform2f(pointer, pointerX, pointerY);
         gl.uniform1f(cell, cellSize);
-        gl.uniform1f(resumeTone, document.body.classList.contains('inner-grid-resume') ? 1 : 0);
+        gl.uniform1f(darkTone, document.body.classList.contains('inner-grid-dark') ? 1 : 0);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
     function updatePointer(event) {
@@ -1098,6 +1109,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initDiecastDash();
     initOffCanvasTracks();
     initResearchTracks();
+    initCaseStudyGridRegion();
     initOffCanvas();
     startGreetingCarousel();
     initCustomCursor();

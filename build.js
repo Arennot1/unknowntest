@@ -325,7 +325,7 @@ function renderCaseStudyBody(p) {
             <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-12 border-t border-b border-gray-200 mb-16">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 font-meta text-sm text-gray-500 uppercase">${metaHTML}</div>
             </div>
-            <div class="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 flex flex-col md:flex-row gap-12 lg:gap-24 relative">
+            <div class="case-study-reading max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 flex flex-col md:flex-row gap-12 lg:gap-24 relative">
                 <div class="hidden md:block w-1/4 shrink-0">
                     <div class="case-study-scroll-nav sticky top-32 flex flex-col space-y-4 text-[15px] text-gray-400 font-meta tracking-wide">${sidebarHTML}</div>
                 </div>
