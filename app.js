@@ -954,27 +954,6 @@ function initPullToRefresh() {
         if (pull >= THRESHOLD) fireRefresh(); else snapBack();
     });
 
-    // ---- Trackpad two-finger swipe down (wheel events) ----
-    // Requires the cursor to be hovering near the top nav band, same as the
-    // touch/mouse paths already require the gesture to start there. Without
-    // this, ordinary momentum-scrolling up to the top of a long page (very
-    // common) could accidentally trigger a reload with the cursor anywhere
-    // on screen — this is what actually causes that.
-    const WHEEL_DEAD_ZONE = 15;
-    let wheelRaw = 0, wheelTimeout = null;
-    window.addEventListener('wheel', (e) => {
-        if (triggered) return;
-        if (e.deltaY >= 0 || e.clientY > START_BAND || !atTop()) { wheelRaw = 0; return; }
-        wheelRaw += -e.deltaY;
-        if (wheelRaw < WHEEL_DEAD_ZONE) return; // ignore tiny incidental scroll-past-top blips
-        e.preventDefault();
-        setPull(Math.max(0, Math.min((wheelRaw - WHEEL_DEAD_ZONE) * 0.5, MAX_PULL)));
-        clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => {
-            if (pull >= THRESHOLD) fireRefresh(); else snapBack();
-            wheelRaw = 0;
-        }, 180); // no new wheel ticks for this long = treat the swipe as finished
-    }, { passive: false });
 }
 
 // ---------------- Boot ----------------
