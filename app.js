@@ -977,6 +977,7 @@ function initInnerWebGLGrid() {
         uniform vec2 uResolution;
         uniform vec2 uPointer;
         uniform float uCell;
+        uniform float uResumeTone;
 
         float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
         float roundedBox(vec2 p, vec2 b, float r) {
@@ -990,13 +991,13 @@ function initInnerWebGLGrid() {
             vec2 id = floor(grid);
             vec2 p = fract(grid) - 0.5;
             float isCircle = step(0.5, hash(id));
-            float circle = abs(length(p) - 0.37);
-            float square = abs(roundedBox(p, vec2(0.38), 0.085));
+            float circle = abs(length(p) - 0.47);
+            float square = abs(roundedBox(p, vec2(0.485), 0.075));
             float outlineDistance = mix(square, circle, isCircle);
             float outline = 1.0 - smoothstep(0.006, 0.016, outlineDistance);
 
             vec3 white = vec3(1.0);
-            vec3 grey = vec3(0.96862745);
+            vec3 grey = mix(vec3(0.96862745), vec3(0.91, 0.94, 0.93), uResumeTone);
             vec3 color = mix(white, grey, outline * 0.92);
 
             if (isCircle > 0.5) {
@@ -1043,6 +1044,7 @@ function initInnerWebGLGrid() {
     const resolution = gl.getUniformLocation(program, 'uResolution');
     const pointer = gl.getUniformLocation(program, 'uPointer');
     const cell = gl.getUniformLocation(program, 'uCell');
+    const resumeTone = gl.getUniformLocation(program, 'uResumeTone');
     let dpr = 1;
     let cellSize = 96;
     let pointerX = -1000;
@@ -1052,13 +1054,14 @@ function initInnerWebGLGrid() {
         dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         canvas.width = Math.round(window.innerWidth * dpr);
         canvas.height = Math.round(window.innerHeight * dpr);
-        cellSize = Math.round(Math.max(76, Math.min(132, Math.min(window.innerWidth, window.innerHeight) / 7.5))) * dpr;
+        cellSize = Math.round(Math.max(52, Math.min(88, Math.min(window.innerWidth, window.innerHeight) / 12))) * dpr;
         gl.viewport(0, 0, canvas.width, canvas.height);
     }
     function draw() {
         gl.uniform2f(resolution, canvas.width, canvas.height);
         gl.uniform2f(pointer, pointerX, pointerY);
         gl.uniform1f(cell, cellSize);
+        gl.uniform1f(resumeTone, document.body.classList.contains('inner-grid-resume') ? 1 : 0);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
     function updatePointer(event) {

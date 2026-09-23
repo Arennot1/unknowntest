@@ -44,9 +44,10 @@ const fragments = {
 const BASE_BY_DEPTH = ['./', '../', '../../', '../../../'];
 
 // ---------- shared page shell ----------
-function renderShell({ depth, title, description, body: bodyHTML, extraHead = '' }) {
+function renderShell({ depth, title, description, body: bodyHTML, extraHead = '', pageClass = '' }) {
     const base = BASE_BY_DEPTH[depth];
     const hasInnerGrid = depth > 0;
+    const bodyClass = [hasInnerGrid ? 'has-inner-grid' : '', pageClass].filter(Boolean).join(' ');
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +65,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <link rel="stylesheet" href="styles.css">
     ${extraHead}
 </head>
-<body${hasInnerGrid ? ' class="has-inner-grid"' : ''}>
+<body${bodyClass ? ` class="${bodyClass}"` : ''}>
     ${hasInnerGrid ? '<canvas id="inner-webgl-grid" aria-hidden="true"></canvas><div id="inner-grid-coordinate" aria-hidden="true"></div>' : ''}
     <div id="transition-curtain"></div>
 ${bodyHTML}
@@ -353,7 +354,8 @@ function renderResearchCard(collection, title, index) {
     const slug = researchArticleSlug(title);
     const subtitle = index === 1 && collection.slug === 'methodology' ? 'A Comparative Analysis of Ergonomic Feedback in Gaming.' : 'A working research note on systems, behavior, and practical design decisions.';
     const abstract = index === 1 && collection.slug === 'methodology' ? 'The contemporary video game industry faces a paradox...' : 'A concise starting point for the full article and its supporting observations.';
-    return `<article class="research-paper-card"><div class="research-paper-card-head"><p>Published draft</p><h3>${title}</h3><span>${subtitle}</span><small>September 2026 <b>•</b> 8 min read</small></div><div class="research-paper-card-body"><div class="research-paper-tags">${collection.tags.map(tag => `<span>${tag}</span>`).join('')}</div><p>${abstract}</p><a href="research/${collection.slug}/${slug}/" data-transition>Read full paper <span aria-hidden="true">→</span></a></div></article>`;
+    const href = `research/${collection.slug}/${slug}/`;
+    return `<a class="research-paper-card" href="${href}" data-transition aria-label="Read ${title}"><div class="research-paper-card-head"><p>Published draft</p><h3>${title}</h3><span>${subtitle}</span><small>September 2026 <b>•</b> 8 min read</small></div><div class="research-paper-card-body"><div class="research-paper-tags">${collection.tags.map(tag => `<span>${tag}</span>`).join('')}</div><p>${abstract}</p><span class="research-paper-card-cta">Read full paper <span aria-hidden="true">→</span></span></div></a>`;
 }
 function renderResearchIndex() {
     return `<main class="research-index" aria-labelledby="research-page-title">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research' }])}<header class="research-hero"><h1 id="research-page-title">Research</h1><p>Notes on systems, behavior, and the practical realities that shape products.</p></header>${RESEARCH_COLLECTIONS.map(collection => `<section class="research-stream" aria-labelledby="${collection.slug}-title"><div class="research-stream-heading"><div><h2 id="${collection.slug}-title">${collection.title}</h2><p>${collection.description}</p></div><a href="research/${collection.slug}/" data-transition class="research-view-more">View collection</a></div><div class="research-track" role="region" aria-label="${collection.title} article carousel" tabindex="0">${collection.items.map((title, index) => renderResearchCard(collection, title, index)).join('')}</div></section>`).join('')}</main>`;
@@ -458,7 +460,7 @@ for (const collection of RESEARCH_COLLECTIONS) {
         const slug = researchArticleSlug(item);
         const articleUrl = `${canonical}${slug}/`;
         const articleSchema = JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'Article', headline: item, description: `Research article: ${item}.`, datePublished: '2026-09-01', dateModified: '2026-09-01', mainEntityOfPage: articleUrl, author: { '@type': 'Person', name: 'Areen Pednekar' } }, breadcrumbData([{ name: 'Home', url: SITE_URL }, { name: 'Research', url: `${SITE_URL}/research/` }, { name: collection.title, url: canonical }, { name: item, url: articleUrl }])] });
-        routes.push({ outPath: `research/${collection.slug}/${slug}/index.html`, depth: 3, title: `${item} | Areen Pednekar`, description: `Research article: ${item}.`, extraHead: `<link rel="canonical" href="${articleUrl}"><meta property="og:type" content="article"><meta property="og:title" content="${item} | Areen Pednekar"><meta property="og:description" content="Research article: ${item}."><script type="application/ld+json">${articleSchema}</script>`, body: `    <div id="content-view">\n${renderHeader({ backHref: `research/${collection.slug}/`, active: 'Research' })}\n        <article class="research-article">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research', href: 'research/' }, { name: collection.title, href: `research/${collection.slug}/` }, { name: item }])}<header><p>${collection.title}</p><h1>${item}</h1><span>September 2026 · 8 min read</span></header><div class="research-article-copy"><h2>Research note</h2><p>This is a placeholder for the complete article. It is structured as a focused research paper, with a clear argument, supporting evidence, and practical implications for designers.</p><p>The full piece will place the research in context, explain the methods used, and document the observations that informed the final point of view.</p><h2>Working implications</h2><p>These notes will expand into examples, source material, and decision-making guidance as the article is developed.</p></div></article>\n${FOOTER}\n    </div>` });
+        routes.push({ outPath: `research/${collection.slug}/${slug}/index.html`, depth: 3, title: `${item} | Areen Pednekar`, description: `Research article: ${item}.`, pageClass: 'inner-grid-research-article', extraHead: `<link rel="canonical" href="${articleUrl}"><meta property="og:type" content="article"><meta property="og:title" content="${item} | Areen Pednekar"><meta property="og:description" content="Research article: ${item}."><script type="application/ld+json">${articleSchema}</script>`, body: `    <div id="content-view">\n${renderHeader({ backHref: `research/${collection.slug}/`, active: 'Research' })}\n        <article class="research-article">${renderBreadcrumbs([{ name: 'Home', href: '' }, { name: 'Research', href: 'research/' }, { name: collection.title, href: `research/${collection.slug}/` }, { name: item }])}<header><p>${collection.title}</p><h1>${item}</h1><span>September 2026 · 8 min read</span></header><div class="research-article-copy"><h2>Research note</h2><p>This is a placeholder for the complete article. It is structured as a focused research paper, with a clear argument, supporting evidence, and practical implications for designers.</p><p>The full piece will place the research in context, explain the methods used, and document the observations that informed the final point of view.</p><h2>Working implications</h2><p>These notes will expand into examples, source material, and decision-making guidance as the article is developed.</p></div></article>\n${FOOTER}\n    </div>` });
     }
 }
 
@@ -466,6 +468,7 @@ routes.push({
     outPath: 'resume/index.html', depth: 1,
     title: 'Resume | Areen Pednekar',
     description: 'Resume and professional background of Areen Pednekar, Product & Industrial Designer.',
+    pageClass: 'inner-grid-resume',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Resume' })}\n        <div id="resume-content">\n${fragments.resume}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
@@ -473,6 +476,7 @@ routes.push({
     outPath: 'contact/index.html', depth: 1,
     title: 'Contact | Areen Pednekar',
     description: "Get in touch with Areen Pednekar to discuss a product, industrial, or UI/UX design project.",
+    pageClass: 'inner-grid-dark',
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', darkMode: true, active: 'Contact' })}\n        <div id="contact-content">\n${fragments.contact}\n        </div>\n    </div>`,
 });
 
@@ -481,6 +485,7 @@ for (const p of projects) {
         outPath: `projects/${p.id}/index.html`, depth: 2,
         title: p.pageTitle || `${p.title} | Areen Pednekar`,
         description: p.metaDescription || p.subtitle,
+        pageClass: 'inner-grid-case-study',
         body: `    <div id="content-view">\n${renderHeader({ backHref: 'projects/', active: 'Projects' })}\n${renderCaseStudyBody(p)}\n${FOOTER}\n    </div>`,
     });
 }
