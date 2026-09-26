@@ -268,41 +268,6 @@
     "gridSize": "narrow"
   },
   {
-    "id": "irctc",
-    "category": "uiux",
-    "title": "IRCTC Redesign",
-    "subtitle": "Modernizing India's largest ticketing platform for accessibility and speed.",
-    "tagLine": "IRCTC Redesign",
-    "tagMeta": "IRCTC • CONCEPT 2023",
-    "meta": [
-      ["Timeline", "4 Weeks"],
-      ["Role", "UI/UX Designer"],
-      ["Platform", "Web Platform"],
-      ["Deliverables", "UI Systems"]
-    ],
-    "thumbnail": {
-      "image": null,
-      "bgClass": "bg-blue-100",
-      "placeholderHTML": "<span class=\"text-blue-400 font-mono text-sm group-hover:scale-105 transition-transform duration-700\">[ IRCTC View ]</span>"
-    },
-    "hero": {
-      "image": null,
-      "bgClass": "bg-blue-100",
-      "placeholderHTML": "<span class=\"text-blue-400 font-mono text-sm\">[ IRCTC Hero - 1920x1080 ]</span>"
-    },
-    "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
-    },
-    "gridSize": "standard"
-  },
-  {
     "id": "koya",
     "category": "industrial",
     "filterCategories": ["industrial", "research"],
@@ -359,41 +324,6 @@
     "gridSize": "standard"
   },
   {
-    "id": "sewing",
-    "category": "industrial",
-    "title": "Hand Sewing Machine",
-    "subtitle": "Ergonomic redesign of a classic utilitarian tool.",
-    "tagLine": "Hand Sewing Machine",
-    "tagMeta": "INDUSTRIAL • REDESIGN",
-    "meta": [
-      ["Timeline", "10 Weeks"],
-      ["Role", "Industrial Designer"],
-      ["Category", "Hardware"],
-      ["Deliverables", "CAD, Physical Prototype"]
-    ],
-    "thumbnail": {
-      "image": null,
-      "bgClass": "bg-neutral-800",
-      "placeholderHTML": "<span class=\"text-neutral-500 font-mono text-sm group-hover:scale-105 transition-transform duration-700\">[ Sewing Machine Render ]</span>"
-    },
-    "hero": {
-      "image": null,
-      "bgClass": "bg-neutral-800",
-      "placeholderHTML": "<span class=\"text-neutral-500 font-mono text-sm\">[ Sewing Hero - 1920x1080 ]</span>"
-    },
-    "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
-    },
-    "gridSize": "narrow"
-  },
-  {
     "id": "yuma",
     "category": "industrial",
     "filterCategories": ["uiux", "industrial"],
@@ -428,41 +358,5 @@
       "reflection": { "type": "text", "content": "[ Final takeaways ]" }
     },
     "gridSize": "wide"
-  },
-  {
-    "id": "smoothie",
-    "category": "industrial",
-    "filterCategories": ["uiux", "industrial"],
-    "title": "Smoothie Machine",
-    "subtitle": "Industrial design concept for a high-volume commercial blender.",
-    "tagLine": "Smoothie Machine",
-    "tagMeta": "INDUSTRIAL • CONCEPT",
-    "meta": [
-      ["Timeline", "4 Weeks"],
-      ["Role", "Industrial Designer"],
-      ["Category", "Hardware"],
-      ["Deliverables", "Concept Renders"]
-    ],
-    "thumbnail": {
-      "image": null,
-      "bgClass": "bg-orange-50",
-      "placeholderHTML": "<span class=\"text-orange-300 font-mono text-sm group-hover:scale-105 transition-transform duration-700\">[ Smoothie Machine Render ]</span>"
-    },
-    "hero": {
-      "image": null,
-      "bgClass": "bg-orange-50",
-      "placeholderHTML": "<span class=\"text-orange-300 font-mono text-sm\">[ Smoothie Hero - 1920x1080 ]</span>"
-    },
-    "sections": {
-      "solution": { "type": "video", "content": "[ Solution Concept Video Placeholder - 16:9 ]", "image": null },
-      "flows": { "type": "text", "content": "[ Flow documentation goes here ]" },
-      "research": { "type": "text", "content": "[ Research findings go here ]" },
-      "formFactors": { "type": "images", "content": "[ Form Factor Images ]", "image": null },
-      "prototyping": { "type": "text", "content": "[ Prototyping data goes here ]" },
-      "decisions": { "type": "text", "content": "To ensure Session-Based Continuity, the architecture was modified so users do not lose context when navigating away from core tasks." },
-      "hardware": { "type": "text", "content": "[ Hardware constraint details ]" },
-      "reflection": { "type": "text", "content": "[ Final takeaways ]" }
-    },
-    "gridSize": "standard"
   }
 ]

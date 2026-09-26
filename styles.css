@@ -365,6 +365,18 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); }
 .menu-item, .project-card, .back-btn, .content-logo a { text-decoration: none; }
 .menu-item, .project-card { display: block; }
 
+.projects-nda-note {
+    max-width: 46ch;
+    margin: 5rem 0 0;
+    color: #374151;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+    .projects-nda-note { margin-top: 3.5rem; }
+}
+
 .lottie-cover {
     width: 100%;
     height: 100%;

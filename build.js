@@ -436,6 +436,7 @@ ${renderProjectGridMobile()}
                 <div class="hidden lg:flex gap-x-5" id="projects-grid">
 ${renderProjectGridDesktop()}
                 </div>
+                <p class="projects-nda-note">Beyond this public archive, several enterprise ecosystems and soon-to-be-live products remain under NDA. I am happy to walk through these workflows and live environments on a call.</p>
             </div>
         </div>\n${FOOTER}\n    </div>`,
 });
