@@ -454,6 +454,23 @@ function initCaseStudyGridRegion() {
     observer.observe(region);
 }
 
+// Project covers can opt into a self-contained Lottie scene. Loading happens
+// after the page is ready so a missing CDN library never blocks core content.
+function initLottieCovers() {
+    if (!window.lottie) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('[data-lottie-src]').forEach(container => {
+        window.lottie.loadAnimation({
+            container,
+            renderer: 'svg',
+            loop: !reduceMotion,
+            autoplay: true,
+            path: container.dataset.lottieSrc,
+            rendererSettings: { preserveAspectRatio: 'xMidYMid meet' },
+        });
+    });
+}
+
 // ---------------- Off-Canvas image lightbox ----------------
 function initOffCanvas() {
     const lightbox = document.getElementById('offCanvasLightbox');
@@ -1111,6 +1128,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initOffCanvasTracks();
     initResearchTracks();
     initCaseStudyGridRegion();
+    initLottieCovers();
     initOffCanvas();
     startGreetingCarousel();
     initCustomCursor();

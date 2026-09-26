@@ -59,6 +59,7 @@ function renderShell({ depth, title, description, body: bodyHTML, extraHead = ''
     <meta name="description" content="${description}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500..900&family=Sora:wght@100..800&family=Permanent+Marker&family=VT323&display=swap" rel="stylesheet">
@@ -118,6 +119,7 @@ const FOOTER = `        <footer class="content-footer bg-white border-t border-g
 
 function renderMedia(media, altText = '') {
     if (media.image) return `<img src="${media.image}" alt="${altText}" class="w-full h-full object-cover">`;
+    if (media.lottie) return `<div class="lottie-cover" data-lottie-src="${media.lottie}" role="img" aria-label="${altText}"></div>`;
     return media.placeholderHTML || '';
 }
 

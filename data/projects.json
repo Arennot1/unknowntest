@@ -113,17 +113,17 @@
         "content": "<div class=\"case-note\">The final system turns a fragmented pre-session tool into one interruption-tolerant journey: setup on the beach, passive continuity in the water, and meaningful progression afterward.</div>"
       }
     ],
-    "thumbnail": {
-      "image": null,
-      "bgClass": "bg-gradient-to-br from-orange-300 to-pink-400",
-      "placeholderClass": "",
-      "placeholderHTML": "<h3 class=\"text-white font-bold text-3xl group-hover:scale-105 transition-transform duration-700\">Surfing App</h3>"
-    },
-    "hero": {
-      "image": null,
-      "bgClass": "bg-gradient-to-br from-orange-300 to-pink-400",
-      "placeholderHTML": "<span class=\"text-white font-meta text-sm tracking-[0.18em] uppercase\">[ Surfing App Hero Visual ]</span>"
-    },
+  "thumbnail": {
+    "lottie": "assets/projects/surfing-cover.json",
+    "bgClass": "bg-[#0b2730]",
+    "placeholderClass": "",
+    "placeholderHTML": ""
+  },
+  "hero": {
+    "image": "assets/projects/surfing-banner.png",
+    "bgClass": "bg-[#0b2730]",
+    "placeholderHTML": ""
+  },
     "sections": {
       "solution": {
         "type": "rich",
