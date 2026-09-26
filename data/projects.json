@@ -222,14 +222,14 @@
       }
     ],
     "thumbnail": {
-      "image": null,
-      "bgClass": "bg-gray-900",
-      "placeholderHTML": "<span class=\"text-gray-500 font-meta text-sm group-hover:scale-105 transition-transform duration-700\">[ Kaari — Native-Audio Craft Ecosystem ]</span>"
+      "lottie": "assets/projects/kaari-cover.json",
+      "bgClass": "bg-[#d74522]",
+      "placeholderHTML": ""
     },
     "hero": {
-      "image": null,
-      "bgClass": "bg-gray-900",
-      "placeholderHTML": "<span class=\"text-gray-500 font-meta text-sm\">Hero visual slot: modern app interface and physical 3D-printed hardware terminal</span>"
+      "image": "assets/projects/kaari-banner.png",
+      "bgClass": "bg-[#d74522]",
+      "placeholderHTML": ""
     },
     "sections": {
       "solution": {
