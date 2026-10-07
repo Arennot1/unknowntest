@@ -1080,3 +1080,21 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 .certificate-artwork { display: block; width: 100%; min-height: 0; height: 9.6rem; border-style: solid; object-fit: cover; object-position: center; }
 .resume-certification-track li[data-active] .certificate-artwork { height: 10.8rem; }
 @media (max-width: 767px) { .resume-route-map { min-height: 12.5rem; }.resume-route-map ol { padding-top: 7rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 4.8rem; }.resume-route-map .resume-train { top: 2.95rem; }.resume-station { padding-right: 4.6rem; }.resume-experience-logo { top: 1.25rem; right: 1.25rem; width: 2.65rem; height: 2.65rem; }.certificate-artwork { height: 8.5rem; }.resume-certification-track li[data-active] .certificate-artwork { height: 9.4rem; } }
+
+/* Experience records use the supplied large marks as their visual anchor. */
+.resume-station { min-height: 27rem; padding-top: 2rem; padding-right: 1.7rem; }
+.resume-experience-logo { top: 1.8rem; left: 1.7rem; right: auto; width: 8.2rem; height: 8.2rem; border: 0; border-radius: 0; padding: .35rem; background: #f1f1f1; }
+.resume-station h3 { min-height: 2.1em; margin-left: 9.5rem; padding-top: .25rem; }
+.resume-station .resume-employment-meta { min-height: 3em; margin-left: 9.5rem; }
+.resume-station ul { margin-top: 2.35rem; }
+.resume-skill-marquees { display: grid; gap: 1.15rem; margin-top: 2rem; }
+.resume-skill-row { display: grid; grid-template-columns: minmax(9.5rem, 14rem) minmax(0, 1fr); align-items: center; gap: 1rem; overflow: hidden; }
+.resume-skill-row > p { margin: 0; color: #6b7280; font-family: var(--font-display); font-size: var(--type-meta); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.resume-skill-track { display: flex; width: max-content; animation: resume-skills-drift 42s linear infinite; }
+.resume-skill-row:nth-child(even) .resume-skill-track { animation-duration: 35s; animation-direction: reverse; }
+.resume-skill-track ul { display: flex; flex: 0 0 auto; gap: .7rem; width: max-content; margin: 0; padding: 0 .7rem 0 0; list-style: none; }
+.resume-skill-track li { white-space: nowrap; }
+@keyframes resume-skills-drift { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.resume-skill-row:hover .resume-skill-track { animation-play-state: paused; }
+@media (max-width: 767px) { .resume-station { min-height: 0; }.resume-experience-logo { top: 1.4rem; left: 1.3rem; width: 5.65rem; height: 5.65rem; }.resume-station h3 { min-height: 0; margin-left: 6.5rem; padding-top: 0; }.resume-station .resume-employment-meta { min-height: 0; margin-left: 6.5rem; }.resume-station ul { margin-top: 1.7rem; }.resume-skill-row { grid-template-columns: 1fr; gap: .55rem; }.resume-skill-row > p { padding-left: .25rem; }.resume-skill-track { animation-duration: 28s; }.resume-skill-row:nth-child(even) .resume-skill-track { animation-duration: 24s; } }
+@media (prefers-reduced-motion: reduce) { .resume-skill-track { animation: none; } }

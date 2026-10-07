@@ -140,6 +140,7 @@ const CLIENT_LOGOS = [
     { name: 'Dr. Reddy\'s', image: 'assets/clients/dr-reddys.png' },
     { name: 'EaZy Byts', image: 'assets/clients/eazy-byts.png' },
     { name: 'Freudenberg', image: 'assets/clients/freudenberg.png' },
+    { name: 'Gromania', image: 'assets/resume/companies/gromania.png' },
     { name: 'Gala', image: 'assets/clients/gala.png' },
     { name: 'Prototyze', image: 'assets/clients/prototyze.png' },
     { name: 'Screen Root', image: 'assets/clients/screenroot.png' },
