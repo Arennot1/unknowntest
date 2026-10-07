@@ -466,6 +466,31 @@ function initResumeTimeline() {
         track.scrollBy({ left: step(), behavior: 'smooth' });
     });
 
+    const stations = Array.from(track.querySelectorAll('.resume-station'));
+    const stops = Array.from(document.querySelectorAll('[data-resume-stop]'));
+    const setActiveStop = index => {
+        stops.forEach((stop, stopIndex) => stop.toggleAttribute('data-active', stopIndex === index));
+    };
+    stops.forEach(stop => stop.addEventListener('click', () => {
+        const index = Number(stop.dataset.resumeStop);
+        stations[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        setActiveStop(index);
+    }));
+    track.addEventListener('scroll', () => {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let closestIndex = 0;
+        let closestDistance = Number.POSITIVE_INFINITY;
+        stations.forEach((station, index) => {
+            const distance = Math.abs(station.offsetLeft + station.offsetWidth / 2 - center);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestIndex = index;
+            }
+        });
+        setActiveStop(closestIndex);
+    }, { passive: true });
+    setActiveStop(0);
+
     let dragging = false;
     let startX = 0;
     let startScrollLeft = 0;
