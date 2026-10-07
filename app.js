@@ -460,10 +460,30 @@ function initResumeTimeline() {
 
     const stations = Array.from(track.querySelectorAll('.resume-station'));
     const stops = Array.from(document.querySelectorAll('[data-resume-stop]'));
-    const train = track.querySelector('.resume-train');
+    const stage = document.querySelector('.resume-timeline-stage');
+    const railStops = Array.from(document.querySelectorAll('.resume-rail-stop'));
     const routeMap = document.querySelector('.resume-route-map');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndex = 0;
+    let targetIndex = null;
+    let targetTimer;
+
+    const positionRail = index => {
+        if (!stage) return;
+        const inset = Math.min(40, Math.max(24, stage.clientWidth * 0.045));
+        const available = Math.max(0, stage.clientWidth - inset * 2);
+        railStops.forEach((stop, stopIndex) => {
+            const ratio = railStops.length > 1 ? stopIndex / (railStops.length - 1) : 0;
+            stop.style.setProperty('--rail-x', `${inset + available * ratio}px`);
+            stop.toggleAttribute('data-active', stopIndex === index);
+            stop.toggleAttribute('data-current', stopIndex === 0);
+        });
+        const progress = stations.length > 1 ? index / (stations.length - 1) : 0;
+        stage.style.setProperty('--rail-start', `${inset}px`);
+        stage.style.setProperty('--rail-end', `${inset}px`);
+        stage.style.setProperty('--rail-progress', `${available * progress}px`);
+        stage.style.setProperty('--train-x', `${inset + available * progress}px`);
+    };
 
     const setActiveStop = (index, force = false) => {
         const nextIndex = Math.max(0, Math.min(index, stations.length - 1));
@@ -473,17 +493,16 @@ function initResumeTimeline() {
         stations.forEach((station, stationIndex) => station.toggleAttribute('data-active', stationIndex === activeIndex));
         const progress = stations.length > 1 ? (activeIndex / (stations.length - 1)) * 100 : 0;
         routeMap?.style.setProperty('--route-progress', `${progress}%`);
-        track.style.setProperty('--rail-progress', `${progress}%`);
-        if (train && stations[activeIndex]) {
-            const station = stations[activeIndex];
-            train.style.transform = `translateX(${station.offsetLeft + station.offsetWidth / 2 - train.offsetWidth / 2}px)`;
-        }
+        positionRail(activeIndex);
     };
 
     const goToStop = (index, behavior = 'smooth') => {
         const nextIndex = Math.max(0, Math.min(index, stations.length - 1));
         const station = stations[nextIndex];
         if (!station) return;
+        targetIndex = nextIndex;
+        clearTimeout(targetTimer);
+        targetTimer = window.setTimeout(() => { targetIndex = null; }, reducedMotion ? 0 : 700);
         station.scrollIntoView({ behavior: reducedMotion ? 'auto' : behavior, block: 'nearest', inline: 'center' });
         setActiveStop(nextIndex);
     };
@@ -495,6 +514,7 @@ function initResumeTimeline() {
         goToStop(index);
     }));
     track.addEventListener('scroll', () => {
+        if (targetIndex !== null) return;
         const center = track.scrollLeft + track.clientWidth / 2;
         let closestIndex = 0;
         let closestDistance = Number.POSITIVE_INFINITY;
@@ -508,7 +528,7 @@ function initResumeTimeline() {
         setActiveStop(closestIndex);
     }, { passive: true });
 
-    window.addEventListener('resize', () => setActiveStop(activeIndex), { passive: true });
+    window.addEventListener('resize', () => positionRail(activeIndex), { passive: true });
     requestAnimationFrame(() => setActiveStop(0, true));
 
     let dragging = false;
@@ -545,7 +565,7 @@ function initResumeCertifications() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndex = 0;
     let timer;
-    let paused = false;
+    let scrollTimer;
 
     const setActive = (index, shouldScroll = false) => {
         activeIndex = (index + cards.length) % cards.length;
@@ -556,11 +576,12 @@ function initResumeCertifications() {
         }
     };
     const schedule = () => {
-        clearInterval(timer);
-        if (!paused && !reducedMotion) timer = window.setInterval(() => setActive(activeIndex + 1, true), 3000);
+        window.clearTimeout(timer);
+        if (!reducedMotion) timer = window.setTimeout(() => {
+            setActive(activeIndex + 1, true);
+            schedule();
+        }, 3000);
     };
-    const pause = () => { paused = true; clearInterval(timer); };
-    const resume = () => { paused = false; schedule(); };
 
     track.addEventListener('scroll', () => {
         const center = track.scrollLeft + track.clientWidth / 2;
@@ -571,10 +592,9 @@ function initResumeCertifications() {
             if (nextDistance < distance) { closest = index; distance = nextDistance; }
         });
         if (closest !== activeIndex) setActive(closest);
+        window.clearTimeout(scrollTimer);
+        scrollTimer = window.setTimeout(schedule, 3000);
     }, { passive: true });
-    ['pointerenter', 'focusin', 'pointerdown'].forEach(type => track.addEventListener(type, pause));
-    track.addEventListener('pointerleave', resume);
-    track.addEventListener('focusout', event => { if (!track.contains(event.relatedTarget)) resume(); });
     setActive(0, true);
     schedule();
 }
