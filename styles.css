@@ -52,14 +52,14 @@ body.has-inner-grid .inner-grid-surface { background-color: transparent !importa
 body.inner-grid-case-study #inner-webgl-grid { clip-path: inset(0 100% 0 0); opacity: 0; }
 body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 66% 0 0); opacity: 0.68; }
 body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 76%); opacity: 0.7; }
-body.inner-grid-resume #inner-webgl-grid { opacity: 0.28; }
+body.inner-grid-resume #inner-webgl-grid { opacity: 0.48; }
 body.inner-grid-dark { background: #050505; }
 body.inner-grid-dark #contact-content { background-color: transparent; }
 body.diecast-playing #inner-webgl-grid { display: none; }
 @media (max-width: 767px) {
     body.inner-grid-case-study.case-grid-active #inner-webgl-grid { clip-path: inset(0 62% 0 0); opacity: 0.38; }
     body.inner-grid-research-article #inner-webgl-grid { clip-path: inset(0 0 0 70%); opacity: 0.45; }
-    body.inner-grid-resume #inner-webgl-grid { opacity: 0.18; }
+    body.inner-grid-resume #inner-webgl-grid { opacity: 0.32; }
 }
 
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); }
@@ -950,7 +950,7 @@ a:focus-visible, button:focus-visible {
 }
 
 /* ---------- Resume: brand-aligned transit timeline ---------- */
-body.inner-grid-resume #content-view { background: rgba(255, 255, 255, 0.78) !important; }
+body.inner-grid-resume #content-view { background: rgba(255, 255, 255, 0.54) !important; }
 .resume-page { width: min(100%, 1600px); padding: 8.5rem clamp(1.25rem, 5vw, 5rem) 8rem; }
 .resume-hero { max-width: 1100px; padding-bottom: 3.25rem; border-bottom: 1px solid #e5e7eb; }
 .resume-kicker { margin-bottom: 0.8rem; color: #6b7280; font-family: var(--font-display); font-size: var(--type-meta); font-weight: 800; letter-spacing: 0.13em; }
@@ -971,17 +971,11 @@ body.inner-grid-resume #content-view { background: rgba(255, 255, 255, 0.78) !im
 .resume-section-heading { align-items: end; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e5e7eb; }
 .resume-section h2 { color: #111; font-size: clamp(2.35rem, 4.3vw, 4.25rem); letter-spacing: -0.07em; line-height: 0.9; }
 .resume-section-heading p, .resume-certification-heading > div > p { margin: 0.8rem 0 0; color: var(--text-sub); font-size: var(--type-body); line-height: 1.5; }
-.resume-timeline-navigation { display: flex; align-items: center; gap: 1rem; }
-.resume-timeline-status, .resume-certification-status { display: grid; gap: 0.2rem; margin: 0; color: #6b7280; font-family: var(--font-display); font-size: 0.64rem; font-weight: 800; letter-spacing: 0.08em; line-height: 1.2; text-transform: uppercase; }
-.resume-timeline-status strong, .resume-certification-status strong { color: #111; font-size: 0.72rem; letter-spacing: 0.03em; }
 .resume-timeline-controls button { width: 2.75rem; height: 2.75rem; border: 1px solid #d4d4d4; border-radius: 50%; background: #fff; box-shadow: none; color: #111; font-weight: 800; }
 .resume-timeline-controls button:hover { border-color: #111; background: #111; box-shadow: none; color: #fff; transform: none; }
 .resume-timeline-track { gap: clamp(1.25rem, 3vw, 3rem); min-height: 31rem; padding: 5rem clamp(0.2rem, 2vw, 1.25rem) 2.2rem; background: transparent; border: 0; scroll-padding-inline: 1rem; }
 .resume-timeline-line { top: 2.1rem; right: -2rem; left: -2rem; height: 2px; background: #111; box-shadow: none; }
-.resume-train { position: absolute; z-index: 3; top: 1.25rem; left: 0; display: flex; width: 4.5rem; height: 1.65rem; align-items: center; justify-content: center; gap: 0.25rem; border-radius: 0.48rem; background: #111; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14); pointer-events: none; transition: transform 420ms cubic-bezier(.2,.75,.2,1); }
-.resume-train::before, .resume-train::after { position: absolute; bottom: -0.23rem; width: 0.38rem; height: 0.38rem; border-radius: 50%; background: #111; content: ''; }
-.resume-train::before { left: 0.65rem; }.resume-train::after { right: 0.65rem; }
-.resume-train span { width: 0.58rem; height: 0.52rem; border-radius: 0.1rem; background: #fff; opacity: 0.9; }
+.resume-train { position: absolute; z-index: 3; top: 0.92rem; left: 0; width: 7.5rem; height: 2rem; object-fit: contain; filter: drop-shadow(0 5px 9px rgba(0, 0, 0, 0.13)); pointer-events: none; }
 .resume-station { flex-basis: min(37rem, 76vw); min-height: 25rem; padding: 3.3rem 1.65rem 1.7rem; border: 1px solid #e5e7eb; border-radius: var(--card-radius); background: rgba(255, 255, 255, 0.94); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.045); scroll-snap-align: center; scroll-margin-inline: 1rem; }
 .resume-station:hover { border-color: #c4c4c4; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.075); transform: translateY(-3px); }
 .resume-station::before { position: absolute; top: 1rem; left: 1.65rem; color: #8a8a8a; content: 'EXPERIENCE'; font-family: var(--font-display); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; }
@@ -998,5 +992,7 @@ body.inner-grid-resume #content-view { background: rgba(255, 255, 255, 0.78) !im
 .resume-record h3 { color: #111; font-size: 1.22rem; }.resume-record p { color: var(--text-sub); }
 .resume-certifications { max-width: none; }.resume-certification-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e5e7eb; }
 .resume-certification-track { display: flex !important; gap: 1rem; margin: 0 !important; padding: 0 0 0.9rem !important; overflow-x: auto; list-style: none; scroll-snap-type: x mandatory; scrollbar-width: thin; touch-action: pan-x; }
-.resume-certification-track li { flex: 0 0 clamp(17rem, 31vw, 25rem); min-height: 7.5rem; border: 1px solid #e5e7eb !important; border-radius: var(--card-radius); padding: 1.25rem !important; background: rgba(255, 255, 255, 0.92); color: #444; font-size: 0.9rem; font-weight: 600; line-height: 1.5; scroll-snap-align: start; }
-@media (max-width: 767px) { .resume-page { padding-top: 7rem; }.resume-hero h1 { font-size: clamp(3.35rem, 17vw, 5rem); }.resume-route-map { margin-right: -0.1rem; margin-left: -0.1rem; }.resume-section-heading, .resume-certification-heading { align-items: flex-start; flex-direction: column; gap: 1rem; }.resume-timeline-navigation { width: 100%; justify-content: space-between; }.resume-timeline-track { min-height: 0; margin-right: -1.25rem; padding-top: 4.8rem; padding-right: 1.25rem; }.resume-timeline-line { top: 2rem; }.resume-train { top: 1.15rem; }.resume-station { flex-basis: min(84vw, 25rem); min-height: 0; }.resume-two-column { gap: 3rem; }.resume-certification-track { margin-right: -1.25rem !important; padding-right: 1.25rem !important; }.resume-certification-track li { flex-basis: min(78vw, 21rem); } }
+.resume-certification-track li { display: grid; flex: 0 0 clamp(17rem, 31vw, 25rem); gap: 0.9rem; min-height: 20rem; border: 1px solid #e5e7eb !important; border-radius: var(--card-radius); padding: 1rem !important; background: rgba(255, 255, 255, 0.92); color: #444; scroll-snap-align: start; }
+.certificate-artwork { display: grid; min-height: 11.75rem; place-items: center; border: 1px dashed #cfcfcf; border-radius: calc(var(--card-radius) - 0.25rem); background: rgba(247, 247, 247, 0.86); color: #8a8a8a; font-family: var(--font-display); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.09em; line-height: 1.45; text-align: center; text-transform: uppercase; }
+.resume-certification-track p { margin: 0; color: #272727; font-size: 0.92rem; font-weight: 700; line-height: 1.35; }.resume-certification-track small { color: #777; font-family: var(--font-display); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+@media (max-width: 767px) { .resume-page { padding-top: 7rem; }.resume-hero h1 { font-size: clamp(3.35rem, 17vw, 5rem); }.resume-route-map { margin-right: -0.1rem; margin-left: -0.1rem; }.resume-section-heading, .resume-certification-heading { align-items: flex-start; flex-direction: column; gap: 1rem; }.resume-timeline-track { min-height: 0; margin-right: -1.25rem; padding-top: 4.8rem; padding-right: 1.25rem; }.resume-timeline-line { top: 2rem; }.resume-train { top: 0.82rem; width: 6.5rem; }.resume-station { flex-basis: min(84vw, 25rem); min-height: 0; }.resume-two-column { gap: 3rem; }.resume-certification-track { margin-right: -1.25rem !important; padding-right: 1.25rem !important; }.resume-certification-track li { flex-basis: min(78vw, 21rem); } }
