@@ -1098,3 +1098,21 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 .resume-skill-row:hover .resume-skill-track { animation-play-state: paused; }
 @media (max-width: 767px) { .resume-station { min-height: 0; }.resume-experience-logo { top: 1.4rem; left: 1.3rem; width: 5.65rem; height: 5.65rem; }.resume-station h3 { min-height: 0; margin-left: 6.5rem; padding-top: 0; }.resume-station .resume-employment-meta { min-height: 0; margin-left: 6.5rem; }.resume-station ul { margin-top: 1.7rem; }.resume-skill-row { grid-template-columns: 1fr; gap: .55rem; }.resume-skill-row > p { padding-left: .25rem; }.resume-skill-track { animation-duration: 28s; }.resume-skill-row:nth-child(even) .resume-skill-track { animation-duration: 24s; } }
 @media (prefers-reduced-motion: reduce) { .resume-skill-track { animation: none; } }
+
+/* Final resume hierarchy and visual-hygiene pass. */
+.resume-page { display: flex; flex-direction: column; }
+.resume-hero { order: 0; }
+.resume-skills { order: 1; margin-top: clamp(2.75rem, 5vw, 4.5rem); }
+.resume-experience { order: 2; }
+.resume-two-column { order: 3; }
+.resume-certifications { order: 4; }
+.resume-skill-row { display: block; }
+.resume-skill-row > p { display: none; }
+.resume-skill-marquees { gap: .75rem; margin: 1.45rem -2rem -0.15rem; }
+.resume-skill-track { width: max-content; }
+.resume-skill-track ul { gap: .62rem; padding-right: .62rem; }
+.resume-skills li { min-height: 2.25rem; padding: .54rem .9rem; font-size: .78rem; letter-spacing: .035em; }
+.resume-experience-logo { background: transparent; padding: 0; mix-blend-mode: multiply; }
+.resume-route-map ol::before, .resume-route-map ol::after { top: 4.2rem; }
+.resume-route-map .resume-train { top: 2.1rem; }
+@media (max-width: 767px) { .resume-skill-marquees { margin-right: -1.25rem; margin-left: -1.25rem; }.resume-skills li { min-height: 2.1rem; font-size: .75rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 3.75rem; }.resume-route-map .resume-train { top: 1.98rem; } }
