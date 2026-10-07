@@ -461,12 +461,19 @@ function initResumeTimeline() {
     const stations = Array.from(track.querySelectorAll('.resume-station'));
     const stops = Array.from(document.querySelectorAll('[data-resume-stop]'));
     const train = track.querySelector('.resume-train');
+    const routeMap = document.querySelector('.resume-route-map');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndex = 0;
 
-    const setActiveStop = index => {
-        activeIndex = Math.max(0, Math.min(index, stations.length - 1));
+    const setActiveStop = (index, force = false) => {
+        const nextIndex = Math.max(0, Math.min(index, stations.length - 1));
+        if (!force && nextIndex === activeIndex) return;
+        activeIndex = nextIndex;
         stops.forEach((stop, stopIndex) => stop.toggleAttribute('data-active', stopIndex === activeIndex));
+        stations.forEach((station, stationIndex) => station.toggleAttribute('data-active', stationIndex === activeIndex));
+        const progress = stations.length > 1 ? (activeIndex / (stations.length - 1)) * 100 : 0;
+        routeMap?.style.setProperty('--route-progress', `${progress}%`);
+        track.style.setProperty('--rail-progress', `${progress}%`);
         if (train && stations[activeIndex]) {
             const station = stations[activeIndex];
             train.style.transform = `translateX(${station.offsetLeft + station.offsetWidth / 2 - train.offsetWidth / 2}px)`;
@@ -502,7 +509,7 @@ function initResumeTimeline() {
     }, { passive: true });
 
     window.addEventListener('resize', () => setActiveStop(activeIndex), { passive: true });
-    requestAnimationFrame(() => setActiveStop(0));
+    requestAnimationFrame(() => setActiveStop(0, true));
 
     let dragging = false;
     let startX = 0;
@@ -527,6 +534,49 @@ function initResumeTimeline() {
     };
     track.addEventListener('pointerup', endDrag);
     track.addEventListener('pointercancel', endDrag);
+}
+
+function initResumeCertifications() {
+    const track = document.querySelector('.resume-certification-track');
+    if (!track) return;
+
+    const cards = Array.from(track.querySelectorAll('li'));
+    if (!cards.length) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let activeIndex = 0;
+    let timer;
+    let paused = false;
+
+    const setActive = (index, shouldScroll = false) => {
+        activeIndex = (index + cards.length) % cards.length;
+        cards.forEach((card, cardIndex) => card.toggleAttribute('data-active', cardIndex === activeIndex));
+        if (shouldScroll) {
+            const card = cards[activeIndex];
+            track.scrollTo({ left: card.offsetLeft - (track.clientWidth - card.clientWidth) / 2, behavior: reducedMotion ? 'auto' : 'smooth' });
+        }
+    };
+    const schedule = () => {
+        clearInterval(timer);
+        if (!paused && !reducedMotion) timer = window.setInterval(() => setActive(activeIndex + 1, true), 3000);
+    };
+    const pause = () => { paused = true; clearInterval(timer); };
+    const resume = () => { paused = false; schedule(); };
+
+    track.addEventListener('scroll', () => {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let closest = 0;
+        let distance = Number.POSITIVE_INFINITY;
+        cards.forEach((card, index) => {
+            const nextDistance = Math.abs(card.offsetLeft + card.clientWidth / 2 - center);
+            if (nextDistance < distance) { closest = index; distance = nextDistance; }
+        });
+        if (closest !== activeIndex) setActive(closest);
+    }, { passive: true });
+    ['pointerenter', 'focusin', 'pointerdown'].forEach(type => track.addEventListener(type, pause));
+    track.addEventListener('pointerleave', resume);
+    track.addEventListener('focusout', event => { if (!track.contains(event.relatedTarget)) resume(); });
+    setActive(0, true);
+    schedule();
 }
 
 // Project covers can opt into a self-contained Lottie scene. Loading happens
@@ -1204,6 +1254,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initResearchTracks();
     initCaseStudyGridRegion();
     initResumeTimeline();
+    initResumeCertifications();
     initLottieCovers();
     initOffCanvas();
     startGreetingCarousel();
