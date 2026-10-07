@@ -1049,7 +1049,8 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 /* Single transit strip + focused carousel treatment. */
 .resume-route-map { position: relative; min-height: 12rem; overflow: hidden; }
 .resume-route-map ol { padding-top: 4.75rem; }
-.resume-route-map ol::before, .resume-route-map ol::after { top: 5.4rem; }
+.resume-route-map ol::before { top: 5.4rem; right: var(--route-line-end, 4.5rem); left: var(--route-line-start, 4.5rem); }
+.resume-route-map ol::after { top: 5.4rem; left: var(--route-line-start, 4.5rem); width: var(--route-progress, 0px); }
 .resume-route-map .resume-train { position: absolute; z-index: 3; top: 1.1rem; left: var(--train-x, 4.5rem); width: clamp(11rem, 17vw, 15rem); height: 4.2rem; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .14)); pointer-events: none; transform: translateX(-50%); transition: left 560ms cubic-bezier(.2,.75,.2,1); }
 .resume-timeline-stage { display: none; }
 .resume-timeline-track { gap: 1rem; padding: 1.5rem max(1rem, calc(50% - 15rem)) 2.4rem; scroll-snap-type: x mandatory; scrollbar-width: none; }
@@ -1066,5 +1067,5 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 .resume-contact a img { width: 1.05rem; height: 1.05rem; object-fit: contain; }
 .resume-certification-track { position: relative; gap: 1rem; padding-right: max(.5rem, calc(50% - 9.5rem)) !important; padding-left: max(.5rem, calc(50% - 9.5rem)) !important; }
 .resume-certification-track li { flex-basis: min(19rem, 72vw); min-height: 15rem; opacity: .18; filter: blur(1.3px); transform: scale(.88); transform-origin: center; }
-.resume-certification-track li[data-active] { position: relative; z-index: 2; opacity: 1; filter: none; transform: scale(1.08); }
+.resume-certification-track li[data-active] { position: relative; z-index: 2; opacity: 1; filter: none; transform: scale(1.16); }
 @media (max-width: 767px) { .resume-route-map { min-height: 10.5rem; overflow-x: auto; }.resume-route-map ol { min-width: 760px; padding-top: 4.25rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 4.9rem; }.resume-route-map .resume-train { top: .8rem; width: 9.5rem; height: 3.55rem; }.resume-timeline-track { padding-right: max(1.25rem, calc(50% - 38vw)); padding-left: max(1.25rem, calc(50% - 38vw)); }.resume-station { flex-basis: 76vw; }.resume-certification-track { padding-right: max(1.25rem, calc(50% - 38vw)) !important; padding-left: max(1.25rem, calc(50% - 38vw)) !important; }.resume-certification-track li { flex-basis: 70vw; }.resume-certification-track li[data-active] { transform: scale(1.035); } }

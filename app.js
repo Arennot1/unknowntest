@@ -469,9 +469,18 @@ function initResumeTimeline() {
 
     const positionRail = index => {
         if (!routeMap || !train || !stops[index]) return;
-        const stop = stops[index];
-        const left = stop.offsetLeft + stop.offsetWidth / 2;
-        train.style.setProperty('--train-x', `${left}px`);
+        const mapBounds = routeMap.getBoundingClientRect();
+        const centerFor = stop => {
+            const bounds = stop.getBoundingClientRect();
+            return bounds.left - mapBounds.left + bounds.width / 2 + routeMap.scrollLeft;
+        };
+        const firstCenter = centerFor(stops[0]);
+        const lastCenter = centerFor(stops[stops.length - 1]);
+        const activeCenter = centerFor(stops[index]);
+        routeMap.style.setProperty('--route-line-start', `${firstCenter}px`);
+        routeMap.style.setProperty('--route-line-end', `${Math.max(0, routeMap.scrollWidth - lastCenter)}px`);
+        routeMap.style.setProperty('--route-progress', `${Math.max(0, activeCenter - firstCenter)}px`);
+        train.style.setProperty('--train-x', `${activeCenter}px`);
     };
 
     const setActiveStop = (index, force = false) => {
@@ -480,8 +489,6 @@ function initResumeTimeline() {
         activeIndex = nextIndex;
         stops.forEach((stop, stopIndex) => stop.toggleAttribute('data-active', stopIndex === activeIndex));
         stations.forEach((station, stationIndex) => station.toggleAttribute('data-active', stationIndex === activeIndex));
-        const progress = stations.length > 1 ? (activeIndex / (stations.length - 1)) * 100 : 0;
-        routeMap?.style.setProperty('--route-progress', `${progress}%`);
         positionRail(activeIndex);
     };
 
