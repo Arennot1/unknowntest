@@ -460,29 +460,18 @@ function initResumeTimeline() {
 
     const stations = Array.from(track.querySelectorAll('.resume-station'));
     const stops = Array.from(document.querySelectorAll('[data-resume-stop]'));
-    const stage = document.querySelector('.resume-timeline-stage');
-    const railStops = Array.from(document.querySelectorAll('.resume-rail-stop'));
     const routeMap = document.querySelector('.resume-route-map');
+    const train = routeMap?.querySelector('.resume-train');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndex = 0;
     let targetIndex = null;
     let targetTimer;
 
     const positionRail = index => {
-        if (!stage) return;
-        const inset = Math.min(40, Math.max(24, stage.clientWidth * 0.045));
-        const available = Math.max(0, stage.clientWidth - inset * 2);
-        railStops.forEach((stop, stopIndex) => {
-            const ratio = railStops.length > 1 ? stopIndex / (railStops.length - 1) : 0;
-            stop.style.setProperty('--rail-x', `${inset + available * ratio}px`);
-            stop.toggleAttribute('data-active', stopIndex === index);
-            stop.toggleAttribute('data-current', stopIndex === 0);
-        });
-        const progress = stations.length > 1 ? index / (stations.length - 1) : 0;
-        stage.style.setProperty('--rail-start', `${inset}px`);
-        stage.style.setProperty('--rail-end', `${inset}px`);
-        stage.style.setProperty('--rail-progress', `${available * progress}px`);
-        stage.style.setProperty('--train-x', `${inset + available * progress}px`);
+        if (!routeMap || !train || !stops[index]) return;
+        const stop = stops[index];
+        const left = stop.offsetLeft + stop.offsetWidth / 2;
+        train.style.setProperty('--train-x', `${left}px`);
     };
 
     const setActiveStop = (index, force = false) => {
@@ -560,42 +549,65 @@ function initResumeCertifications() {
     const track = document.querySelector('.resume-certification-track');
     if (!track) return;
 
+    const originals = Array.from(track.querySelectorAll('li'));
+    if (!originals.length) return;
+    const firstClone = originals[0].cloneNode(true);
+    const lastClone = originals[originals.length - 1].cloneNode(true);
+    firstClone.dataset.clone = 'first';
+    lastClone.dataset.clone = 'last';
+    track.prepend(lastClone);
+    track.append(firstClone);
     const cards = Array.from(track.querySelectorAll('li'));
-    if (!cards.length) return;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndex = 0;
     let timer;
-    let scrollTimer;
+    let resetTimer;
 
-    const setActive = (index, shouldScroll = false) => {
-        activeIndex = (index + cards.length) % cards.length;
-        cards.forEach((card, cardIndex) => card.toggleAttribute('data-active', cardIndex === activeIndex));
+    const select = (index, shouldScroll = false, physicalIndex = index + 1) => {
+        activeIndex = (index + originals.length) % originals.length;
+        cards.forEach((card, cardIndex) => card.toggleAttribute('data-active', cardIndex === physicalIndex));
         if (shouldScroll) {
-            const card = cards[activeIndex];
+            const card = cards[physicalIndex];
             track.scrollTo({ left: card.offsetLeft - (track.clientWidth - card.clientWidth) / 2, behavior: reducedMotion ? 'auto' : 'smooth' });
+        }
+    };
+    const advance = () => {
+        const next = (activeIndex + 1) % originals.length;
+        const isLooping = activeIndex === originals.length - 1;
+        select(next, true, isLooping ? cards.length - 1 : next + 1);
+        if (isLooping && !reducedMotion) {
+            window.clearTimeout(resetTimer);
+            resetTimer = window.setTimeout(() => {
+                const first = cards[1];
+                track.scrollTo({ left: first.offsetLeft - (track.clientWidth - first.clientWidth) / 2, behavior: 'auto' });
+                select(0, false, 1);
+            }, 650);
         }
     };
     const schedule = () => {
         window.clearTimeout(timer);
         if (!reducedMotion) timer = window.setTimeout(() => {
-            setActive(activeIndex + 1, true);
+            advance();
             schedule();
         }, 3000);
     };
 
-    track.addEventListener('scroll', () => {
+    track.addEventListener('scrollend', () => {
         const center = track.scrollLeft + track.clientWidth / 2;
-        let closest = 0;
+        let closest = 1;
         let distance = Number.POSITIVE_INFINITY;
         cards.forEach((card, index) => {
             const nextDistance = Math.abs(card.offsetLeft + card.clientWidth / 2 - center);
             if (nextDistance < distance) { closest = index; distance = nextDistance; }
         });
-        if (closest !== activeIndex) setActive(closest);
-        window.clearTimeout(scrollTimer);
-        scrollTimer = window.setTimeout(schedule, 3000);
+        select(closest === 0 ? originals.length - 1 : closest === cards.length - 1 ? 0 : closest - 1, false, closest);
+        schedule();
     }, { passive: true });
-    setActive(0, true);
+    requestAnimationFrame(() => {
+        const first = cards[1];
+        track.scrollTo({ left: first.offsetLeft - (track.clientWidth - first.clientWidth) / 2, behavior: 'auto' });
+        select(0, false, 1);
+    });
     schedule();
 }
 
