@@ -458,23 +458,38 @@ function initResumeTimeline() {
     const track = document.querySelector('.resume-timeline-track');
     if (!track) return;
 
-    const step = () => Math.min(track.clientWidth * 0.82, 480);
-    document.querySelector('[data-resume-prev]')?.addEventListener('click', () => {
-        track.scrollBy({ left: -step(), behavior: 'smooth' });
-    });
-    document.querySelector('[data-resume-next]')?.addEventListener('click', () => {
-        track.scrollBy({ left: step(), behavior: 'smooth' });
-    });
-
     const stations = Array.from(track.querySelectorAll('.resume-station'));
     const stops = Array.from(document.querySelectorAll('[data-resume-stop]'));
+    const train = track.querySelector('.resume-train');
+    const status = document.querySelector('[data-resume-status]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let activeIndex = 0;
+    let lastWheelAt = 0;
+
     const setActiveStop = index => {
+        activeIndex = Math.max(0, Math.min(index, stations.length - 1));
         stops.forEach((stop, stopIndex) => stop.toggleAttribute('data-active', stopIndex === index));
+        const company = stations[activeIndex]?.querySelector('.resume-company')?.textContent?.trim();
+        if (status && company) status.textContent = company;
+        if (train && stations[activeIndex]) {
+            const station = stations[activeIndex];
+            train.style.transform = `translateX(${station.offsetLeft + station.offsetWidth / 2 - train.offsetWidth / 2}px)`;
+        }
     };
+
+    const goToStop = (index, behavior = 'smooth') => {
+        const nextIndex = Math.max(0, Math.min(index, stations.length - 1));
+        const station = stations[nextIndex];
+        if (!station) return;
+        station.scrollIntoView({ behavior: reducedMotion ? 'auto' : behavior, block: 'nearest', inline: 'center' });
+        setActiveStop(nextIndex);
+    };
+
+    document.querySelector('[data-resume-prev]')?.addEventListener('click', () => goToStop(activeIndex - 1));
+    document.querySelector('[data-resume-next]')?.addEventListener('click', () => goToStop(activeIndex + 1));
     stops.forEach(stop => stop.addEventListener('click', () => {
         const index = Number(stop.dataset.resumeStop);
-        stations[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        setActiveStop(index);
+        goToStop(index);
     }));
     track.addEventListener('scroll', () => {
         const center = track.scrollLeft + track.clientWidth / 2;
@@ -489,7 +504,22 @@ function initResumeTimeline() {
         });
         setActiveStop(closestIndex);
     }, { passive: true });
-    setActiveStop(0);
+
+    track.addEventListener('wheel', event => {
+        if (!window.matchMedia('(min-width: 768px)').matches) return;
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || Math.abs(event.deltaY) < 6) return;
+        const now = Date.now();
+        if (now - lastWheelAt < 520) {
+            event.preventDefault();
+            return;
+        }
+        event.preventDefault();
+        lastWheelAt = now;
+        goToStop(activeIndex + (event.deltaY > 0 ? 1 : -1));
+    }, { passive: false });
+
+    window.addEventListener('resize', () => setActiveStop(activeIndex), { passive: true });
+    requestAnimationFrame(() => setActiveStop(0));
 
     let dragging = false;
     let startX = 0;
@@ -514,6 +544,35 @@ function initResumeTimeline() {
     };
     track.addEventListener('pointerup', endDrag);
     track.addEventListener('pointercancel', endDrag);
+}
+
+function initResumeCertifications() {
+    const track = document.querySelector('.resume-certification-track');
+    if (!track || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let timer;
+    let paused = false;
+    const advance = () => {
+        if (paused) return;
+        const card = track.querySelector('li');
+        if (!card) return;
+        const step = card.getBoundingClientRect().width + 16;
+        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+        track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step, behavior: 'smooth' });
+    };
+    const start = () => {
+        clearInterval(timer);
+        if (!paused) timer = window.setInterval(advance, 3800);
+    };
+    const pause = () => { paused = true; clearInterval(timer); };
+    const resume = () => { paused = false; start(); };
+
+    ['pointerenter', 'focusin', 'pointerdown'].forEach(type => track.addEventListener(type, pause));
+    track.addEventListener('pointerleave', resume);
+    track.addEventListener('focusout', event => {
+        if (!track.contains(event.relatedTarget)) resume();
+    });
+    start();
 }
 
 // Project covers can opt into a self-contained Lottie scene. Loading happens
@@ -1191,6 +1250,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initResearchTracks();
     initCaseStudyGridRegion();
     initResumeTimeline();
+    initResumeCertifications();
     initLottieCovers();
     initOffCanvas();
     startGreetingCarousel();
