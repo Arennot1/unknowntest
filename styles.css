@@ -1116,3 +1116,16 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 .resume-route-map ol::before, .resume-route-map ol::after { top: 4.2rem; }
 .resume-route-map .resume-train { top: 2.1rem; }
 @media (max-width: 767px) { .resume-skill-marquees { margin-right: -1.25rem; margin-left: -1.25rem; }.resume-skills li { min-height: 2.1rem; font-size: .75rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 3.75rem; }.resume-route-map .resume-train { top: 1.98rem; } }
+
+/* Capability lanes intentionally run edge-to-edge; education is a concise pair. */
+.resume-skills { overflow: visible; }
+.resume-skill-marquees { width: 100vw; margin-right: calc(50% - 50vw); margin-left: calc(50% - 50vw); padding: 0; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.resume-skill-row { width: 100%; }
+.resume-skill-track { min-width: 200%; }
+.resume-download { display: inline-flex !important; align-items: center; gap: .65rem; border: 1px solid #111 !important; border-radius: 999px; padding: .75rem 1rem; background: #111; color: #fff !important; font-family: var(--font-display); font-size: .78rem !important; font-weight: 800; letter-spacing: .08em; text-decoration: none !important; text-transform: uppercase; transition: transform 180ms ease, background-color 180ms ease, color 180ms ease; }
+.resume-download:hover { background: #fff; color: #111 !important; transform: translateY(-2px); }
+.resume-download span { font-size: 1.1rem; line-height: .6; }
+.resume-education { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.resume-education-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 6rem); }
+.resume-education .resume-record { margin: 0; }
+@media (max-width: 767px) { .resume-skill-marquees { margin-right: calc(50% - 50vw); margin-left: calc(50% - 50vw); mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }.resume-education-row { grid-template-columns: 1fr; gap: .4rem; } }
