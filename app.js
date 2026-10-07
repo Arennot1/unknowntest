@@ -454,6 +454,43 @@ function initCaseStudyGridRegion() {
     observer.observe(region);
 }
 
+function initResumeTimeline() {
+    const track = document.querySelector('.resume-timeline-track');
+    if (!track) return;
+
+    const step = () => Math.min(track.clientWidth * 0.82, 480);
+    document.querySelector('[data-resume-prev]')?.addEventListener('click', () => {
+        track.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+    document.querySelector('[data-resume-next]')?.addEventListener('click', () => {
+        track.scrollBy({ left: step(), behavior: 'smooth' });
+    });
+
+    let dragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    track.addEventListener('pointerdown', event => {
+        if (event.pointerType !== 'mouse') return;
+        dragging = true;
+        startX = event.clientX;
+        startScrollLeft = track.scrollLeft;
+        track.classList.add('is-dragging');
+        track.setPointerCapture(event.pointerId);
+    });
+    track.addEventListener('pointermove', event => {
+        if (!dragging) return;
+        track.scrollLeft = startScrollLeft - (event.clientX - startX);
+    });
+    const endDrag = event => {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove('is-dragging');
+        if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+}
+
 // Project covers can opt into a self-contained Lottie scene. Loading happens
 // after the page is ready so a missing CDN library never blocks core content.
 function initLottieCovers() {
@@ -1128,6 +1165,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initOffCanvasTracks();
     initResearchTracks();
     initCaseStudyGridRegion();
+    initResumeTimeline();
     initLottieCovers();
     initOffCanvas();
     startGreetingCarousel();

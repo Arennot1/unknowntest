@@ -470,8 +470,9 @@ for (const collection of RESEARCH_COLLECTIONS) {
 routes.push({
     outPath: 'resume/index.html', depth: 1,
     title: 'Resume | Areen Pednekar',
-    description: 'Resume and professional background of Areen Pednekar, Product & Industrial Designer.',
+    description: 'Resume of Areen S. Pednekar, UX Designer and Researcher specializing in enterprise digital transformation, B2B SaaS, and ethnographic research.',
     pageClass: 'inner-grid-resume',
+    extraHead: `<link rel="canonical" href="${SITE_URL}/resume/"><meta property="og:type" content="profile"><meta property="og:title" content="Areen S. Pednekar | UX Designer and Researcher"><meta property="og:description" content="Experience in enterprise digital transformation, B2B SaaS, research, and product design."><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Person', name: 'Areen S. Pednekar', url: `${SITE_URL}/resume/`, jobTitle: 'UX Designer and Researcher', email: 'areenpednekar@gmail.com', telephone: '+917410199112', address: { '@type': 'PostalAddress', addressLocality: 'Panaji', addressRegion: 'Goa', addressCountry: 'IN' }, alumniOf: { '@type': 'CollegeOrUniversity', name: 'ATLAS SkillTech University' }, knowsAbout: ['Enterprise digital transformation', 'B2B SaaS', 'User research', 'Ethnography', 'Design systems', 'Information architecture', 'Product design'] })}</script>`,
     body: `    <div id="content-view">\n${renderHeader({ backHref: '', active: 'Resume' })}\n        <div id="resume-content">\n${fragments.resume}\n        </div>\n${FOOTER}\n    </div>`,
 });
 
