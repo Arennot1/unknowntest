@@ -1069,3 +1069,14 @@ body.inner-grid-resume #cursor-dot, body.inner-grid-resume #cursor-glass { displ
 .resume-certification-track li { flex-basis: min(19rem, 72vw); min-height: 15rem; opacity: .18; filter: blur(1.3px); transform: scale(.88); transform-origin: center; }
 .resume-certification-track li[data-active] { position: relative; z-index: 2; opacity: 1; filter: none; transform: scale(1.16); }
 @media (max-width: 767px) { .resume-route-map { min-height: 10.5rem; overflow-x: auto; }.resume-route-map ol { min-width: 760px; padding-top: 4.25rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 4.9rem; }.resume-route-map .resume-train { top: .8rem; width: 9.5rem; height: 3.55rem; }.resume-timeline-track { padding-right: max(1.25rem, calc(50% - 38vw)); padding-left: max(1.25rem, calc(50% - 38vw)); }.resume-station { flex-basis: 76vw; }.resume-certification-track { padding-right: max(1.25rem, calc(50% - 38vw)) !important; padding-left: max(1.25rem, calc(50% - 38vw)) !important; }.resume-certification-track li { flex-basis: 70vw; }.resume-certification-track li[data-active] { transform: scale(1.035); } }
+
+/* Place the rail vehicle directly over its route and surface supplied proof. */
+.resume-route-map { min-height: 14.25rem; }
+.resume-route-map ol { padding-top: 8.1rem; }
+.resume-route-map ol::before, .resume-route-map ol::after { top: 5.45rem; }
+.resume-route-map .resume-train { top: 3.35rem; }
+.resume-station { padding-right: 5.6rem; }
+.resume-experience-logo { position: absolute; top: 1.55rem; right: 1.55rem; width: 3.15rem; height: 3.15rem; border: 1px solid #e6e6e6; border-radius: .75rem; padding: .32rem; background: #fff; object-fit: contain; }
+.certificate-artwork { display: block; width: 100%; min-height: 0; height: 9.6rem; border-style: solid; object-fit: cover; object-position: center; }
+.resume-certification-track li[data-active] .certificate-artwork { height: 10.8rem; }
+@media (max-width: 767px) { .resume-route-map { min-height: 12.5rem; }.resume-route-map ol { padding-top: 7rem; }.resume-route-map ol::before, .resume-route-map ol::after { top: 4.8rem; }.resume-route-map .resume-train { top: 2.95rem; }.resume-station { padding-right: 4.6rem; }.resume-experience-logo { top: 1.25rem; right: 1.25rem; width: 2.65rem; height: 2.65rem; }.certificate-artwork { height: 8.5rem; }.resume-certification-track li[data-active] .certificate-artwork { height: 9.4rem; } }
